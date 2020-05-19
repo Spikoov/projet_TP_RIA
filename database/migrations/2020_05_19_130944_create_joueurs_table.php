@@ -15,6 +15,25 @@ class CreateJoueursTable extends Migration
     {
         Schema::create('joueurs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('prenom');
+            $table->string('nom');
+            $table->integer('age');
+            $table->string('poste');
+            $table->integer('tir');
+            $table->integer('passe');
+            $table->integer('technique');
+            $table->integer('placement');
+            $table->integer('vitesse');
+            $table->integer('tacle');
+            $table->integer('arret');
+            $table->integer('forme');
+            $table->integer('endurance');
+            $table->integer('noteGlobale');
+            $table->integer('noteInstantanee');
+            $table->boolean('sousContrat');
+            $table->integer('dureeContrat');
+            $table->integer('salaire');
+            $table->binary('historiqueClubs');
             $table->timestamps();
         });
     }
