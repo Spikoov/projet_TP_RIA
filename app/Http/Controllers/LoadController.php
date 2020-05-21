@@ -28,12 +28,24 @@ class LoadController extends Controller
 
     public function generatePrenom()
     {
-        // code...
+        $length = count($this->$prenom) - 1;
+
+        $randIndex = rand(0, $length);
+
+        return $this->$prenom[$randIndex];
     }
 
     public function generateNom()
     {
-        // code...
+        $length = count($this->$nom) - 1;
+        $randNumber = rand(1, 4);
+        $nomString = "";
+
+        for ($i=0; $i < $randNumber; $i++) {
+          $randNom = rand(0, $length);
+          $nomString .= $this->$nom[$randNumber];
+        }
+        return ucfirst($nomString);
     }
 
     public function stats()
