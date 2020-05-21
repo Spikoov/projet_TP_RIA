@@ -11,4 +11,4 @@
 |
 */
 
-Route::view('/', 'welcome');
+Route::get('/', 'LoadController@welcome');
