@@ -6,12 +6,35 @@ use Illuminate\Http\Request;
 
 class LoadController extends Controller
 {
-    private $prenom = array('' => , );
+    private $prenom = array(
+        'Philippe',
+        'Jean',
+    );
 
-    public function generate()
+    public function welcome()
     {
-        
+
 
         return view('welcome');
+    }
+
+    public function generatePrenom()
+    {
+        // code...
+    }
+
+    public function generateNom()
+    {
+        // code...
+    }
+
+    public function stats()
+    {
+        // code...
+    }
+
+    public function insert()
+    {
+        // code...
     }
 }
