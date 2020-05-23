@@ -35,7 +35,11 @@ class JoueurController extends Controller
         $this->_prenom = $this->generatePrenom($listPrenom);
         $this->_nom = $this->generateNom($listNom);
         $this->age = rand(17, 35);
+<<<<<<< HEAD
         $this->_poste = $listPostes[array_rand($listPostes)]
+=======
+        $this->_poste = $this->postes[array_rand($this->postes)]
+>>>>>>> b2d0f90ec184f1cd0fbdf33499210a804e317544
         $this->_stats = $this->generateStats($this->_poste);
         $this->_note = $this->generateNotes();
 
