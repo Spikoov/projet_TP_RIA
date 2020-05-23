@@ -12,7 +12,9 @@ class LoadController extends Controller
 {
     public function welcome()
     {
-        (new JoueurController)->generateJoueur();
+        for ($i=0; $i < 200; $i++) {
+            (new JoueurController)->generateJoueur();
+        }
 
         return view('welcome');
     }
