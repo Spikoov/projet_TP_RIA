@@ -12,8 +12,14 @@ class LoadController extends Controller
 {
     public function welcome()
     {
+        //generate 200 players
         for ($i=0; $i < 200; $i++) {
             (new JoueurController)->generateJoueur();
+        }
+
+        //generate 10 clubs
+        for ($i=0; $i < 10; $i++) {
+            (new ClubController)->generateClub();
         }
 
         return view('welcome');

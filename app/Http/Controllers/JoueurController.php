@@ -15,35 +15,28 @@ class JoueurController extends Controller
 
     public function generateJoueur()
     {
-        $listPrenom = array(
-            'Philippe', 'Jean', 'Jérôme', 'Sébastien', 'Miguel', 'François', 'Loïc', 'Luca', 'Théo', 'Clément',
-            'Victor', 'Stéphane', 'Giuseppe', 'Zelda', 'Thor', 'Tony', 'Lemmy', 'Francis', 'Thomas', 'Arnold',
-            'Durotan', 'Loris', 'Anduin', 'Camille', 'Ragnar'
-        );
-
-        $listNom = array(
-            'mar', 'chi', 'oni', 'flo', 'res', 'cor', 'reia', 'fig', 'loth', 'brok',
-            'elli', 'ar', 'rein', 'hardt', 'hurl', 'enfer', 'cor', 'arch', 'son', 'sras',
-            'moth', 'med', 'ori', 'ant', 'oni', 'het', 'field', 'chew', 'bacca', 'krank',
-            'en', 'wag', 'kraft', 'kil', 'ami', 'kuru', 'oli', 'ken', 'obi', 'cci'
-        );
-
         $listPostes = array(
             'gardien', 'defense', 'milieu', 'attaquant'
-        )
+        );
 
-        $this->_prenom = $this->generatePrenom($listPrenom);
-        $this->_nom = $this->generateNom($listNom);
+        $this->_prenom = $this->generatePrenom();
+        $this->_nom = $this->generateNom();
         $this->age = rand(17, 35);
-        $this->_poste = $listPostes[array_rand($listPostes)]
+        $this->_poste = $listPostes[array_rand($listPostes)];
         $this->_stats = $this->generateStats($this->_poste);
         $this->_note = $this->generateNotes();
 
         $this->insert();
     }
 
-    public function generatePrenom($prenoms)
+    public function generatePrenom()
     {
+        $prenoms = array(
+            'Philippe', 'Jean', 'Jérôme', 'Sébastien', 'Miguel', 'François', 'Loïc', 'Luca', 'Théo', 'Clément',
+            'Victor', 'Stéphane', 'Giuseppe', 'Zelda', 'Thor', 'Tony', 'Lemmy', 'Francis', 'Thomas', 'Arnold',
+            'Durotan', 'Loris', 'Anduin', 'Camille', 'Ragnar'
+        );
+
         $length = count($prenoms) - 1;
 
         $randIndex = rand(0, $length);
@@ -51,8 +44,15 @@ class JoueurController extends Controller
         return $prenoms[$randIndex];
     }
 
-    public function generateNom($noms)
+    public function generateNom()
     {
+        $noms = array(
+            'mar', 'chi', 'oni', 'flo', 'res', 'cor', 'reia', 'fig', 'loth', 'brok',
+            'elli', 'ar', 'rein', 'hardt', 'hurl', 'enfer', 'cor', 'arch', 'son', 'sras',
+            'moth', 'med', 'ori', 'ant', 'oni', 'het', 'field', 'chew', 'bacca', 'krank',
+            'en', 'wag', 'kraft', 'kil', 'ami', 'kuru', 'oli', 'ken', 'obi', 'cci'
+        );
+
         $length = count($noms) - 1;
         $randNumber = rand(1, 4);
         $nomString = "";
@@ -72,7 +72,7 @@ class JoueurController extends Controller
         }
         elseif ($position === 'defense') {
             $gk0 = 0; $df0 = 70; $ml0 = 20; $at0 = 0;
-            $gk1 = 10; $df1 = 100; $ml1 = 60; $at1 = 20;.
+            $gk1 = 10; $df1 = 100; $ml1 = 60; $at1 = 20;
         }
         elseif ($position === 'milieu') {
             $gk0 = 0; $df0 = 20; $ml0 = 70; $at0 = 20;
@@ -101,19 +101,19 @@ class JoueurController extends Controller
     public function generateNotes()
     {
         $notes = array(
-            'gardien' => floor(array_sum($this->_stats['placement'], $this->_stats['arret'], $this->_stats['arret'], $this->_stats['tacle'])/4),
-            'defense' => floor(array_sum($this->_stats['placement'], $this->_stats['tacle'], $this->_stats['tacle'], $this->_stats['passe'])/4),
-            'milieu' => floor(array_sum($this->_stats['passe'], $this->_stats['technique'], $this->_stats['vitesse'], $this->_stats['placement'])/4),
-            'attaque' => floor(array_sum($this->_stats['tir'], $this->_stats['tir'], $this->_stats['vitesse'], $this->_stats['technique'])/4),
+            'gardien' => floor(array_sum([$this->_stats['placement'], $this->_stats['arret'], $this->_stats['arret'], $this->_stats['tacle']])/4),
+            'defense' => floor(array_sum([$this->_stats['placement'], $this->_stats['tacle'], $this->_stats['tacle'], $this->_stats['passe']])/4),
+            'milieu' => floor(array_sum([$this->_stats['passe'], $this->_stats['technique'], $this->_stats['vitesse'], $this->_stats['placement']])/4),
+            'attaque' => floor(array_sum([$this->_stats['tir'], $this->_stats['tir'], $this->_stats['vitesse'], $this->_stats['technique']])/4),
         );
 
-        return $notes
+        return $notes;
     }
 
     public function insert()
     {
-        DB::table('joueurs')->truncate();
+        //DB::table('joueurs')->truncate();
 
-        //insert
+        //insert...
     }
 }

@@ -15,6 +15,7 @@ class CreateClubsTable extends Migration
     {
         Schema::create('clubs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('nom');
             $table->integer('idVille');
             $table->string('stade');
             $table->integer('capaciteStade');
