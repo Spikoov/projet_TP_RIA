@@ -21,7 +21,7 @@ class LoadController extends Controller
         DB::table('matches')->truncate();
         DB::table('titulaires')->truncate();
         DB::table('remplacants')->truncate();
-        DB::table('effectifAutres')->truncate();
+        DB::table('effectif_autres')->truncate();
 
         //generate 200 players
         for ($i=0; $i < 200; $i++) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Ville;
 use App\Club;
+use Illuminate\Support\Facades\DB;
 
 class ClubController extends Controller
 {
@@ -35,7 +36,7 @@ class ClubController extends Controller
 
         $ville = array(
             'nom' => $villes[array_rand($villes)],
-            'attractivite' => rand(0, 100)
+            'attractivite' => rand(50, 100)
         );
 
         return $ville;
@@ -73,7 +74,7 @@ class ClubController extends Controller
         if($firstLetter === 'A' OR $firstLetter === 'I' OR $firstLetter === 'U'
         OR $firstLetter === 'E' OR $firstLetter === 'O' OR $firstLetter === 'Y')
             $nom .= 'e l\'';
-        elseif (substr($this->_nomClub, 0, 4); === 'Real')
+        elseif (substr($this->_nomClub, 0, 4) === 'Real')
             $nom .= 'u ';
         else
             $nom .= 'e ';
@@ -92,16 +93,20 @@ class ClubController extends Controller
     {
         Ville::create([
           'nom' => $this->_ville['nom'],
-          'attracitvite' => $this->_ville['attractivite']
+          'attractivite' => $this->_ville['attractivite']
         ]);
+
+        $idVille = DB::table('villes')->latest('id')->first()->id;
+        var_dump($idVille);
+        //die();
 
         Club::create([
           'nom' => $this->_nomClub,
-          'idVille' => //RecupererAvecRequete,
+          'idVille' => $idVille,
           'stade' => $this->_stade['nom'],
           'capaciteStade' => $this->_stade['capacite'],
           'budget' => $this->_budget,
           'points' => $this->_points
-        ]);
+      ]);
     }
 }

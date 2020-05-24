@@ -16,7 +16,7 @@ class CreateVillesTable extends Migration
         Schema::create('villes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nom');
-            $table->integer('attracitvite');
+            $table->integer('attractivite');
             $table->timestamps();
         });
     }
