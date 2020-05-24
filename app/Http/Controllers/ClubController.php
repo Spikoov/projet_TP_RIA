@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Ville;
+use App\Club;
 
 class ClubController extends Controller
 {
@@ -88,7 +90,18 @@ class ClubController extends Controller
 
     public function insert()
     {
-        //insert villes...
-        //insert clubs...
+        Ville::create([
+          'nom' => $this->_ville['nom'],
+          'attracitvite' => $this->_ville['attractivite']
+        ]);
+
+        Club::create([
+          'nom' => $this->_nomClub,
+          'idVille' => //RecupererAvecRequete,
+          'stade' => $this->_stade,
+          'capaciteStade' => ,
+          'budget' => ,
+          'points' =>
+        ]);
     }
 }
