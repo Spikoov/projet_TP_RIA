@@ -97,8 +97,6 @@ class ClubController extends Controller
         ]);
 
         $idVille = DB::table('villes')->latest('id')->first()->id;
-        var_dump($idVille);
-        //die();
 
         Club::create([
           'nom' => $this->_nomClub,
