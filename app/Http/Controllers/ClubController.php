@@ -98,10 +98,10 @@ class ClubController extends Controller
         Club::create([
           'nom' => $this->_nomClub,
           'idVille' => //RecupererAvecRequete,
-          'stade' => $this->_stade,
-          'capaciteStade' => ,
-          'budget' => ,
-          'points' =>
+          'stade' => $this->_stade['nom'],
+          'capaciteStade' => $this->_stade['capacite'],
+          'budget' => $this->_budget,
+          'points' => $this->_points
         ]);
     }
 }
