@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Joueur;
 
 class JoueurController extends Controller
 {
@@ -11,7 +12,7 @@ class JoueurController extends Controller
     private $_age;
     private $_poste;
     private $_stats;
-    private $_notes;
+    private $_note;
     private $_contrat;
 
     public function generateJoueur()
@@ -22,10 +23,10 @@ class JoueurController extends Controller
 
         $this->_prenom = $this->generatePrenom();
         $this->_nom = $this->generateNom();
-        $this->age = rand(17, 35);
+        $this->_age = rand(17, 35);
         $this->_poste = $listPostes[array_rand($listPostes)];
         $this->_stats = $this->generateStats($this->_poste);
-        $this->_notes = $this->generateNotes();
+        $this->_note = $this->generateNotes();
         $this->_contrat = array(
             'sousContrat' => false,
             'dureeContrat' => 0,
@@ -113,11 +114,30 @@ class JoueurController extends Controller
             'attaque' => floor(array_sum([$this->_stats['tir'], $this->_stats['tir'], $this->_stats['vitesse'], $this->_stats['technique']])/4),
         );
 
-        return $notes;
+        $note = $notes[$this->_poste];
+        return $note;
     }
 
     public function insert()
     {
-        //insert...
+        Joueur::create([
+            'prenom' => $this->_prenom,
+            'nom' => $this->_nom,
+            'age' => $this->_age,
+            'poste' => $this->_poste,
+            'tir' => $this->_stats['tir'],
+            'passe' => $this->_stats['passe'],
+            'technique' => $this->_stats['technique'],
+            'placement' => $this->_stats['placement'],
+            'vitesse' => $this->_stats['vitesse'],
+            'tacle' => $this->_stats['tacle'],
+            'arret' => $this->_stats['arret'],
+            'forme' => $this->_stats['forme'],
+            'endurance' => $this->_stats['endurance'],
+            'noteGlobale' => $this->_note,
+            'sousContrat' => $this->_contrat['sousContrat'],
+            'dureeContrat' => $this->_contrat['dureeContrat'],
+            'salaire' => $this->_contrat['salaire']
+        ]);
     }
 }
