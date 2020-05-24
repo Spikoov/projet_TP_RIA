@@ -10,19 +10,19 @@ class EquipeController extends Controller
 {
     private $_titulaires;
     private $_remplaçants;
-    private $_effectif;
+    private $_autres;
     private $_organisation;
     private $_notes;
 
     public function generateEquipe()
     {
-        $this->
+        $this->_titulaires
 
         $this->insert();
     }
 
     public function insert()
     {
-        // code...
+        //insert...
     }
 }

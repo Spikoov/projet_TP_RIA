@@ -22,7 +22,6 @@ class CreateMatchesTable extends Migration
             $table->integer('scoreClub1');
             $table->integer('scoreClub2');
             $table->integer('nbSpectateurs');
-            $table->timestamps();
         });
     }
 

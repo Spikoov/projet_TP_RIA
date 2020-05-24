@@ -20,9 +20,7 @@ class CreateClubsTable extends Migration
             $table->string('stade');
             $table->integer('capaciteStade');
             $table->bigInteger('budget');
-            $table->integer('idEquipe');
             $table->integer('points');
-            $table->timestamps();
         });
     }
 

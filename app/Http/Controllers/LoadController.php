@@ -15,7 +15,7 @@ class LoadController extends Controller
         //DB::table('joueurs')->truncate();
         //DB::table('clubs')->truncate();
         //DB::table('villes')->truncate();
-        //DB::table('historique_club')->truncate();
+        //DB::table('historique_clubs')->truncate();
         //DB::table('equipes')->truncate();
         //DB::table('matches')->truncate();
 

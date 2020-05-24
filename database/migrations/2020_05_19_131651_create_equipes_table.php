@@ -15,13 +15,13 @@ class CreateEquipesTable extends Migration
     {
         Schema::create('equipes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('idClub');
             $table->binary('joueursTitulaires');
             $table->binary('joueursRemplacants');
-            $table->binary('joueursAutres');
+            $table->binary('joueursAutres')->nullable();
             $table->string('organisation');
             $table->integer('noteAbsolue');
             $table->integer('notePartielle');
-            $table->timestamps();
         });
     }
 
