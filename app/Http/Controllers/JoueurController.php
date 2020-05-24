@@ -18,7 +18,7 @@ class JoueurController extends Controller
     public function generateJoueur()
     {
         $listPostes = array(
-            'gardien', 'defense', 'milieu', 'attaquant'
+            'gardien', 'defense', 'milieu', 'attaque'
         );
 
         $this->_prenom = $this->generatePrenom();
