@@ -12,6 +12,13 @@ class LoadController extends Controller
 {
     public function welcome()
     {
+        //DB::table('joueurs')->truncate();
+        //DB::table('clubs')->truncate();
+        //DB::table('villes')->truncate();
+        //DB::table('historique_club')->truncate();
+        //DB::table('equipes')->truncate();
+        //DB::table('matches')->truncate();
+
         //generate 200 players
         for ($i=0; $i < 200; $i++) {
             (new JoueurController)->generateJoueur();

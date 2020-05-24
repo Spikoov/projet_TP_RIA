@@ -33,7 +33,6 @@ class CreateJoueursTable extends Migration
             $table->boolean('sousContrat');
             $table->integer('dureeContrat');
             $table->integer('salaire');
-            $table->binary('historiqueClubs');
             $table->timestamps();
         });
     }

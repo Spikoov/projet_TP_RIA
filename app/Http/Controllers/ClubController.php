@@ -28,7 +28,7 @@ class ClubController extends Controller
         $villes = array(
             'Bastia', 'Corte', 'Ajaccio', 'Calvi', 'Porto-Vecchio', 'Propriano', 'Conca', 'Paris', 'Marseille', 'Berlin',
             'Lyon', 'Avignon', 'Rennes', 'Madrid', 'Hambourg', 'Milan', 'Tatooine', 'Orgrimmar', 'Hurlevent', 'St-Etienne',
-            'Avalon', 'Nantes', 'Kaamelott', 'Poudlard', 'Tokyo', 'Gotham', 'Cyrnea', 'Minas Tirith', 'Minas Morgul', 'Erebor'
+            'Avalon', 'Nantes', 'Kaamelott', 'Poudlard', 'Manchester', 'Gotham', 'Cyrnea', 'Minas Tirith', 'Minas Morgul', 'Erebor'
         );
 
         $ville = array(
@@ -50,10 +50,10 @@ class ClubController extends Controller
             $club = $this->_ville['nom'] . $club;
         }
         else {
-            $firstLetter = substr($this->_ville['nom'], 0, 1);
             if ($club === 'Real d') {
+                $firstLetter = substr($this->_ville['nom'], 0, 1);
                 if($firstLetter === 'A' OR $firstLetter === 'I' OR $firstLetter === 'U'
-                OR $firstLetter === 'A' OR $firstLetter === 'O' OR $firstLetter === 'Y')
+                OR $firstLetter === 'E' OR $firstLetter === 'O' OR $firstLetter === 'Y')
                     $club .= '\'';
                 else
                     $club .= 'e ';
@@ -68,9 +68,10 @@ class ClubController extends Controller
         $nom = 'Stade d';
         $firstLetter = substr($this->_nomClub, 0, 1);
 
-        if($firstLetter === 'A' OR $firstLetter === 'I' OR $firstLetter === 'U')
+        if($firstLetter === 'A' OR $firstLetter === 'I' OR $firstLetter === 'U'
+        OR $firstLetter === 'E' OR $firstLetter === 'O' OR $firstLetter === 'Y')
             $nom .= 'e l\'';
-        elseif ($firstLetter === 'R')
+        elseif (substr($this->_nomClub, 0, 4); === 'Real')
             $nom .= 'u ';
         else
             $nom .= 'e ';
@@ -79,7 +80,7 @@ class ClubController extends Controller
 
         $stade = array(
             'nom' => $nom,
-            'capacite' => rand(5000, 15000)
+            'capacite' => rand(10000, 25000)
         );
 
         return $stade;
@@ -87,9 +88,6 @@ class ClubController extends Controller
 
     public function insert()
     {
-        //DB::table('villes')->truncate();
-        //DB::table('clubs')->truncate();
-
         //insert villes...
         //insert clubs...
     }

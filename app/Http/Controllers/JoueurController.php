@@ -11,7 +11,8 @@ class JoueurController extends Controller
     private $_age;
     private $_poste;
     private $_stats;
-    private $_note;
+    private $_notes;
+    private $_contrat;
 
     public function generateJoueur()
     {
@@ -24,7 +25,12 @@ class JoueurController extends Controller
         $this->age = rand(17, 35);
         $this->_poste = $listPostes[array_rand($listPostes)];
         $this->_stats = $this->generateStats($this->_poste);
-        $this->_note = $this->generateNotes();
+        $this->_notes = $this->generateNotes();
+        $this->_contrat = array(
+            'sousContrat' => false,
+            'dureeContrat' => 0,
+            'salaire' => 0
+        );
 
         $this->insert();
     }
@@ -112,8 +118,6 @@ class JoueurController extends Controller
 
     public function insert()
     {
-        //DB::table('joueurs')->truncate();
-
         //insert...
     }
 }
