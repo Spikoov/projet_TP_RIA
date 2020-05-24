@@ -6,13 +6,6 @@ use Illuminate\Http\Request;
 
 class EquipeController extends Controller
 {
-
-<<<<<<< HEAD
-  public function generateEquipe($value='')
-  {
-
-  }
-=======
     public function generateEquipe()
     {
         $this->_titulaires = getTitulaires();
@@ -29,5 +22,4 @@ class EquipeController extends Controller
     {
         //insert...
     }
->>>>>>> acbcf19eaa2ecef867a25ac96fd40660517e03f0
 }
