@@ -17,6 +17,7 @@ class CreateHistoriqueClubsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('idJoueur');
             $table->string('nomClub');
+            $table->timestamps();
         });
     }
 

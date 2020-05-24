@@ -29,10 +29,10 @@ class CreateJoueursTable extends Migration
             $table->integer('forme');
             $table->integer('endurance');
             $table->integer('noteGlobale');
-            $table->integer('noteInstantanee');
             $table->boolean('sousContrat');
             $table->integer('dureeContrat');
             $table->integer('salaire');
+            $table->timestamps();
         });
     }
 

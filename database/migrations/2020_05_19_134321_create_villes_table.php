@@ -17,6 +17,7 @@ class CreateVillesTable extends Migration
             $table->bigIncrements('id');
             $table->string('nom');
             $table->integer('attracitvite');
+            $table->timestamps();
         });
     }
 

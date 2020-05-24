@@ -21,6 +21,7 @@ class CreateClubsTable extends Migration
             $table->integer('capaciteStade');
             $table->bigInteger('budget');
             $table->integer('points');
+            $table->timestamps();
         });
     }
 
