@@ -15,12 +15,11 @@ class EquipeController extends Controller
     private $_remplacants;
     private $_effectifAutres;
     private $_organisation;
-    private $_allOrganisations = array('1-2-1', '2-1-1', '1-1-2');
     private $_notes;
 
     public function generateEquipe()
     {
-        $this->_organisation = $this->setOrganisation($this->_allOrganisations[array_rand($this->_allOrganisations)]);
+        $this->_organisation = $this->setOrganisation('1-2-1');
         $this->_titulaires = $this->generateTitulaires();
         $_notes = $this->setNotes();
 
@@ -46,28 +45,11 @@ class EquipeController extends Controller
             ['sousContrat', '0']
         ])->get();
 
-        $gardien = $gardiens[rand($gardiens)]->id;
+        $gardien = $gardiens[rand(0, )]->id;
 
         $titulaires = array(
             'gardien' => $gardien
         );
-
-        //$positions = explode("-", $this->_organisation);
-        $positions = array('1', '2', '1');
-
-        //def
-        for ($i=0; $i < (int)$positions[0]; $i++) {
-            $def = $defs[array_rand($defs)]->id;
-            $titulaires['defense'] = $def;
-        }
-        //ml
-        for ($i=0; $i < (int)$positions[1]; $i++) {
-
-        }
-        //atq
-        for ($i=0; $i < (int)$positions[2]; $i++) {
-
-        }
 
         print_r($titulaires);
     }
