@@ -25,15 +25,9 @@ class EquipeController extends Controller
 
     public function generateEquipe()
     {
-<<<<<<< HEAD
-        $this->_titulaires = generateTitulaires();
-        $this->_organisation = setOrganisation("1-2-1");
-        $_notes = setNotes();
-=======
         $this->_organisation = $this->setOrganisation("1-2-1");
         $this->_titulaires = $this->generateTitulaires();
         $_notes = $this->setNotes();
->>>>>>> 55f126ccb4c22caba93488f3ae3a09a4ea94d7d5
 
         $this->insert();
     }
