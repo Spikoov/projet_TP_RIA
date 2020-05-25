@@ -31,7 +31,7 @@ class LoadController extends Controller
         //generate 10 clubs
         for ($i=0; $i < 10; $i++) {
             (new ClubController)->generateClub();
-            $equipes = new EquipeController();
+            (new EquipeController)->generateEquipe();
         }
 
 
