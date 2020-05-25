@@ -29,7 +29,7 @@ class EquipeController extends Controller
         $this->_titulaires = $this->generateTitulaires();
         $_notes = $this->setNotes();
 
-        //insert
+        $this->insert();
     }
 
     public function generateTitulaires()
@@ -68,33 +68,12 @@ class EquipeController extends Controller
     }
 
     public function getId(){
-
+        return $this->_id;
     }
 
     public function setTitulaires($titulaires, $nouveauTitulaires)
     {
-        // J
-
-        $titulaires = array(
-            'gardien' => $gardien
-        );
-
-        //$positions = explode("-", $this->_organisation);
-        /*$positions = array('1', '2', '1');
-
-        //def
-        for ($i=0; $i < (int)$positions[0]; $i++) {
-            $def = $defs[array_rand($defs)]->id;
-            $titulaires['defense'] = $def;
-        }
-        //ml
-        for ($i=0; $i < (int)$positions[1]; $i++) {
-
-        }
-        //atq
-        for ($i=0; $i < (int)$positions[2]; $i++) {
-
-        }*/
+        
     }
 
     public function getTitulaires()
@@ -142,7 +121,7 @@ class EquipeController extends Controller
         // M
     }
 
-    public function update()
+    public function insert()
     {
         // M
     }
