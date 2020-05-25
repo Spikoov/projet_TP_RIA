@@ -71,7 +71,7 @@ class EquipeController extends Controller
         return $this->_id;
     }
 
-    public function setTitulaires($nouveauTitulaires)
+    public function setTitulaires($titulaires, $nouveauTitulaires)
     {
 
     }
@@ -81,7 +81,7 @@ class EquipeController extends Controller
         // J
     }
 
-    public function setRemplacants($nouveauRemplacants)
+    public function setRemplacants($remplacants, $nouveauRemplacants)
     {
         // J
     }
@@ -91,7 +91,7 @@ class EquipeController extends Controller
         // J
     }
 
-    public function setAutres($nouveauJoueurs)
+    public function setAutres($joueurs, $nouveauJoueurs)
     {
         // J
     }
@@ -107,9 +107,9 @@ class EquipeController extends Controller
       return $organisation;
     }
 
-    public function getOrganisation($idEquipe)
+    public function getOrganisation()
     {
-        $formation = DB::table('equipes')->where('id', $idEquipe)->value('organisation');
+        $formation = DB::table('equipes')->where('id', $this->_id)->value('organisation');
         return $formation->organisation;
     }
 
@@ -120,7 +120,7 @@ class EquipeController extends Controller
 
     public function getNotes()
     {
-        $noteAbsolue = DB::table('equipes')->where('id', $idEquipe)->value('organisation');
+        $noteAbsolue = DB::table('equipes')->where('id', $this->_id)->value('noteAbsolue');
     }
 
     public function insert()
