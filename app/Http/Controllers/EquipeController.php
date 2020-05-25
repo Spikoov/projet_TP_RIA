@@ -11,19 +11,25 @@ use Illuminate\Support\Facades\DB;
 
 class EquipeController extends Controller
 {
+    private $_id;
     private $_titulaires;
     private $_remplacants;
     private $_effectifAutres;
     private $_organisation;
     private $_notes;
 
+    public function __construct()
+    {
+        //$this->_id = $lastId + 1;
+    }
+
     public function generateEquipe()
     {
-        $this->_organisation = $this->setOrganisation('1-2-1');
+        $this->_organisation = $this->setOrganisation("1-2-1");
         $this->_titulaires = $this->generateTitulaires();
         $_notes = $this->setNotes();
 
-        $this->insert();
+        //insert
     }
 
     public function generateTitulaires()
@@ -45,18 +51,50 @@ class EquipeController extends Controller
             ['sousContrat', '0']
         ])->get();
 
-        $gardien = $gardiens[rand(0, )]->id;
+
+        $gardien = $gardiens[rand(0, count($gardiens) - 1)]->id;
+        $def = $defs[rand(0, count($defs) - 1)]->id;
+        $ml0 = $mls[rand(0, count($mls) - 1)]->id;
+        $ml1 = $mls[rand(0, count($mls) - 1)]->id;
+        $atq = $atqs[rand(0, count($atqs) - 1)]->id;
 
         $titulaires = array(
-            'gardien' => $gardien
+            'gardien' => $gardien,
+            'defense' => $def,
+            'milieu1' => $ml0,
+            'milieu2' => $ml1,
+            'attaque' => $atq,
         );
+    }
 
-        print_r($titulaires);
+    public function getId(){
+
     }
 
     public function setTitulaires($titulaires, $nouveauTitulaires)
     {
         // J
+
+        $titulaires = array(
+            'gardien' => $gardien
+        );
+
+        //$positions = explode("-", $this->_organisation);
+        /*$positions = array('1', '2', '1');
+
+        //def
+        for ($i=0; $i < (int)$positions[0]; $i++) {
+            $def = $defs[array_rand($defs)]->id;
+            $titulaires['defense'] = $def;
+        }
+        //ml
+        for ($i=0; $i < (int)$positions[1]; $i++) {
+
+        }
+        //atq
+        for ($i=0; $i < (int)$positions[2]; $i++) {
+
+        }*/
     }
 
     public function getTitulaires()
@@ -104,7 +142,7 @@ class EquipeController extends Controller
         // M
     }
 
-    public function insert()
+    public function update()
     {
         // M
     }
