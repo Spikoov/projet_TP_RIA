@@ -25,7 +25,7 @@ class EquipeController extends Controller
 
     public function generateEquipe()
     {
-        $this->_organisation = $this->setOrganisation("1-2-1");
+        $this->setOrganisation("1-2-1");
         $this->_titulaires = $this->generateTitulaires();
         $_notes = $this->setNotes();
 
@@ -65,6 +65,15 @@ class EquipeController extends Controller
             'milieu2' => $ml1,
             'attaque' => $atq,
         );
+
+        foreach($titulaires as $titulaire){
+            DB::table('joueurs')->where('id', $titulaire)->update([
+                'sousContrat' => 1,
+                'dureeContrat' => rand(1, 3),
+                'salaire' => 20
+            ]);
+
+        }
     }
 
     public function getId(){
@@ -73,7 +82,7 @@ class EquipeController extends Controller
 
     public function setTitulaires($titulaires, $nouveauTitulaires)
     {
-
+        // J
     }
 
     public function getTitulaires()
@@ -103,8 +112,7 @@ class EquipeController extends Controller
 
     public function setOrganisation($organisation)
     {
-
-      return $organisation;
+        $this->_organisation = $organisation;
     }
 
     public function getOrganisation()
