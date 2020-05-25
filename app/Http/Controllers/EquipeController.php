@@ -19,7 +19,7 @@ class EquipeController extends Controller
     public function generateEquipe()
     {
         $this->_titulaires = generateTitulaires();
-        $this->_organisation = setOrganisation();
+        $this->_organisation = setOrganisation("1-2-1");
         $_notes = setNotes();
 
         $this->insert();
@@ -62,12 +62,14 @@ class EquipeController extends Controller
 
     public function setOrganisation($organisation)
     {
-        // M
+
+      return $organisation;
     }
 
-    public function getOrganisation()
+    public function getOrganisation($idEquipe)
     {
-        // M
+        $formation = DB::table('equipes')->where('id', $idEquipe)->value('organisation');
+        return $formation->organisation;
     }
 
     public function setNotes()
@@ -77,7 +79,7 @@ class EquipeController extends Controller
 
     public function getNotes()
     {
-        // M
+        $noteAbsolue = DB::table('equipes')->where('id', $idEquipe)->value('organisation');
     }
 
     public function insert()
