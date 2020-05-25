@@ -71,9 +71,9 @@ class EquipeController extends Controller
         return $this->_id;
     }
 
-    public function setTitulaires($titulaires, $nouveauTitulaires)
+    public function setTitulaires($nouveauTitulaires)
     {
-        
+
     }
 
     public function getTitulaires()
@@ -81,7 +81,7 @@ class EquipeController extends Controller
         // J
     }
 
-    public function setRemplacants($remplacants, $nouveauRemplacants)
+    public function setRemplacants($nouveauRemplacants)
     {
         // J
     }
@@ -91,7 +91,7 @@ class EquipeController extends Controller
         // J
     }
 
-    public function setAutres($joueurs, $nouveauJoueurs)
+    public function setAutres($nouveauJoueurs)
     {
         // J
     }
