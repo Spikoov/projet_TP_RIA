@@ -72,7 +72,6 @@ class EquipeController extends Controller
                 'dureeContrat' => rand(1, 3),
                 'salaire' => 20
             ]);
-
         }
     }
 
@@ -80,9 +79,15 @@ class EquipeController extends Controller
         return $this->_id;
     }
 
-    public function setTitulaires($titulaires, $nouveauTitulaires)
+    public function setTitulaires($nouveauTitulaires)
     {
-        // J
+        DB::table('titulaires')->where('id', $this->_id)->update([
+            'idT1' => $nouveauTitulaires[0],
+            'idT2' => $nouveauTitulaires[1],
+            'idT3' => $nouveauTitulaires[2],
+            'idT4' => $nouveauTitulaires[3],
+            'idT5' => $nouveauTitulaires[4],
+        ]);
     }
 
     public function getTitulaires()
@@ -90,7 +95,7 @@ class EquipeController extends Controller
         // J
     }
 
-    public function setRemplacants($remplacants, $nouveauRemplacants)
+    public function setRemplacants($nouveauRemplacants)
     {
         // J
     }
@@ -100,7 +105,7 @@ class EquipeController extends Controller
         // J
     }
 
-    public function setAutres($joueurs, $nouveauJoueurs)
+    public function setAutres($nouveauJoueurs)
     {
         // J
     }
@@ -133,6 +138,6 @@ class EquipeController extends Controller
 
     public function insert()
     {
-        // M
+
     }
 }
