@@ -18,18 +18,18 @@ class EquipeController extends Controller
     private $_organisation;
     private $_notes;
 
-    public function __construct()
+    public function __construct($lastId)
     {
-        //$this->_id = $lastId + 1;
+        $this->_id = $lastId + 1;
     }
 
     public function generateEquipe()
     {
         $this->_organisation = "1-2-1";
         $this->_titulaires = $this->generateTitulaires();
-        $this->setNotes();
 
         $this->insert();
+        $this->setNotes();
     }
 
     public function generateTitulaires()
@@ -73,6 +73,8 @@ class EquipeController extends Controller
                 'salaire' => 20
             ]);
         }
+
+        return $titulaires;
     }
 
     public function getId(){
@@ -148,9 +150,11 @@ class EquipeController extends Controller
 
       $notesAbsolue = $notesTitulaires;
 
-      array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR1)->value('noteGlobale'));
-      array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR2)->value('noteGlobale'));
-      array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR3)->value('noteGlobale'));
+      if(count($remplacants) != 0){
+          array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR1)->value('noteGlobale'));
+          array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR2)->value('noteGlobale'));
+          array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR3)->value('noteGlobale'));
+      }
 
       for ($i=0; $i < count($autres); $i++) {
         array_push($notesAbsolue, DB::table('joueurs')->where('id', $autres[$i]->idJoueur)->value('noteGlobale'));
@@ -163,6 +167,11 @@ class EquipeController extends Controller
         'absolue' => $noteAbsolue,
         'partielle' => $notePartielle,
       );
+
+      DB::table('equipes')->where('id', $this->_id)->update([
+          'noteAbsolue' => $note['absolue'],
+          'notePartielle' => $note['partielle']
+      ]);
 
       $this->_notes = $note;
     }
@@ -187,8 +196,17 @@ class EquipeController extends Controller
         Equipe::create([
           'idClub' => $idClub,
           'organisation' => $this->_organisation,
-          'noteAbsolue' => $this->_notes['absolue'],
-          'notePartielle' => $this->_notes['partielle'],
+          'noteAbsolue' => 0,
+          'notePartielle' => 0
+        ]);
+
+        Titulaire::create([
+            'idEquipe' => $this->_id,
+            'idT1' => $this->_titulaires['gardien'],
+            'idT2' => $this->_titulaires['defense'],
+            'idT3' => $this->_titulaires['milieu1'],
+            'idT4' => $this->_titulaires['attaque'],
+            'idT5' => $this->_titulaires['milieu2'],
         ]);
     }
 }
