@@ -168,6 +168,7 @@ class EquipeController extends Controller
         'partielle' => $notePartielle,
       );
 
+      //UPDATE in DB
       DB::table('equipes')->where('id', $this->_id)->update([
           'noteAbsolue' => $note['absolue'],
           'notePartielle' => $note['partielle']
