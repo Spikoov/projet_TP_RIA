@@ -25,7 +25,7 @@ class EquipeController extends Controller
 
     public function generateEquipe()
     {
-        $this->setOrganisation("1-2-1");
+        $this->_organisation = $this->setOrganisation("1-2-1");
         $this->_titulaires = $this->generateTitulaires();
         $_notes = $this->setNotes();
 
@@ -65,15 +65,6 @@ class EquipeController extends Controller
             'milieu2' => $ml1,
             'attaque' => $atq,
         );
-
-        foreach($titulaires as $titulaire){
-            DB::table('joueurs')->where('id', $titulaire)->update([
-                'sousContrat' => 1,
-                'dureeContrat' => rand(1, 3),
-                'salaire' => 20
-            ]);
-
-        }
     }
 
     public function getId(){
@@ -82,7 +73,7 @@ class EquipeController extends Controller
 
     public function setTitulaires($titulaires, $nouveauTitulaires)
     {
-        // J
+
     }
 
     public function getTitulaires()
@@ -112,7 +103,7 @@ class EquipeController extends Controller
 
     public function setOrganisation($organisation)
     {
-        $this->_organisation = $organisation;
+      return $organisation;
     }
 
     public function getOrganisation()
@@ -123,16 +114,56 @@ class EquipeController extends Controller
 
     public function setNotes()
     {
-        // M
+      $titulaires = DB::table('titulaires')->select('idT1', 'idT2', 'idT3', 'idT4', 'idT5')->where('idEquipe', $this->_id)->get();
+      $remplacants = DB::table('remplacants')->select('idR1', 'idR2', 'idR3')->where('idEquipe', $this->_id)->get();
+      $autres = DB::table('effectif_autres')->select('idJoueur')->where('idEquipe', $this->_id)->get();
+
+      $noteTitulaire1 = DB::table('joueurs')->where('id', $titulaires[0]->idT1)->value('noteGlobale');
+      $noteTitulaire2 = DB::table('joueurs')->where('id', $titulaires[0]->idT2)->value('noteGlobale');
+      $noteTitulaire3 = DB::table('joueurs')->where('id', $titulaires[0]->idT3)->value('noteGlobale');
+      $noteTitulaire4 = DB::table('joueurs')->where('id', $titulaires[0]->idT4)->value('noteGlobale');
+      $noteTitulaire5 = DB::table('joueurs')->where('id', $titulaires[0]->idT5)->value('noteGlobale');
+
+      $notePartielle = $noteTitulaire1->noteGlobale + $noteTitulaire2->noteGlobale + $noteTitulaire3->noteGlobale + $noteTitulaire4->noteGlobale + $noteTitulaire5->noteGlobale;
+
+      $noteRemplacant1 = DB::table('joueurs')->where('id', $remplacants[0]->idR1)->value('noteGlobale');
+      $noteRemplacant2 = DB::table('joueurs')->where('id', $remplacants[0]->idR2)->value('noteGlobale');
+      $noteRemplacant3 = DB::table('joueurs')->where('id', $remplacants[0]->idR3)->value('noteGlobale');
+
+      for ($i=0; $i < count($autres); $i++) {
+        $noteEffectif
+      }
+
+      $note = array(
+        'absolue' => $noteAbsolue,
+        'partielle' => $notePartielle,
+      );
+
+      return $note;
     }
 
     public function getNotes()
     {
-        $noteAbsolue = DB::table('equipes')->where('id', $this->_id)->value('noteAbsolue');
+      $noteAbs = DB::table('equipes')->where('id', $this->_id)->value('noteAbsolue');
+      $noteParti = DB::table('equipes')->where('id', $this->_id)->value('notePartielle');
+
+      $note = array(
+        'absolue' => $noteAbs->noteAbsolue,
+        'partielle' => $noteParti->notePartielle,
+      );
+
+      return $note;
     }
 
     public function insert()
     {
-        // M
+        $idClub = DB::table('clubs')->latest('id')->first()->id;
+
+        Equipe::create([
+          'idClub' => $idClub,
+          'organisation' => $this->_organisation,
+          'noteAbsolue' => $this->_notes['absolue'],
+          'notePartielle' => $this->_notes['partielle'],
+        ]);
     }
 }
