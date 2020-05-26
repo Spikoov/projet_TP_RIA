@@ -103,6 +103,7 @@ class EquipeController extends Controller
 
     public function setOrganisation($organisation)
     {
+
       return $organisation;
     }
 
@@ -118,11 +119,13 @@ class EquipeController extends Controller
       $remplacants = DB::table('remplacants')->select('idR1', 'idR2', 'idR3')->where('idEquipe', $this->_id)->get();
       $autres = DB::table('effectif_autres')->select('idJoueur')->where('idEquipe', $this->_id)->get();
 
-      $noteTitulaire1 = DB::table('joueurs')->where('id', $titulaires[0]->idT1)->value('noteGlobale');
-      $noteTitulaire2 = DB::table('joueurs')->where('id', $titulaires[0]->idT2)->value('noteGlobale');
-      $noteTitulaire3 = DB::table('joueurs')->where('id', $titulaires[0]->idT3)->value('noteGlobale');
-      $noteTitulaire4 = DB::table('joueurs')->where('id', $titulaires[0]->idT4)->value('noteGlobale');
-      $noteTitulaire5 = DB::table('joueurs')->where('id', $titulaires[0]->idT5)->value('noteGlobale');
+      $notesTitulaires = array();
+
+      array_push($notesTitulaires, DB::table('joueurs')->where('id', $titulaires[0]->idT1)->value('noteGlobale'));
+      array_push($notesTitulaires, DB::table('joueurs')->where('id', $titulaires[0]->idT2)->value('noteGlobale'));
+      array_push($notesTitulaires, DB::table('joueurs')->where('id', $titulaires[0]->idT3)->value('noteGlobale'));
+      array_push($notesTitulaires, DB::table('joueurs')->where('id', $titulaires[0]->idT4)->value('noteGlobale'));
+      array_push($notesTitulaires, DB::table('joueurs')->where('id', $titulaires[0]->idT5)->value('noteGlobale'));
 
       $notePartielle = $noteTitulaire1->noteGlobale + $noteTitulaire2->noteGlobale + $noteTitulaire3->noteGlobale + $noteTitulaire4->noteGlobale + $noteTitulaire5->noteGlobale;
 
