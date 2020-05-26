@@ -59,11 +59,11 @@ class EquipeController extends Controller
         $atq = $atqs[rand(0, count($atqs) - 1)]->id;
 
         $titulaires = array(
-            'gardien' => $gardien,
-            'defense' => $def,
-            'milieu1' => $ml0,
-            'milieu2' => $ml1,
-            'attaque' => $atq,
+            'T1' => $gardien,
+            'T2' => $def,
+            'T3' => $ml0,
+            'T4' => $atq,
+            'T5' => $ml1
         );
 
         foreach($titulaires as $titulaire){
@@ -83,12 +83,12 @@ class EquipeController extends Controller
 
     public function setTitulaires($nouveauTitulaires)
     {
-        DB::table('titulaires')->where('id', $this->_id)->update([
+        DB::table('titulaires')->where('idEquipe', $this->_id)->update([
             'idT1' => $nouveauTitulaires[0],
             'idT2' => $nouveauTitulaires[1],
             'idT3' => $nouveauTitulaires[2],
             'idT4' => $nouveauTitulaires[3],
-            'idT5' => $nouveauTitulaires[4],
+            'idT5' => $nouveauTitulaires[4]
         ]);
 
         $this->_titulaires = $nouveauTitulaires;
@@ -101,7 +101,13 @@ class EquipeController extends Controller
 
     public function setRemplacants($nouveauRemplacants)
     {
-        // J
+        DB::table('remplacants')->where('idEquipe', $this->_id)->update([
+            'idR1' => $nouveauRemplacants[0],
+            'idR2' => $nouveauRemplacants[1],
+            'idR3' => $nouveauRemplacants[2]
+        ]);
+
+        $this->_remplacants = $nouveauRemplacants;
     }
 
     public function getRemplacants()
@@ -111,7 +117,22 @@ class EquipeController extends Controller
 
     public function setAutres($nouveauJoueurs)
     {
-        // J
+        $autres = DB::table('effectif_autres')->select('idJoueur')->where('idEquipe', $this->_id)->get();
+        foreach ($nouveauJoueurs as $key => $value) {
+            if (property_exists($autres, $key)) {
+                if ($autres[$key]->idJoueur != $value) {
+                    DB::table('effectif_autres')->where('idEquipe', $this->_id)->update([
+                        'idJoueur' => $value
+                    ]);
+                }
+            }
+            else {
+                EffectifAutre::create([
+                    'idEquipe' => $this->_id,
+                    'idJoueur' => $value
+                ]);
+            }
+        }
     }
 
     public function getAutres()
@@ -190,6 +211,43 @@ class EquipeController extends Controller
       return $note;
     }
 
+    public function echange($joueurA, $joueurB)
+    {
+        foreach ($this->_titulaires as $key => $value) {
+            if ($value === $joueurA['id']) {
+                $value = $joueurB['id'];
+            }
+            elseif($value === $joueurB['id']) {
+                $value = $joueurA['id'];
+            }
+        }
+
+        foreach ($this->_remplacants as $key => $value) {
+            if ($value === $joueurA['id']) {
+                $value = $joueurB['id'];
+            }
+
+            if ($value === $joueurB['id']) {
+                $value = $joueurA['id'];
+            }
+        }
+
+        foreach ($this->$_effectifAutres as $key => $value) {
+            if ($value === $joueurA['id']) {
+                $value = $joueurB['id'];
+            }
+
+            if ($value === $joueurB['id']) {
+                $value = $joueurA['id'];
+            }
+        }
+
+        $this->setTitulaires($this->_titulaires);
+        $this->setRemplacants($this->_remplacants);
+        $this->setAutres($this->_effectifAutres);
+
+    }
+
     public function insert()
     {
         $idClub = DB::table('clubs')->latest('id')->first()->id;
@@ -203,11 +261,11 @@ class EquipeController extends Controller
 
         Titulaire::create([
             'idEquipe' => $this->_id,
-            'idT1' => $this->_titulaires['gardien'],
-            'idT2' => $this->_titulaires['defense'],
-            'idT3' => $this->_titulaires['milieu1'],
-            'idT4' => $this->_titulaires['attaque'],
-            'idT5' => $this->_titulaires['milieu2'],
+            'idT1' => $this->_titulaires['T1'],
+            'idT2' => $this->_titulaires['T2'],
+            'idT3' => $this->_titulaires['T3'],
+            'idT4' => $this->_titulaires['T4'],
+            'idT5' => $this->_titulaires['T5'],
         ]);
     }
 }
