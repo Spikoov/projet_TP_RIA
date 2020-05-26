@@ -27,7 +27,7 @@ class EquipeController extends Controller
     {
         $this->_organisation = "1-2-1";
         $this->_titulaires = $this->generateTitulaires();
-        $_notes = $this->setNotes();
+        $this->setNotes();
 
         $this->insert();
     }
@@ -120,7 +120,7 @@ class EquipeController extends Controller
     public function setOrganisation($organisation)
     {
         DB::table('equipes')->where('id', $this->_id)->update([
-            'organisation' => $organisation;
+            'organisation' => $organisation
         ]);
 
         $this->_organisation = $organisation;
@@ -146,22 +146,25 @@ class EquipeController extends Controller
       array_push($notesTitulaires, DB::table('joueurs')->where('id', $titulaires[0]->idT4)->value('noteGlobale'));
       array_push($notesTitulaires, DB::table('joueurs')->where('id', $titulaires[0]->idT5)->value('noteGlobale'));
 
-      $notePartielle = $noteTitulaire1->noteGlobale + $noteTitulaire2->noteGlobale + $noteTitulaire3->noteGlobale + $noteTitulaire4->noteGlobale + $noteTitulaire5->noteGlobale;
+      $notesAbsolue = $notesTitulaires;
 
-      $noteRemplacant1 = DB::table('joueurs')->where('id', $remplacants[0]->idR1)->value('noteGlobale');
-      $noteRemplacant2 = DB::table('joueurs')->where('id', $remplacants[0]->idR2)->value('noteGlobale');
-      $noteRemplacant3 = DB::table('joueurs')->where('id', $remplacants[0]->idR3)->value('noteGlobale');
+      array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR1)->value('noteGlobale'));
+      array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR2)->value('noteGlobale'));
+      array_push($notesAbsolue, DB::table('joueurs')->where('id', $remplacants[0]->idR3)->value('noteGlobale'));
 
       for ($i=0; $i < count($autres); $i++) {
-        $noteEffectif
+        array_push($notesAbsolue, DB::table('joueurs')->where('id', $autres[$i]->idJoueur)->value('noteGlobale'));
       }
+
+      $noteAbsolue = floor(array_sum($notesAbsolue) / count($notesAbsolue));
+      $notePartielle = floor(array_sum($notesTitulaires) / 5);
 
       $note = array(
         'absolue' => $noteAbsolue,
         'partielle' => $notePartielle,
       );
 
-      return $note;
+      $this->_notes = $note;
     }
 
     public function getNotes()
