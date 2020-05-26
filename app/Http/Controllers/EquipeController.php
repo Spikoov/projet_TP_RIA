@@ -131,7 +131,7 @@ class EquipeController extends Controller
     public function getOrganisation()
     {
         $formation = DB::table('equipes')->where('id', $this->_id)->value('organisation');
-        return $formation->organisation;
+        return $formation;
     }
 
     public function setNotes()
@@ -183,8 +183,8 @@ class EquipeController extends Controller
       $noteParti = DB::table('equipes')->where('id', $this->_id)->value('notePartielle');
 
       $note = array(
-        'absolue' => $noteAbs->noteAbsolue,
-        'partielle' => $noteParti->notePartielle,
+        'absolue' => $noteAbs,
+        'partielle' => $noteParti,
       );
 
       return $note;

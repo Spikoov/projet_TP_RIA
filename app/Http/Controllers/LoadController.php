@@ -34,7 +34,6 @@ class LoadController extends Controller
             (new EquipeController($i))->generateEquipe();
         }
 
-
         return view('welcome');
     }
 }
