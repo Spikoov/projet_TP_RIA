@@ -12,3 +12,5 @@
 */
 
 Route::get('/', 'LoadController@welcome');
+
+Route::get('/game', 'GameController@play');

@@ -23,36 +23,43 @@ class EquipeController extends Controller
         $this->_id = $lastId + 1;
 
         $titulaires = DB::table('titulaires')->select('idT1', 'idT2', 'idT3', 'idT4', 'idT5')->where('idEquipe', $this->_id)->get();
-        $this->_titulaires = array(
-          'T1' => $titulaires[0]->idT1,
-          'T2' => $titulaires[0]->idT2,
-          'T3' => $titulaires[0]->idT3,
-          'T4' => $titulaires[0]->idT4,
-          'T5' => $titulaires[0]->idT5
-        );
+        if (isset($titulaires[0])) {
+            $this->_titulaires = array(
+              'T1' => $titulaires[0]->idT1,
+              'T2' => $titulaires[0]->idT2,
+              'T3' => $titulaires[0]->idT3,
+              'T4' => $titulaires[0]->idT4,
+              'T5' => $titulaires[0]->idT5
+            );
 
-        $remplacants = DB::table('remplacants')->select('idR1', 'idR2', 'idR3')->where('idEquipe', $this->_id)->get();
-        $this->_remplacants = array(
-          'R1' => $remplacants[0]->idR1,
-          'R2' => $remplacants[0]->idR2,
-          'R3' => $remplacants[0]->idR3
-        );
+            $remplacants = DB::table('remplacants')->select('idR1', 'idR2', 'idR3')->where('idEquipe', $this->_id)->get();
+            if (isset($remplacants[0])) {
+                $this->_remplacants = array(
+                  'R1' => $remplacants[0]->idR1,
+                  'R2' => $remplacants[0]->idR2,
+                  'R3' => $remplacants[0]->idR3
+                );
 
-        $this->_effectifAutres = array();
-        $autres = DB::table('effectif_autres')->select('idJoueur')->where('idEquipe', $this->_id)->get();
-        for ($i=0; $i < count($autres); $i++) {
-          array_push($_effectifAutres, $autres[$i]->idJoueur);
+                $this->_effectifAutres = array();
+                $autres = DB::table('effectif_autres')->select('idJoueur')->where('idEquipe', $this->_id)->get();
+                for ($i=0; $i < count($autres); $i++) {
+                    if (isset($autre[$i])) {
+                        array_push($_effectifAutres, $autres[$i]->idJoueur);
+                    }
+                }
+            }
+
+            $formation = DB::table('equipes')->where('id', $this->_id)->value('organisation');
+            $this->_organisation = $formation;
+
+            $noteAbs = DB::table('equipes')->where('id', $this->_id)->value('noteAbsolue');
+            $noteParti = DB::table('equipes')->where('id', $this->_id)->value('notePartielle');
+            $this->_notes = array(
+              'absolue' => $noteAbs,
+              'partielle' => $noteParti
+            );
+
         }
-
-        $formation = DB::table('equipes')->where('id', $this->_id)->value('organisation');
-        $this->_organisation = $formation;
-
-        $noteAbs = DB::table('equipes')->where('id', $this->_id)->value('noteAbsolue');
-        $noteParti = DB::table('equipes')->where('id', $this->_id)->value('notePartielle');
-        $this->_notes = array(
-          'absolue' => $noteAbs,
-          'partielle' => $noteParti
-        );
     }
 
     public function generateEquipe()
@@ -299,5 +306,11 @@ class EquipeController extends Controller
             'idT4' => $this->_titulaires['T4'],
             'idT5' => $this->_titulaires['T5'],
         ]);
+    }
+
+    public function newYear()
+    {
+        //update budget
+        //update Note
     }
 }

@@ -140,4 +140,9 @@ class JoueurController extends Controller
             'salaire' => $this->_contrat['salaire']
         ]);
     }
+
+    public function newYear($id)
+    {
+        // update age, etc
+    }
 }
