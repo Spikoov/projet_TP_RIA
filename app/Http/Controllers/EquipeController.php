@@ -96,7 +96,7 @@ class EquipeController extends Controller
 
     public function getTitulaires()
     {
-        // J
+        return $this->_titulaires;
     }
 
     public function setRemplacants($nouveauRemplacants)
@@ -106,7 +106,7 @@ class EquipeController extends Controller
 
     public function getRemplacants()
     {
-        // J
+        return $this->_remplacants;
     }
 
     public function setAutres($nouveauJoueurs)
@@ -116,7 +116,7 @@ class EquipeController extends Controller
 
     public function getAutres()
     {
-        // J
+        return $this->_effectifAutres;
     }
 
     public function setOrganisation($organisation)
