@@ -25,7 +25,7 @@ class EquipeController extends Controller
 
     public function generateEquipe()
     {
-        $this->_organisation = $this->setOrganisation("1-2-1");
+        $this->_organisation = "1-2-1";
         $this->_titulaires = $this->generateTitulaires();
         $_notes = $this->setNotes();
 
@@ -88,6 +88,8 @@ class EquipeController extends Controller
             'idT4' => $nouveauTitulaires[3],
             'idT5' => $nouveauTitulaires[4],
         ]);
+
+        $this->_titulaires = $nouveauTitulaires;
     }
 
     public function getTitulaires()
@@ -117,8 +119,11 @@ class EquipeController extends Controller
 
     public function setOrganisation($organisation)
     {
+        DB::table('equipes')->where('id', $this->_id)->update([
+            'organisation' => $organisation;
+        ]);
 
-      return $organisation;
+        $this->_organisation = $organisation;
     }
 
     public function getOrganisation()
