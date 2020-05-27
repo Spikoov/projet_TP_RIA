@@ -45,7 +45,7 @@ class ClubController extends Controller
     public function generateNomClub()
     {
         $clubs = array(
-            'AC ', 'SC ', 'FC ', 'Real d', 'AS ', 'Inter ', '', ' City', 'CS ', ' United'
+            'AC ', 'SC ', 'FC ', 'Real d', 'AS ', 'Inter ', '', ' City', 'Olympique d', ' United'
         );
 
         $club = $clubs[array_rand($clubs)];
@@ -53,11 +53,14 @@ class ClubController extends Controller
             $club = $this->_ville['nom'] . $club;
         }
         else {
-            if ($club === 'Real d') {
+            if ($club === 'Real d' XOR $club === 'Olympique d') {
                 $firstLetter = substr($this->_ville['nom'], 0, 1);
                 if($firstLetter === 'A' OR $firstLetter === 'I' OR $firstLetter === 'U'
                 OR $firstLetter === 'E' OR $firstLetter === 'O' OR $firstLetter === 'Y')
                     $club .= '\'';
+                elseif ($this->_ville === 'Cyrnea') {
+                    $club .= 'u ';
+                }
                 else
                     $club .= 'e ';
             }

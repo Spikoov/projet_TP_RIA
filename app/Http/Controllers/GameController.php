@@ -14,6 +14,10 @@ class GameController extends Controller
     public function __construct()
     {
         //90 matchs / saisons
+        if (request()->session()->has('selectedTeamId')) {
+            $this->_idEquipe = request()->session()->get('selectedTeamId');
+        }
+
         $this->_equipes = array();
         $nbEquipes = DB::table('equipes')->count();
 
@@ -26,13 +30,25 @@ class GameController extends Controller
     {
         // TODO: update à chaque fin de saisons Joueurs -> (age, duree contrat) / Equipe -> (budget)
         //      update des salaires en fonction du role (titu 20, rempl 5 ou autre 0)
-        //      Afficher la ligue + saisons etc
-        //      affiche son equipe (nom club, budget, joueurs(nom, salaire, dureeContrat, note, poste), formation)
+        //      affiche son equipe (joueurs = salaire, dureeContrat, note, poste), formation)
         //      affiche liste des joueurs(nom, salaire, dureeContrat, note, poste) sans contrat -> qu'il en prenne 3
+        //      affiche classement (droite)
+        //      faire fonction getTitulaireInfos
 
-        request()->session()->get('selectedTeamId');
+        $titus = array();
+        foreach ($this->_equipes[$this->_idEquipe]->getTitulaires() as $titu) {
+            array_push($titus, [
+                'nom' => $this->_equipes[$this->_idEquipe]->getNomTitulaire($titu),
+                'poste' => $this->_equipes[$this->_idEquipe]->getPoste($titu)
+            ]);
+        }
 
-        return view('game');
+        return view('game', [
+            'equipe' => $this->_equipes[$this->_idEquipe],
+            'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+            'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+            'titulaires' => $titus
+        ]);
     }
 
     public function teamSelectorDisplay()
@@ -49,7 +65,7 @@ class GameController extends Controller
         ]);
         $this->_idEquipe = request('selectedEquipe');
 
-        request()->session()->put('selectedTeamId', $this->_idEquipe);
+        request()->session()->put('selectedTeamId', $this->_idEquipe - 1);
         return redirect('/game');
     }
 
