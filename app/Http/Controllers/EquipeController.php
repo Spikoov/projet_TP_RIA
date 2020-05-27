@@ -120,6 +120,17 @@ class EquipeController extends Controller
         return $this->_id;
     }
 
+    public function getIdClub()
+    {
+        return DB::table('equipes')->where('id', $this->_id)->value('idClub');
+    }
+
+    public function getNom()
+    {
+        $idClub = $this->getIdClub();
+        return DB::table('clubs')->where('id', $this->_id)->value('nom');
+    }
+
     public function setTitulaires($nouveauTitulaires)
     {
         DB::table('titulaires')->where('idEquipe', $this->_id)->update([
