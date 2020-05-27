@@ -135,16 +135,23 @@ class EquipeController extends Controller
         return DB::table('clubs')->where('id', $this->getIdClub())->value('budget');
     }
 
-    public function getPoste($idJoueur)
+    public function getTitulaireInfos()
     {
-        return DB::table('joueurs')->where('id', $idJoueur)->value('poste');
-    }
+        $titus = array();
+        foreach ($this->getTitulaires() as $titu) {
+            $nom = DB::table('joueurs')->where('id', $titu)->value('prenom');
+            $nom .= ' ' . DB::table('joueurs')->where('id', $titu)->value('nom');
 
-    public function getNomTitulaire($idJoueur)
-    {
-        $nom = DB::table('joueurs')->where('id', $idJoueur)->value('prenom');
-        $nom .= ' ' . DB::table('joueurs')->where('id', $idJoueur)->value('nom');
-        return $nom;
+            $poste = DB::table('joueurs')->where('id', $titu)->value('poste');
+
+            //--------------------------------------
+            array_push($titus, [
+                'nom' => $nom,
+                'poste' => $poste
+            ]);
+        }
+
+        return $titus;
     }
 
     public function setTitulaires($nouveauTitulaires)
