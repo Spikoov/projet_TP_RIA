@@ -55,12 +55,12 @@ class GameController extends Controller
 
     public function newYear()
     {
-        foreach ($this->_equipes as $equipe) {
-            $equipe->newYear();
-        }
-
         foreach ($this->$_joueursSansContrat as $joueur) {
             (new JoueurController)->newYear($id);
+        }
+
+        foreach ($this->_equipes as $equipe) {
+            $equipe->newYear();
         }
     }
 }

@@ -143,6 +143,21 @@ class JoueurController extends Controller
 
     public function newYear($id)
     {
-        // update age, etc
+      $infoJoueur = DB::table('joueurs')->select('age', 'dureeContrat', 'sousContrat')->where('id', $id)->get();
+
+      $newAge = $infoJoueur[0]->age + 1;
+      $newDuree = $infoJoueur[0]->dureeContrat - 1;
+
+      if($infoJoueur[0]->sousContrat == true){
+        DB::table('joueurs')->where('id', $id)->update([
+            'dureeContrat' => $newDuree,
+            'age' => $newAge
+        ]);
+      }
+      else {
+        if($newAge > 40){
+          DB::table('joueurs')->where('id', $id)->delete();
+        }
+      }
     }
 }

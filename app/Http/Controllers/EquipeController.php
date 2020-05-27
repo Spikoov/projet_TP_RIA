@@ -323,5 +323,7 @@ class EquipeController extends Controller
     {
         //update budget
         //update Note
+
+
     }
 }
