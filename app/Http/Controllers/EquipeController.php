@@ -324,7 +324,7 @@ class EquipeController extends Controller
         //update budget
         //update Note
 
-        $idClub = DB::table('equipes')->where('id', $this->_id)->value('idClub');
+        $idClub = getIdClub();
         $budget = DB::table('clubs')->where('id', $idClub)->value('budget');
 
         $infoTitulaires = array();
