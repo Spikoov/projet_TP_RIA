@@ -347,6 +347,8 @@ class EquipeController extends Controller
         $infoRemplacants = array();
         $infoAutres = array();
 
+        //update le salaire des titulaires, remplacants et autres
+
         foreach ($this->_titulaires as $key => $value) {
           $salaire = DB::table('joueurs')->where('id', $value)->value('salaire');
           $salaire = $salaire + 20;
@@ -371,9 +373,13 @@ class EquipeController extends Controller
           array_push($infoAutres, DB::table('joueurs')->select('age', 'dureeContrat', 'id')->where('id', $value)->get());
         }
 
+        //update le budget du club
+
         DB::table('clubs')->where('id', $idClub)->update([
             'budget' => $budget
         ]);
+
+        //créer des tableaux tampons qui contiennent les id de l'effectif
 
         $nvTitu = array();
         foreach ($this->_titulaires as $key => $value) {
@@ -389,6 +395,9 @@ class EquipeController extends Controller
         $flagR = 0;
         $flagA = 0;
         $compteur = 0;
+
+        //tests si les joueurs de l'effectif ont plus de 40 ans ou que le contrat est terminé
+        //supprime les joueurs ... (à faire)
 
         foreach ($infoTitulaires as $titulaire) {
           if(($titulaire->age > 40)){
@@ -444,7 +453,15 @@ class EquipeController extends Controller
         }
         $compteur = 0;
 
-        
+        if($flagT == 1){
+          DB::table('titulaires')->where('idEquipe', $this->_id)->update([
+            'idT1' => ,
+            'idT2' => $this->_titulaires['T2'],
+            'idT3' => $this->_titulaires['T3'],
+            'idT4' => $this->_titulaires['T4'],
+            'idT5' => $this->_titulaires['T5']
+          ]);
+        }
 
     }
 }
