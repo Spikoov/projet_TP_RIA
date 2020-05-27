@@ -313,6 +313,40 @@ class EquipeController extends Controller
         //update budget
         //update Note
 
+        $idClub = DB::table('equipes')->where('id', $this->_id)->value('idClub');
+        $budget = DB::table('clubs')->where('id', $idClub)->value('budget');
 
+        $infoTitulaires = array();
+        $infoRemplacants = array();
+        $infoAutres = array();
+
+        foreach ($this->_titulaires as $key => $value) {
+          $salaire = DB::table('joueurs')->where('id', $value)->value('saliare');
+          $salaire = $salaire + 20;
+          $budget = $budget - 20;
+          DB::table('joueurs')->where('id', $value)->update([
+              'salaire' => $salaire
+          ]);
+          array_push($infoTitulaires, DB::table('joueurs')->select('age', 'dureeContrat')->where('id', $value)->get());
+        }
+
+        foreach ($this->_remplacants as $key => $value) {
+          $salaire = DB::table('joueurs')->where('id', $value)->value('saliare');
+          $salaire = $salaire + 5;
+          $budget = $budget - 5;
+          DB::table('joueurs')->where('id', $value)->update([
+              'salaire' => $salaire
+          ]);
+          array_push($infoRemplacants, DB::table('joueurs')->select('age', 'dureeContrat')->where('id', $value)->get());
+        }
+
+        foreach ($this->_effectifAutres as $key => $value) {
+          array_push($infoAutres, DB::table('joueurs')->select('age', 'dureeContrat')->where('id', $value)->get());
+        }
+
+
+        DB::table('clubs')->where('id', $idClub)->update([
+            'budget' => $budget
+        ]);
     }
 }
