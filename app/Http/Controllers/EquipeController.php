@@ -332,32 +332,103 @@ class EquipeController extends Controller
         $infoAutres = array();
 
         foreach ($this->_titulaires as $key => $value) {
-          $salaire = DB::table('joueurs')->where('id', $value)->value('saliare');
+          $salaire = DB::table('joueurs')->where('id', $value)->value('salaire');
           $salaire = $salaire + 20;
           $budget = $budget - 20;
           DB::table('joueurs')->where('id', $value)->update([
               'salaire' => $salaire
           ]);
-          array_push($infoTitulaires, DB::table('joueurs')->select('age', 'dureeContrat')->where('id', $value)->get());
+          array_push($infoTitulaires, DB::table('joueurs')->select('age', 'dureeContrat', 'id')->where('id', $value)->get());
         }
 
         foreach ($this->_remplacants as $key => $value) {
-          $salaire = DB::table('joueurs')->where('id', $value)->value('saliare');
+          $salaire = DB::table('joueurs')->where('id', $value)->value('salaire');
           $salaire = $salaire + 5;
           $budget = $budget - 5;
           DB::table('joueurs')->where('id', $value)->update([
               'salaire' => $salaire
           ]);
-          array_push($infoRemplacants, DB::table('joueurs')->select('age', 'dureeContrat')->where('id', $value)->get());
+          array_push($infoRemplacants, DB::table('joueurs')->select('age', 'dureeContrat', 'id')->where('id', $value)->get());
         }
 
-        foreach ($this->_effectifAutres as $key => $value) {
-          array_push($infoAutres, DB::table('joueurs')->select('age', 'dureeContrat')->where('id', $value)->get());
+        foreach ($this->_effectifAutres as $value) {
+          array_push($infoAutres, DB::table('joueurs')->select('age', 'dureeContrat', 'id')->where('id', $value)->get());
         }
-
 
         DB::table('clubs')->where('id', $idClub)->update([
             'budget' => $budget
         ]);
+
+        $nvTitu = array();
+        foreach ($this->_titulaires as $key => $value) {
+          array_push($nvTitu, $value);
+        }
+
+        $nvRempl = array();
+        foreach ($this->_remplacants as $key => $value) {
+          array_push($nvRempl, $value);
+        }
+
+        $flagT = 0;
+        $flagR = 0;
+        $flagA = 0;
+        $compteur = 0;
+
+        foreach ($infoTitulaires as $titulaire) {
+          if(($titulaire->age > 40)){
+            DB::table('joueurs')->where('id', $titulaire->id)->delete();
+            $nvTitu[$compteur] = 0;
+            $flagT = 1;
+          }
+
+          if(($titulaire->dureeContrat == 0) AND ($titulaire->age <= 40)){
+            $nvTitu[$compteur] = 0;
+            DB::table('joueurs')->where('id', $titulaire->id)->update([
+                'sousContrat' => 0
+            ]);
+            $flagT = 1;
+          }
+          $compteur++;
+        }
+        $compteur = 0;
+
+        foreach ($infoRemplacants as $remplacant) {
+          if(($remplacant->age > 40)){
+            DB::table('joueurs')->where('id', $remplacant->id)->delete();
+            $nvRempl[$compteur] = 0;
+            $flagR = 1;
+          }
+
+          if(($remplacant->dureeContrat == 0) AND ($remplacant->age <= 40)){
+            $nvRempl[$compteur] = 0;
+            DB::table('joueurs')->where('id', $remplacant->id)->update([
+                'sousContrat' => 0
+            ]);
+            $flagR = 1;
+          }
+          $compteur++;
+        }
+        $compteur = 0;
+
+        foreach ($infoAutres as $autre) {
+          if(($autre->age > 40)){
+            DB::table('joueurs')->where('id', $autre->id)->delete();
+            $this->_effectifAutres[$compteur] = 0;
+            $flagA = 1;
+          }
+
+          if(($autre->dureeContrat == 0) AND ($autre->age <= 40)){
+            $this->_effectifAutres[$compteur] = 0;
+            DB::table('joueurs')->where('id', $autre->id)->update([
+                'sousContrat' => 0
+            ]);
+            $flagA = 1;
+          }
+          $compteur++;
+        }
+        $compteur = 0;
+
+        
+
     }
 }
