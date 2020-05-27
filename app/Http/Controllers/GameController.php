@@ -35,19 +35,11 @@ class GameController extends Controller
         //      affiche classement (droite)
         //      faire fonction getTitulaireInfos
 
-        $titus = array();
-        foreach ($this->_equipes[$this->_idEquipe]->getTitulaires() as $titu) {
-            array_push($titus, [
-                'nom' => $this->_equipes[$this->_idEquipe]->getNomTitulaire($titu),
-                'poste' => $this->_equipes[$this->_idEquipe]->getPoste($titu)
-            ]);
-        }
-
         return view('game', [
             'equipe' => $this->_equipes[$this->_idEquipe],
             'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
             'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
-            'titulaires' => $titus
+            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos()
         ]);
     }
 
