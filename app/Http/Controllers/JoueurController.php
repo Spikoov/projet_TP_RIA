@@ -127,6 +127,7 @@ class JoueurController extends Controller
       foreach ($infoSansContrat as $info) {
 
           array_push($joueurs, [
+              'id' => $info->id,
               'nom' => $info->prenom . ' '. $info->nom,
               'age' => $info->age,
               'poste' => $info->poste,

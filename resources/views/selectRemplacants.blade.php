@@ -5,6 +5,7 @@
     {{ csrf_field() }}
     <table id="table" class="w3-table w3-hoverable w3-bordered">
         <thead class="w3-light-blue">
+            <th id="resetSort" class="w3-button w3-hover-cyan" type="button">&#8634;</th>
             <th>Nom du joueur</th>
             <th id="sort0" class="w3-button w3-hover-cyan" type="button">Age &#8597;</th>
             <th id="sort1" class="w3-button w3-hover-cyan" type="button">Poste &#8597;</th>
@@ -14,6 +15,7 @@
         <tbody>
             @foreach ($joueurs as $joueur)
                 <tr>
+                    <td value="{{ $joueur['id'] }}"><span class="w3-badge w3-lime">{{ $joueur['note'] }}ß</span></td>
                     <td>{{ $joueur['nom'] }}</td>
                     <td>{{ $joueur['age'] }} ans</td>
                     <td>{{ ucfirst($joueur['poste']) }}</td>
@@ -25,15 +27,10 @@
     </table>
 </form>
 <script>
+//------------------------------------------------------------------------------
 $(document).ready(function(){
     $('#sort0, #sort1, #sort2').click(function() {
         var lastLetter = $(this).text()[$(this).text().length-1]
-/*
-        $('#sort0, #sort1, #sort2').map(function(){
-            $(this).text($(this).text().slice(0, -1))
-        })
-        $('#sort0, #sort1, #sort2').not(this).append("↕")
-*/
         $(this).text($(this).text().slice(0, -1))
 
         if (lastLetter == "↕" || lastLetter == "↑") {
@@ -45,12 +42,44 @@ $(document).ready(function(){
             $(this).append("↑")
         }
     })
+
+    //--------------------------------------------------------------------------
+
+    $('#resetSort').click(function() {
+        $('#sort0, #sort1, #sort2').map(function(){
+            $(this).text($(this).text().slice(0, -1))
+        })
+        $('#sort0, #sort1, #sort2').not(this).append("↕")
+
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("table");
+        switching = true;
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = parseInt(rows[i].getElementsByTagName("TD")[0].getAttribute('value'));
+                y = parseInt(rows[i + 1].getElementsByTagName("TD")[0].getAttribute('value'));
+                if (x > y) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    })
 })
+
+//------------------------------------------------------------------------------
 
 function sortTable(t) {
     tb = t.slice(4)
-    ti = parseInt(tb)
-    ti++
+    ti = parseInt(tb) + 2
+
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("table");
     switching = true;
@@ -73,10 +102,11 @@ function sortTable(t) {
     }
 }
 
+//------------------------------------------------------------------------------
+
 function rsortTable(t) {
     tb = t.slice(4)
-    ti = parseInt(tb)
-    ti++
+    ti = parseInt(tb) + 2
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("table");
     switching = true;
