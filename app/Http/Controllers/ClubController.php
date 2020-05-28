@@ -15,13 +15,13 @@ class ClubController extends Controller
     private $_budget;
     private $_points;
 
-    public function generateClub($i)
+    public function generateClub()
     {
         $this->_ville = $this->generateVille();
         $this->_nomClub = $this->generateNomClub();
         $this->_stade = $this->generateStade();
         $this->_budget = 200;
-        $this->_points = $i;
+        $this->_points = 0;
 
         $this->insert();
     }

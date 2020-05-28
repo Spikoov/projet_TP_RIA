@@ -90,11 +90,17 @@ class EquipeController extends Controller
             ['sousContrat', '0']
         ])->get();
 
+        $mlId = array();
+        foreach ($mls as $ml) {
+            array_push($mlId, $ml->id);
+        }
 
         $gardien = $gardiens[rand(0, count($gardiens) - 1)]->id;
         $def = $defs[rand(0, count($defs) - 1)]->id;
-        $ml0 = $mls[rand(0, count($mls) - 1)]->id;
-        $ml1 = $mls[rand(0, count($mls) - 1)]->id;
+        $index = rand(0, count($mls) - 1);
+        $ml0 = $mlId[$index];
+        unset($mlId[$index]); sort($mlId);
+        $ml1 = $mlId[rand(0, count($mlId) - 1)];
         $atq = $atqs[rand(0, count($atqs) - 1)]->id;
 
         $titulaires = array(
