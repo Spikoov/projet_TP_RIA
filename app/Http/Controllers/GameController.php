@@ -60,7 +60,16 @@ class GameController extends Controller
 
     public function selectRemplacants()
     {
+      $joueursSansContrat = new JoueurController();
 
+      return view('selectRemplacants', [
+          'nombre' => $joueursSansContrat->getCountSansContrat(),
+          'prenom' => $joueursSansContrat->getPrenomSansContrat(),
+          'nom' => $joueursSansContrat->getNomSansContrat(),
+          'age' => $joueursSansContrat->getAgeSansContrat(),
+          'poste' => $joueursSansContrat->getPosteSansContrat(),
+          'note' => $joueursSansContrat->getNomSansContrat()
+      ]);
 
         return view('game', [
             'equipe' => $this->_equipes[$this->_idEquipe],
