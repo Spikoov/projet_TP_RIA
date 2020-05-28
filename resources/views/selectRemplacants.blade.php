@@ -12,15 +12,15 @@
             <th></th>
         </thead>
         <tbody>
-            @for($i = 0; $i < $nombre; $i++)
+            @foreach ($joueurs as $joueur)
                 <tr>
-                    <td>{{ $prenom[$i] }} {{ nom[$i] }}</td>
-                    <td>{{ $age[$i] }}</td>
-                    <td>{{ $poste[$i] }}</td>
-                    <td>{{ $note[$i] }}</td>
-                    <td><button class="w3-btn w3-white w3-border w3-border-green w3-hover-green w3-round-large" type="submit" value="{{ $equipe->getId() }}" name="selectedEquipe">Sélectionner</button></td>
+                    <td>{{ $joueur['nom'] }}</td>
+                    <td>{{ $joueur['age'] }}</td>
+                    <td>{{ $joueur['poste'] }}</td>
+                    <td>{{ $joueur['note'] }}</td>
+                    <td><button class="w3-btn w3-white w3-border w3-border-green w3-hover-green w3-round-large" type="submit" value="0" name="selectedEquipe">Sélectionner</button></td>
                 </tr>
-            @endfor
+            @endforeach
         </tbody>
     </table>
 </form>

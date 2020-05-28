@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Joueur;
+use Illuminate\Support\Facades\DB;
 
 class JoueurController extends Controller
 {
@@ -118,34 +119,22 @@ class JoueurController extends Controller
         return $note;
     }
 
-    public function getCountSansContrat()
+    public function getInfoSansContrat()
     {
-      return DB::table('joueurs')->where('sousContrat', 0)->count();
-    }
+      $infoSansContrat = DB::table('joueurs')->where('sousContrat', 0)->get();
 
-    public function getPrenomSansContrat()
-    {
-      return DB::table('joueurs')->where('sousContrat', 0)->value('prenom');
-    }
+      $joueurs = array();
+      foreach ($infoSansContrat as $info) {
 
-    public function getNomSansContrat()
-    {
-      return DB::table('joueurs')->where('sousContrat', 0)->value('nom');
-    }
+          array_push($joueurs, [
+              'nom' => $info->prenom . ' '. $info->nom,
+              'age' => $info->age,
+              'poste' => $info->poste,
+              'note' => $info->noteGlobale
+          ]);
+      }
 
-    public function getAgeSansContrat()
-    {
-      return DB::table('joueurs')->where('sousContrat', 0)->value('age');
-    }
-
-    public function getPosteSansContrat()
-    {
-      return DB::table('joueurs')->where('sousContrat', 0)->value('poste');
-    }
-
-    public function getNoteSansContrat()
-    {
-      return DB::table('joueurs')->where('sousContrat', 0)->value('noteGlobale');
+      return $joueurs;
     }
 
     public function insert()
