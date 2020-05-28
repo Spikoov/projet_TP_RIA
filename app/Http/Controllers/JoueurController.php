@@ -118,6 +118,36 @@ class JoueurController extends Controller
         return $note;
     }
 
+    public function getCountSansContrat()
+    {
+      return DB::table('joueurs')->where('sousContrat', 0)->count();
+    }
+
+    public function getPrenomSansContrat()
+    {
+      return DB::table('joueurs')->where('sousContrat', 0)->value('prenom');
+    }
+
+    public function getNomSansContrat()
+    {
+      return DB::table('joueurs')->where('sousContrat', 0)->value('nom');
+    }
+
+    public function getAgeSansContrat()
+    {
+      return DB::table('joueurs')->where('sousContrat', 0)->value('age');
+    }
+
+    public function getPosteSansContrat()
+    {
+      return DB::table('joueurs')->where('sousContrat', 0)->value('poste');
+    }
+
+    public function getNoteSansContrat()
+    {
+      return DB::table('joueurs')->where('sousContrat', 0)->value('noteGlobale');
+    }
+
     public function insert()
     {
         Joueur::create([
