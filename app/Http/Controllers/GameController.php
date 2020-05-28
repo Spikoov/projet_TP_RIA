@@ -28,10 +28,24 @@ class GameController extends Controller
 
     public function play()
     {
-        // TODO: update à chaque fin de saisons Joueurs -> (age, duree contrat) / Equipe -> (budget)
-        //      update des salaires en fonction du role (titu 20, rempl 5 ou autre 0)
-        //      affiche liste des joueurs(nom, salaire, dureeContrat, note, poste) sans contrat -> qu'il en prenne 3
+        // TODO: affiche liste des joueurs(nom, salaire, dureeContrat, note, poste) sans contrat -> qu'il en prenne 3
         //      affiche classement (droite)
+
+        if ($this->_idEquipe == NULL) {
+            return redirect('/');
+        }
+
+        return view('game', [
+            'equipe' => $this->_equipes[$this->_idEquipe],
+            'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+            'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos()
+        ]);
+    }
+
+    public function selectRemplacants()
+    {
+        
 
         return view('game', [
             'equipe' => $this->_equipes[$this->_idEquipe],

@@ -16,4 +16,4 @@ Route::get('/', 'LoadController@welcome');
 Route::get('/teamSelector', 'GameController@teamSelectorDisplay');
 Route::post('/teamSelector', 'GameController@teamSelectorAction');
 
-Route::get('/game', 'GameController@play');
+Route::get('/game/selectRemplacants', 'GameController@selectRemplacants');
