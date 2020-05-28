@@ -135,6 +135,11 @@ class EquipeController extends Controller
         return DB::table('clubs')->where('id', $this->getIdClub())->value('budget');
     }
 
+    public function getPoints()
+    {
+        return DB::table('clubs')->where('id', $this->getIdClub())->value('points');
+    }
+
     public function getTitulaireInfos()
     {
         $titus = array();

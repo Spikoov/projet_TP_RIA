@@ -36,6 +36,7 @@ class GameController extends Controller
         }
 
         return view('game', [
+            'classementEquipes' => $this->getClassement(),
             'equipe' => $this->_equipes[$this->_idEquipe],
             'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
             'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
@@ -43,9 +44,24 @@ class GameController extends Controller
         ]);
     }
 
+    public function getClassement()
+    {
+        $classement = array();
+        foreach ($this->_equipes as $e) {
+            array_push($classement, [
+                'points' => $e->getPoints(),
+                'nom' => $e->getNom()
+            ]);
+        }
+
+        rsort($classement);
+
+        return $classement;
+    }
+
     public function selectRemplacants()
     {
-        
+
 
         return view('game', [
             'equipe' => $this->_equipes[$this->_idEquipe],
