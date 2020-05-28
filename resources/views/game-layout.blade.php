@@ -53,7 +53,7 @@
                     <tbody>
                         @foreach($classementEquipes as $equ)
                             <tr>
-                                <td>{{ 0 }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $equ['nom'] }}</td>
                                 <td>{{ $equ['points'] }}</td>
                             </tr>
