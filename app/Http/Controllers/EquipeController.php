@@ -386,7 +386,7 @@ class EquipeController extends Controller
             'budget' => $budget
         ]);
 
-        //créer des tableaux tampons qui contiennent les id de l'effectif
+        //crée des tableaux tampons qui contiennent les id de l'effectif
 
         $nvTitu = array();
         foreach ($this->_titulaires as $key => $value) {
@@ -400,12 +400,14 @@ class EquipeController extends Controller
 
         $flagT = 0;
         $flagR = 0;
-        $flagA = 0;
+
         $compteur = 0;
 
-        //tests si les joueurs de l'effectif ont plus de 40 ans ou que le contrat est terminé
-        //supprime les joueurs ... (à faire)
+        //test si les joueurs de l'effectif ont plus de 40 ans ou que le contrat est terminé
+        //supprime de la table 'joueurs' les joueurs qui ont plus de 40 ans (et de l'equipe)
+        //supprime de l'equipe les joueurs qui sont arrivés au bout du contrat
 
+        //titulaires
         foreach ($infoTitulaires as $titulaire) {
           if(($titulaire->age > 40)){
             DB::table('joueurs')->where('id', $titulaire->id)->delete();
@@ -423,6 +425,8 @@ class EquipeController extends Controller
           $compteur++;
         }
         $compteur = 0;
+
+        //remplacants
 
         foreach ($infoRemplacants as $remplacant) {
           if(($remplacant->age > 40)){
@@ -442,33 +446,61 @@ class EquipeController extends Controller
         }
         $compteur = 0;
 
+        //effectif autres
+
         foreach ($infoAutres as $autre) {
           if(($autre->age > 40)){
             DB::table('joueurs')->where('id', $autre->id)->delete();
-            $this->_effectifAutres[$compteur] = 0;
-            $flagA = 1;
+            DB::table('effectif_autres')->where('idJoueur', $autre->id)->delete();
+            unset($this->_effectifAutres[$compteur]);
+            sort($this->_effectifAutres);
           }
 
           if(($autre->dureeContrat == 0) AND ($autre->age <= 40)){
-            $this->_effectifAutres[$compteur] = 0;
+            DB::table('effectif_autres')->where('idJoueur', $autre->id)->delete();
+            unset($this->_effectifAutres[$compteur]);
+            sort($this->_effectifAutres);
             DB::table('joueurs')->where('id', $autre->id)->update([
                 'sousContrat' => 0
             ]);
-            $flagA = 1;
           }
           $compteur++;
         }
         $compteur = 0;
 
+        //update les joueurs de l'equipe dans la BDD, l'id sera à 0 si le joueur est supprimé de l'équipe
+
         if($flagT == 1){
           DB::table('titulaires')->where('idEquipe', $this->_id)->update([
-            'idT1' => ,
-            'idT2' => $this->_titulaires['T2'],
-            'idT3' => $this->_titulaires['T3'],
-            'idT4' => $this->_titulaires['T4'],
-            'idT5' => $this->_titulaires['T5']
+            'idT1' => $nvTitu[0],
+            'idT2' => $nvTitu[1],
+            'idT3' => $nvTitu[2],
+            'idT4' => $nvTitu[3],
+            'idT5' => $nvTitu[4]
+          ]);
+        }
+        if($flagR == 1){
+          DB::table('remplacants')->where('idEquipe', $this->_id)->update([
+            'idR1' => $nvRempl[0],
+            'idR2' => $nvRempl[1],
+            'idR3' => $nvRempl[2]
           ]);
         }
 
+        //update des attributs d'instance
+
+        $this->_titulaires = array(
+            'T1' => $nvTitu[0],
+            'T2' => $nvTitu[1],
+            'T3' => $nvTitu[2],
+            'T4' => $nvTitu[3],
+            'T5' => $nvTitu[4]
+        );
+
+        $this->_remplacants = array(
+          'R1' => $nvRempl[0],,
+          'R2' => $nvRempl[1],
+          'R3' => $nvRempl[2]
+        );
     }
 }
