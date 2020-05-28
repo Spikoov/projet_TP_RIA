@@ -29,6 +29,7 @@ class GameController extends Controller
     public function play()
     {
         // TODO: liste des joueurs sans contrat -> qu'il en prenne 3
+        //      trier selectRemplacant
         //      voir details joueurs
         //      changer ses joueurs
         //      Changement organisation (+ changement joueurs)
@@ -67,15 +68,13 @@ class GameController extends Controller
       $joueursSansContrat = new JoueurController();
 
       return view('selectRemplacants', [
-          'joueurs' => $joueursSansContrat->getInfoSansContrat()
+          'joueurs' => $joueursSansContrat->getInfoSansContrat(),
+          'classementEquipes' => $this->getClassement(),
+          'equipe' => $this->_equipes[$this->_idEquipe],
+          'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+          'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+          'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos()
       ]);
-
-        return view('game', [
-            'equipe' => $this->_equipes[$this->_idEquipe],
-            'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
-            'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
-            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos()
-        ]);
     }
 
     public function teamSelectorDisplay()
@@ -93,7 +92,7 @@ class GameController extends Controller
         $this->_idEquipe = request('selectedEquipe');
 
         request()->session()->put('selectedTeamId', $this->_idEquipe - 1);
-        return redirect('/game');
+        return redirect('/game/selectRemplacants');
     }
 
     public function newYear()

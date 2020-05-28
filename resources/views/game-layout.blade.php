@@ -6,7 +6,7 @@
     <title>Projet TP RIA</title>
   </head>
   <body>
-        <div class="w3-bar w3-indigo">
+        <div class="w3-bar w3-indigo" style="overflow: hidden; position: fixed; top: 0; width: 100%;">
             @isset($nomEquipe)
                 <div class="w3-bar-item w3-large">{{ $nomEquipe }}</div>
                 <div class="w3-bar-item w3-large">Budget: {{ $budgetEquipe }}ß</div>
@@ -15,7 +15,7 @@
             <div class="w3-bar-item w3-right w3-large">Saison: {{ 0 }}</div>
         </div>
 
-        <div class="w3-sidebar w3-card w3-bar-block w3-border w3-hoverable" style="width:20%">
+        <div class="w3-sidebar w3-card w3-bar-block w3-border w3-hoverable" style="width:20%; top: 43px">
             <div class="w3-light-blue w3-bar-item">
                 <span>Effectif</span>
                 <span class="w3-right">Formation: @if(isset($equipe)) {{ $equipe->getOrganisation() }} @endif</span>
@@ -39,7 +39,7 @@
             @endisset
         </div>
 
-        <div class="w3-sidebar w3-card w3-bar-block w3-border" style="width:20%; right:0">
+        <div class="w3-sidebar w3-card w3-bar-block w3-border" style="width:20%; right:0; top: 43px">
             <div class="w3-light-blue w3-bar-item w3-right">
                 <span class="w3-right">Classement</span>
             </div>
@@ -62,6 +62,8 @@
                 </table>
             @endisset
         </div>
-      @yield('content')
+        <div style="margin-top: 43px">
+            @yield('content')
+        </div>
   </body>
 </html>

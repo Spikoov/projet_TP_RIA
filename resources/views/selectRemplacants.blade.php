@@ -15,8 +15,8 @@
             @foreach ($joueurs as $joueur)
                 <tr>
                     <td>{{ $joueur['nom'] }}</td>
-                    <td>{{ $joueur['age'] }}</td>
-                    <td>{{ $joueur['poste'] }}</td>
+                    <td>{{ $joueur['age'] }} ans</td>
+                    <td>{{ ucfirst($joueur['poste']) }}</td>
                     <td>{{ $joueur['note'] }}</td>
                     <td><button class="w3-btn w3-white w3-border w3-border-green w3-hover-green w3-round-large" type="submit" value="0" name="selectedEquipe">Sélectionner</button></td>
                 </tr>
