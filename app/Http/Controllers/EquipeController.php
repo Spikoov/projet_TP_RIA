@@ -498,7 +498,7 @@ class EquipeController extends Controller
         );
 
         $this->_remplacants = array(
-          'R1' => $nvRempl[0],,
+          'R1' => $nvRempl[0],
           'R2' => $nvRempl[1],
           'R3' => $nvRempl[2]
         );
