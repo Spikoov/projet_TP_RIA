@@ -28,7 +28,7 @@ class GameController extends Controller
 
     public function play()
     {
-        // TODO: affiche liste des joueurs(nom, salaire, dureeContrat, note, poste) sans contrat -> qu'il en prenne 3
+        // TODO: liste des joueurs sans contrat -> qu'il en prenne 3
 
         if ($this->_idEquipe == NULL) {
             return redirect('/');
