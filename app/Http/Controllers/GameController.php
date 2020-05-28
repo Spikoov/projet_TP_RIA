@@ -64,12 +64,7 @@ class GameController extends Controller
       $joueursSansContrat = new JoueurController();
 
       return view('selectRemplacants', [
-          'nombre' => $joueursSansContrat->getCountSansContrat(),
-          'prenom' => $joueursSansContrat->getPrenomSansContrat(),
-          'nom' => $joueursSansContrat->getNomSansContrat(),
-          'age' => $joueursSansContrat->getAgeSansContrat(),
-          'poste' => $joueursSansContrat->getPosteSansContrat(),
-          'note' => $joueursSansContrat->getNomSansContrat()
+          'joueurs' => $joueursSansContrat->getInfoSansContrat()
       ]);
 
         return view('game', [
