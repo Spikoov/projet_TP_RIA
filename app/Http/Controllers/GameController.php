@@ -29,7 +29,6 @@ class GameController extends Controller
     public function play()
     {
         // TODO: liste des joueurs sans contrat -> qu'il en prenne 3
-        //      trier selectRemplacant
         //      voir details joueurs
         //      changer ses joueurs
         //      Changement organisation (+ changement joueurs)

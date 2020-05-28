@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <meta charset="utf-8">
-    <title>Projet TP RIA</title>
-  </head>
-  <body>
+    <head>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <meta charset="utf-8">
+        <title>Projet TP RIA</title>
+    </head>
+    <body>
         <div class="w3-bar w3-indigo" style="overflow: hidden; position: fixed; top: 0; width: 100%;">
             @isset($nomEquipe)
                 <div class="w3-bar-item w3-large">{{ $nomEquipe }}</div>
@@ -16,9 +17,9 @@
         </div>
 
         <div class="w3-sidebar w3-card w3-bar-block w3-border w3-hoverable" style="width:20%; top: 43px">
-            <div class="w3-light-blue w3-bar-item">
+            <div class="w3-light-blue w3-bar-item w3-display-container">
                 <span>Effectif</span>
-                <span class="w3-right">Formation: @if(isset($equipe)) {{ $equipe->getOrganisation() }} @endif</span>
+                <span id="btn-formation" type="button" class="w3-button w3-hover-cyan w3-display-right w3-small">Formation: @isset($equipe) {{ $equipe->getOrganisation() }} @endisset</span>
             </div>
             @isset($titulaires)
                 <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
@@ -65,5 +66,10 @@
         <div style="margin-top: 43px">
             @yield('content')
         </div>
-  </body>
+    </body>
+    <script>
+        $("#btn-formation").click(function(){
+            alert('Changer formation')
+        })
+    </script>
 </html>
