@@ -144,10 +144,22 @@ class EquipeController extends Controller
 
             $poste = DB::table('joueurs')->where('id', $titu)->value('poste');
 
+            $age = DB::table('joueurs')->where('id', $titu)->value('age');
+
+            $salaire = DB::table('joueurs')->where('id', $titu)->value('salaire');
+
+            $dureeContrat = DB::table('joueurs')->where('id', $titu)->value('dureeContrat');
+
+            $note = DB::table('joueurs')->where('id', $titu)->value('noteGlobale');
+
             //--------------------------------------
             array_push($titus, [
                 'nom' => $nom,
-                'poste' => $poste
+                'poste' => $poste,
+                'age' => $age,
+                'salaire' => $salaire,
+                'dureeContrat' => $dureeContrat,
+                'note' => $note
             ]);
         }
 
@@ -460,7 +472,7 @@ class EquipeController extends Controller
         }
         $compteur = 0;
 
-        if($flagT == 1){
+        /*if($flagT == 1){
           DB::table('titulaires')->where('idEquipe', $this->_id)->update([
             'idT1' => ,
             'idT2' => $this->_titulaires['T2'],
@@ -468,7 +480,7 @@ class EquipeController extends Controller
             'idT4' => $this->_titulaires['T4'],
             'idT5' => $this->_titulaires['T5']
           ]);
-        }
+      }*/
 
     }
 }
