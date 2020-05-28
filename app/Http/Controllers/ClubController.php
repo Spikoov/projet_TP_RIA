@@ -58,7 +58,7 @@ class ClubController extends Controller
                 if($firstLetter === 'A' OR $firstLetter === 'I' OR $firstLetter === 'U'
                 OR $firstLetter === 'E' OR $firstLetter === 'O' OR $firstLetter === 'Y')
                     $club .= '\'';
-                elseif ($this->_ville === 'Cyrnea') {
+                elseif ($this->_ville['nom'] === 'Cyrnea') {
                     $club .= 'u ';
                 }
                 else
