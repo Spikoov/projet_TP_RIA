@@ -1,12 +1,12 @@
 @extends('game-layout')
 
 @section('content')
-<form action="/teamSelector" method="post" style="margin-left: 15%; margin-right: 15%">
+<form action="/teamSelector" method="post" style="margin-left: 20%; margin-right: 20%">
     {{ csrf_field() }}
     <table class="w3-table w3-hoverable w3-bordered">
         <thead class="w3-light-blue">
             <th>Nom de l'équipe</th>
-            <th>Note Globale</th>
+            <th>Note Globale ( / 100)</th>
             <th></th>
         </thead>
         <tbody>

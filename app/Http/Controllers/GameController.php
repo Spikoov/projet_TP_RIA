@@ -30,10 +30,8 @@ class GameController extends Controller
     {
         // TODO: update à chaque fin de saisons Joueurs -> (age, duree contrat) / Equipe -> (budget)
         //      update des salaires en fonction du role (titu 20, rempl 5 ou autre 0)
-        //      affiche son equipe (joueurs = salaire, dureeContrat, note, poste), formation)
         //      affiche liste des joueurs(nom, salaire, dureeContrat, note, poste) sans contrat -> qu'il en prenne 3
         //      affiche classement (droite)
-        //      faire fonction getTitulaireInfos
 
         return view('game', [
             'equipe' => $this->_equipes[$this->_idEquipe],

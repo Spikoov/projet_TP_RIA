@@ -144,10 +144,22 @@ class EquipeController extends Controller
 
             $poste = DB::table('joueurs')->where('id', $titu)->value('poste');
 
+            $age = DB::table('joueurs')->where('id', $titu)->value('age');
+
+            $salaire = DB::table('joueurs')->where('id', $titu)->value('salaire');
+
+            $dureeContrat = DB::table('joueurs')->where('id', $titu)->value('dureeContrat');
+
+            $note = DB::table('joueurs')->where('id', $titu)->value('noteGlobale');
+
             //--------------------------------------
             array_push($titus, [
                 'nom' => $nom,
-                'poste' => $poste
+                'poste' => $poste,
+                'age' => $age,
+                'salaire' => $salaire,
+                'dureeContrat' => $dureeContrat,
+                'note' => $note
             ]);
         }
 
