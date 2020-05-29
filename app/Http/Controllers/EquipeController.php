@@ -177,6 +177,79 @@ class EquipeController extends Controller
         return $titus;
     }
 
+    public function getRemplacantInfos()
+    {
+        $rempls = array();
+        if($this->getRemplacants() != NULL) {
+            foreach ($this->getRemplacants() as $rempl) {
+                $nom = DB::table('joueurs')->where('id', $rempl)->value('prenom');
+                $nom .= ' ' . DB::table('joueurs')->where('id', $rempl)->value('nom');
+
+                $poste = DB::table('joueurs')->where('id', $rempl)->value('poste');
+
+                $age = DB::table('joueurs')->where('id', $rempl)->value('age');
+
+                $salaire = DB::table('joueurs')->where('id', $rempl)->value('salaire');
+
+                $dureeContrat = DB::table('joueurs')->where('id', $rempl)->value('dureeContrat');
+
+                $note = DB::table('joueurs')->where('id', $rempl)->value('noteGlobale');
+
+                //--------------------------------------
+                array_push($rempls, [
+                    'nom' => $nom,
+                    'poste' => $poste,
+                    'age' => $age,
+                    'salaire' => $salaire,
+                    'dureeContrat' => $dureeContrat,
+                    'note' => $note
+                ]);
+            }
+        }
+        $len = count($rempls);
+        for ($i=0; $i < 3 - $len; $i++) {
+            array_push($rempls, -1);
+        }
+
+        return $rempls;
+    }
+
+    public function getAutresInfos()
+    {
+        $autres = array();
+        if($this->getAutres() != NULL) {
+            foreach ($this->getAutres() as $autre) {
+                $nom = DB::table('joueurs')->where('id', $autre)->value('prenom');
+                $nom .= ' ' . DB::table('joueurs')->where('id', $autre)->value('nom');
+
+                $poste = DB::table('joueurs')->where('id', $autre)->value('poste');
+
+                $age = DB::table('joueurs')->where('id', $autre)->value('age');
+
+                $salaire = DB::table('joueurs')->where('id', $autre)->value('salaire');
+
+                $dureeContrat = DB::table('joueurs')->where('id', $autre)->value('dureeContrat');
+
+                $note = DB::table('joueurs')->where('id', $autre)->value('noteGlobale');
+
+                //--------------------------------------
+                array_push($autres, [
+                    'nom' => $nom,
+                    'poste' => $poste,
+                    'age' => $age,
+                    'salaire' => $salaire,
+                    'dureeContrat' => $dureeContrat,
+                    'note' => $note
+                ]);
+            }
+        }
+        else {
+            $autres = -1;
+        }
+
+        return $autres;
+    }
+
     public function setTitulaires($nouveauTitulaires)
     {
         DB::table('titulaires')->where('idEquipe', $this->_id)->update([

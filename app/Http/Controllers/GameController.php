@@ -43,7 +43,9 @@ class GameController extends Controller
             'equipe' => $this->_equipes[$this->_idEquipe],
             'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
             'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
-            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos()
+            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+            'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+            'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
         ]);
     }
 
@@ -72,7 +74,9 @@ class GameController extends Controller
           'equipe' => $this->_equipes[$this->_idEquipe],
           'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
           'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
-          'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos()
+          'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+          'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+          'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
       ]);
     }
 
