@@ -141,6 +141,17 @@ class EquipeController extends Controller
         return DB::table('clubs')->where('id', $this->getIdClub())->value('budget');
     }
 
+    public function updateBudget($soustraireBudget)
+    {
+        $currentBudget = $this->getBudget();
+
+        $currentBudget = $currentBudget - $soustraireBudget;
+
+        DB::table('clubs')->where('id', $this->getIdClub())->update([
+          'budget' => $currentBudget
+        ]);
+    }
+
     public function getPoints()
     {
         return DB::table('clubs')->where('id', $this->getIdClub())->value('points');

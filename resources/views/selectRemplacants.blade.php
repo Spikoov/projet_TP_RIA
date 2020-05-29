@@ -5,7 +5,7 @@
     {{ csrf_field() }}
     <table id="table" class="w3-table w3-hoverable w3-bordered">
         <thead class="w3-light-blue">
-            <th id="resetSort" class="w3-button w3-hover-cyan" type="button">&#8634;</th>
+            <th id="resetSort" class="w3-button w3-hover-cyan" type="button">&#8634;<div id="budgetRempl">0ß</div></th>
             <th>Nom du joueur</th>
             <th id="sort0" class="w3-button w3-hover-cyan" type="button">Age &#8597;</th>
             <th id="sort1" class="w3-button w3-hover-cyan" type="button">Poste &#8597;</th>
@@ -20,7 +20,7 @@
                     <td>{{ $joueur['age'] }} ans</td>
                     <td>{{ ucfirst($joueur['poste']) }}</td>
                     <td>{{ $joueur['note'] }}</td>
-                    <td><input type="checkbox" onchange="countChecked()" class="testChecked" id="idJ" name="idJoueur[]" value="{{ $joueur['id'] }}"></td>
+                    <td><input type="checkbox" onchange="countChecked()" id="{{ $joueur['note'] }}" class="testChecked" name="idJoueur[]" value="{{ $joueur['id'] }}"></td>
                 </tr>
             @endforeach
         </tbody>
@@ -40,6 +40,20 @@ function countChecked(){
     $('input.testChecked').removeAttr('disabled');
     $('#boutonValider').attr('disabled', 'disabled');
   }
+
+  var budgetRemplacants = 0;
+      $.each($('input[name="idJoueur[]"]:checked'), function() {
+          var note = parseInt($(this).attr('id'));
+          budgetRemplacants = budgetRemplacants + note;
+      });
+
+      $('#budgetRempl').text(budgetRemplacants + "ß");
+
+      if(budgetRemplacants>200)
+      {
+        $('#boutonValider').attr('disabled', 'disabled');
+        $('#budgetRempl').css('background-color', 'red');
+      }
 }
 
 //------------------------------------------------------------------------------

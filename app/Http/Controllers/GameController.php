@@ -88,8 +88,20 @@ class GameController extends Controller
       ]);
 
       $this->_equipes[$this->_idEquipe]->setRemplacants(request('idJoueur'));
+      $soustraireBudget = $this->getSommeNotes(request('idJoueur'));
+      $this->_equipes[$this->_idEquipe]->updateBudget($soustraireBudget);
 
       return redirect('/game');
+    }
+
+    public function getSommeNotes($remplacants)
+    {
+      $notes = array();
+
+      foreach ($remplacants as $rempls) {
+        array_push($notes, DB::table('joueurs')->where('id', $rempls)->value('noteGlobale'));
+      }
+      return array_sum($notes);
     }
 
     public function teamSelectorDisplay()
