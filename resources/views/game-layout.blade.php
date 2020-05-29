@@ -28,7 +28,7 @@
                         <li class="w3-bar w3-display-container">
                             <span class="w3-badge w3-teal">{{ $titulaire['note'] }} / 100</span>
                             <div class="w3-bar-item">
-                                <span class="w3-large">{{ $titulaire['nom'] }}</span><br>
+                                <span class="w3-large w3-display-left">{{ $titulaire['nom'] }}</span><br>
                                 <span class="w3-small">{{ $titulaire['age']}} ans</span>
                                 <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
                                 <span class="w3-display-right w3-small">Salaire: {{ $titulaire['salaire'] }}ß/an</span>
