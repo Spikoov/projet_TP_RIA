@@ -15,7 +15,8 @@ class GameController extends Controller
     {
         //90 matchs / saisons
         if (request()->session()->has('selectedTeamId')) {
-            $this->_idEquipe = request()->session()->get('selectedTeamId');
+            $this->_idEquipe = intval(request()->session()->get('selectedTeamId'));
+            $this->_idEquipe--;
         }
 
         $this->_equipes = array();
@@ -34,7 +35,7 @@ class GameController extends Controller
         //      changer ses joueurs
         //      Changement organisation (+ changement joueurs)
 
-        if ($this->_idEquipe == NULL) {
+        if ($this->_idEquipe === NULL) {
             return redirect('/');
         }
 
@@ -105,7 +106,7 @@ class GameController extends Controller
         ]);
         $this->_idEquipe = request('selectedEquipe');
 
-        request()->session()->put('selectedTeamId', $this->_idEquipe - 1);
+        request()->session()->put('selectedTeamId', $this->_idEquipe);
         return redirect('/game/selectRemplacants');
     }
 
