@@ -19,7 +19,11 @@
         <div class="w3-sidebar w3-card w3-bar-block w3-border w3-hoverable" style="width:20%; top: 43px">
             <div class="w3-light-blue w3-bar-item w3-display-container">
                 <span>Effectif</span>
-                <span id="btn-formation" type="button" class="w3-button w3-hover-cyan w3-display-right w3-small">Formation: @isset($equipe) {{ $equipe->getOrganisation() }} @endisset</span>
+                @isset($nomEquipe)
+                    <span type="button" id="btn-formation" class="w3-button w3-hover-cyan w3-small w3-display-right">
+                        Formation: {{ $equipe->getOrganisation() }}
+                    </span>
+                @endisset
             </div>
             @isset($titulaires)
                 <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
@@ -38,6 +42,68 @@
                     @endforeach
                 </ul>
             @endisset
+            @isset($remplacants)
+                <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
+                    <li><h4>Remplacants</h4></li>
+                    @for($i = 0; $i < 3; $i++)
+                        @if($remplacants[$i] != -1)
+                            <li class="w3-bar w3-display-container">
+                                <span class="w3-badge w3-teal">{{ $remplacants[$i]['note'] }} / 100</span>
+                                <div class="w3-bar-item">
+                                    <span class="w3-large w3-display-left">{{ $remplacants[$i]['nom'] }}</span><br>
+                                    <span class="w3-small">{{ $remplacants[$i]['age']}} ans</span>
+                                    <span class="w3-display-topright">{{ ucfirst($remplacants[$i]['poste']) }}</span>
+                                    <span class="w3-display-right w3-small">Salaire: {{ $remplacants[$i]['salaire'] }}ß/an</span>
+                                    <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $remplacants[$i]['dureeContrat'] }} ans</span>
+                                </div>
+                            </li>
+                        @else
+                            <li class="w3-bar w3-display-container">
+                                <div class="w3-bar-item">
+                                    <span class="w3-display-middle w3-large">+</span>
+                                </div>
+                            </li>
+                        @endif
+                    @endfor
+                </ul>
+            @endisset
+            @isset($autres)
+                <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
+                    <li><h4>Reste de l'effectif</h4></li>
+                    @if($autres != -1)
+                        @foreach($autres as $autre)
+                            <li class="w3-bar w3-display-container">
+                                <span class="w3-badge w3-teal">{{ $autre['note'] }} / 100</span>
+                                <div class="w3-bar-item">
+                                    <span class="w3-large w3-display-left">{{ $autre['nom'] }}</span><br>
+                                    <span class="w3-small">{{ $autre['age']}} ans</span>
+                                    <span class="w3-display-topright">{{ ucfirst($autre['poste']) }}</span>
+                                    <span class="w3-display-right w3-small">Salaire: {{ $autre['salaire'] }}ß/an</span>
+                                    <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $autre['dureeContrat'] }} ans</span>
+                                </div>
+                            </li>
+                        @endforeach
+                    @endif
+                    <li class="w3-bar w3-display-container">
+                        <div class="w3-bar-item">
+                            <span class="w3-display-middle w3-large">+</span>
+                        </div>
+                    </li>
+                </ul>
+                <br><br>
+            @endisset
+        </div>
+
+        <div id="changerFormation" class="w3-sidebar w3-card w3-bar-block w3-border" style="display: none; top: 43px; width:20%;">
+            <div class="w3-light-blue w3-bar-item">
+                <span id="close-btn-formation" type="button" class="w3-button w3-hover-cyan">&larr;</span>
+                <span>Selectionner nouvelle formation:</span>
+            </div>
+            <form class="" action="/" method="post">
+                <input class="w3-button w3-bar" type="submit" value="1-2-1">
+                <input class="w3-button w3-bar" type="submit" value="2-1-1">
+                <input class="w3-button w3-bar" type="submit" value="1-1-2">
+            </form>
         </div>
 
         <div class="w3-sidebar w3-card w3-bar-block w3-border" style="width:20%; right:0; top: 43px">
@@ -69,7 +135,12 @@
     </body>
     <script>
         $("#btn-formation").click(function(){
-            alert('Changer formation')
+            $("input[value={{ $equipe->getOrganisation() }}]").attr("disabled", "true")
+            $("#changerFormation").css("display", "block")
+        })
+
+        $("#close-btn-formation").click(function(){
+            $("#changerFormation").css("display", "none")
         })
     </script>
 </html>
