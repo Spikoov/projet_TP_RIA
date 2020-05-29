@@ -32,6 +32,7 @@ class GameController extends Controller
         // TODO: selection des joueurs -> update budgetEquipe + affichage du prix total des joueurs
         //      recruter des joueurs
         //      voir details joueurs
+        //      style -> (selection joueurs [budget] / lors du changement n'afficher que le poste adéquat)
         //      Changement organisation (+ changement joueurs)
 
         if ($this->_idEquipe === NULL) {
