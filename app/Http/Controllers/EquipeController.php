@@ -276,6 +276,13 @@ class EquipeController extends Controller
             'idR2' => $nouveauRemplacants[1],
             'idR3' => $nouveauRemplacants[2]
         ]);
+        foreach ($nouveauRemplacants as $rempls) {
+          DB::table('joueurs')->where('id', $rempls)->update([
+            'salaire' => 5,
+            'dureeContrat' => 1,
+            'sousContrat' => 1
+          ]);
+        }
 
         $this->_remplacants = $nouveauRemplacants;
     }
@@ -451,25 +458,15 @@ class EquipeController extends Controller
         $infoRemplacants = array();
         $infoAutres = array();
 
-        //update le salaire des titulaires, remplacants et autres
+        //recup les infos des titulaires, remplacants et autres
 
         foreach ($this->_titulaires as $key => $value) {
-          $salaire = DB::table('joueurs')->where('id', $value)->value('salaire');
-          $salaire = $salaire + 20;
           $budget = $budget - 20;
-          DB::table('joueurs')->where('id', $value)->update([
-              'salaire' => $salaire
-          ]);
           array_push($infoTitulaires, DB::table('joueurs')->select('age', 'dureeContrat', 'id')->where('id', $value)->get());
         }
 
         foreach ($this->_remplacants as $key => $value) {
-          $salaire = DB::table('joueurs')->where('id', $value)->value('salaire');
-          $salaire = $salaire + 5;
           $budget = $budget - 5;
-          DB::table('joueurs')->where('id', $value)->update([
-              'salaire' => $salaire
-          ]);
           array_push($infoRemplacants, DB::table('joueurs')->select('age', 'dureeContrat', 'id')->where('id', $value)->get());
         }
 

@@ -87,6 +87,8 @@ class GameController extends Controller
       ]);
 
       $this->_equipes[$this->_idEquipe]->setRemplacants(request('idJoueur'));
+
+      return redirect('/game');
     }
 
     public function teamSelectorDisplay()
