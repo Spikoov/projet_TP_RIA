@@ -1,7 +1,7 @@
 @extends('game-layout')
 
 @section('content')
-<form action="/setRemplacants" method="post" style="margin-left: 20%; margin-right: 20%">
+<form action="/setRemplacants" method="post">
     {{ csrf_field() }}
     <table id="table" class="w3-table w3-hoverable w3-bordered">
         <thead class="w3-light-blue">

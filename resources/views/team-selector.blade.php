@@ -1,7 +1,7 @@
 @extends('game-layout')
 
 @section('content')
-<form action="/teamSelector" method="post" style="margin-left: 20%; margin-right: 20%">
+<form action="/teamSelector" method="post">
     {{ csrf_field() }}
     <table class="w3-table w3-hoverable w3-bordered">
         <thead class="w3-light-blue">
