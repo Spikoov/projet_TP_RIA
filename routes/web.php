@@ -17,6 +17,10 @@ Route::get('/teamSelector', 'GameController@teamSelectorDisplay');
 Route::post('/teamSelector', 'GameController@teamSelectorAction');
 
 Route::get('/game', 'GameController@play');
-Route::get('/game/selectRemplacants', 'GameController@selectRemplacants');
+Route::get('/selectRemplacants', 'GameController@selectRemplacants');
 
 Route::post('/setRemplacants', 'GameController@setRemplacants');
+
+Route::get('/changerTitulaire', 'GameController@displayChangerTitulaire');
+Route::get('/changerRemplacant', 'GameController@displayChangerRemplacant');
+Route::post('/changerJoueurs', 'GameController@changerJoueurs');

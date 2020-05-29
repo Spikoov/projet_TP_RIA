@@ -27,13 +27,18 @@
             </div>
             @isset($titulaires)
                 <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
-                    <li><h4>Titulaires</h4></li>
+                    <li class="w3-display-container w3-hover-white">
+                        <h4>Titulaires</h4>
+                        @empty($changer)
+                            <a href="/changerTitulaire"type="button" class="w3-display-right w3-button w3-light-grey">Changer</a>
+                        @endempty
+                    </li>
                     @foreach($titulaires as $titulaire)
                         <li class="w3-bar w3-display-container">
-                            <span class="w3-badge w3-teal">{{ $titulaire['note'] }} / 100</span>
+                            <span class="w3-badge w3-teal w3-display-topleft">{{ $titulaire['note'] }} / 100</span><br>
                             <div class="w3-bar-item">
                                 <span class="w3-large w3-display-left">{{ $titulaire['nom'] }}</span><br>
-                                <span class="w3-small">{{ $titulaire['age']}} ans</span>
+                                <span class="w3-small w3-display-bottomleft">{{ $titulaire['age']}} ans</span>
                                 <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
                                 <span class="w3-display-right w3-small">Salaire: {{ $titulaire['salaire'] }}ß/an</span>
                                 <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $titulaire['dureeContrat'] }} ans</span>
@@ -44,14 +49,19 @@
             @endisset
             @isset($remplacants)
                 <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
-                    <li><h4>Remplacants</h4></li>
+                    <li class="w3-display-container w3-hover-white">
+                        <h4>Remplaçants</h4>
+                        @empty($changer)
+                            <a href="/changerRemplacant"type="button" class="w3-display-right w3-button w3-light-grey">Changer</a>
+                        @endempty
+                    </li>
                     @for($i = 0; $i < 3; $i++)
                         @if($remplacants[$i] != -1)
                             <li class="w3-bar w3-display-container">
-                                <span class="w3-badge w3-teal">{{ $remplacants[$i]['note'] }} / 100</span>
+                                <span class="w3-badge w3-teal w3-display-topleft">{{ $remplacants[$i]['note'] }} / 100</span><br>
                                 <div class="w3-bar-item">
                                     <span class="w3-large w3-display-left">{{ $remplacants[$i]['nom'] }}</span><br>
-                                    <span class="w3-small">{{ $remplacants[$i]['age']}} ans</span>
+                                    <span class="w3-small w3-display-bottomleft">{{ $remplacants[$i]['age']}} ans</span>
                                     <span class="w3-display-topright">{{ ucfirst($remplacants[$i]['poste']) }}</span>
                                     <span class="w3-display-right w3-small">Salaire: {{ $remplacants[$i]['salaire'] }}ß/an</span>
                                     <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $remplacants[$i]['dureeContrat'] }} ans</span>
@@ -69,14 +79,14 @@
             @endisset
             @isset($autres)
                 <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
-                    <li><h4>Reste de l'effectif</h4></li>
+                    <li class="w3-hover-white"><h4>Reste de l'effectif</h4></li>
                     @if($autres != -1)
                         @foreach($autres as $autre)
                             <li class="w3-bar w3-display-container">
-                                <span class="w3-badge w3-teal">{{ $autre['note'] }} / 100</span>
+                                <span class="w3-badge w3-teal w3-display-topleft">{{ $autre['note'] }} / 100</span><br>
                                 <div class="w3-bar-item">
                                     <span class="w3-large w3-display-left">{{ $autre['nom'] }}</span><br>
-                                    <span class="w3-small">{{ $autre['age']}} ans</span>
+                                    <span class="w3-small w3-display-bottomleft">{{ $autre['age']}} ans</span>
                                     <span class="w3-display-topright">{{ ucfirst($autre['poste']) }}</span>
                                     <span class="w3-display-right w3-small">Salaire: {{ $autre['salaire'] }}ß/an</span>
                                     <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $autre['dureeContrat'] }} ans</span>
@@ -129,10 +139,11 @@
                 </table>
             @endisset
         </div>
-        <div style="margin-top: 43px">
+        <div style="margin-top: 43px; margin-left: 20%; margin-right: 20%;">
             @yield('content')
         </div>
     </body>
+    @isset($equipe)
     <script>
         $("#btn-formation").click(function(){
             $("input[value={{ $equipe->getOrganisation() }}]").attr("disabled", "true")
@@ -143,4 +154,5 @@
             $("#changerFormation").css("display", "none")
         })
     </script>
+    @endisset
 </html>

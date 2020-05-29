@@ -165,6 +165,7 @@ class EquipeController extends Controller
 
             //--------------------------------------
             array_push($titus, [
+                'id' => $titu,
                 'nom' => $nom,
                 'poste' => $poste,
                 'age' => $age,
@@ -197,6 +198,7 @@ class EquipeController extends Controller
 
                 //--------------------------------------
                 array_push($rempls, [
+                    'id' => $rempl,
                     'nom' => $nom,
                     'poste' => $poste,
                     'age' => $age,
@@ -234,6 +236,7 @@ class EquipeController extends Controller
 
                 //--------------------------------------
                 array_push($autres, [
+                    'id' => $autre,
                     'nom' => $nom,
                     'poste' => $poste,
                     'age' => $age,
@@ -260,6 +263,12 @@ class EquipeController extends Controller
             'idT5' => $nouveauTitulaires[4]
         ]);
 
+        foreach ($nouveauTitulaires as $titl) {
+          DB::table('joueurs')->where('id', $titl)->update([
+            'salaire' => 20,
+          ]);
+        }
+
         $this->_titulaires = $nouveauTitulaires;
     }
 
@@ -270,12 +279,14 @@ class EquipeController extends Controller
 
     public function setRemplacants($nouveauRemplacants)
     {
-        DB::table('remplacants')->where('idEquipe', $this->_id)->updateOrInsert([
-            'idEquipe' => $this->_id,
-            'idR1' => $nouveauRemplacants[0],
-            'idR2' => $nouveauRemplacants[1],
-            'idR3' => $nouveauRemplacants[2]
-        ]);
+        DB::table('remplacants')->where('idEquipe', $this->_id)->updateOrInsert(
+            ['idEquipe' => $this->_id,],
+            [
+                'idR1' => $nouveauRemplacants[0],
+                'idR2' => $nouveauRemplacants[1],
+                'idR3' => $nouveauRemplacants[2]
+            ]
+        );
         foreach ($nouveauRemplacants as $rempls) {
           DB::table('joueurs')->where('id', $rempls)->update([
             'salaire' => 5,
@@ -309,6 +320,12 @@ class EquipeController extends Controller
                     'idJoueur' => $value
                 ]);
             }
+        }
+
+        foreach ($nouveauJoueurs as $jrs) {
+          DB::table('joueurs')->where('id', $jrs)->update([
+            'salaire' => 0,
+          ]);
         }
     }
 
@@ -390,39 +407,41 @@ class EquipeController extends Controller
 
     public function echange($joueurA, $joueurB)
     {
+        $newTitus = array();
         foreach ($this->_titulaires as $key => $value) {
-            if ($value === $joueurA['id']) {
-                $value = $joueurB['id'];
+            if ($value === $joueurA) {
+                $this->_titulaires[$key] = $joueurB;
             }
-            elseif($value === $joueurB['id']) {
-                $value = $joueurA['id'];
+            elseif($value === $joueurB) {
+                $this->_titulaires[$key] = $joueurA;
             }
+            array_push($newTitus, $this->_titulaires[$key]);
         }
 
+        $newRempl = array();
         foreach ($this->_remplacants as $key => $value) {
-            if ($value === $joueurA['id']) {
-                $value = $joueurB['id'];
+            if ($value === $joueurA) {
+                $this->_remplacants[$key] = $joueurB;
             }
 
-            if ($value === $joueurB['id']) {
-                $value = $joueurA['id'];
+            if ($value === $joueurB) {
+                $this->_remplacants[$key] = $joueurA;
+            }
+            array_push($newRempl, $this->_remplacants[$key]);
+        }
+        foreach ($this->_effectifAutres as $key => $value) {
+            if ($value === $joueurA) {
+                $this->_effectifAutres[$key] = $joueurB;
+            }
+
+            if ($value === $joueurB) {
+                $this->_effectifAutres[$key] = $joueurA;
             }
         }
 
-        foreach ($this->$_effectifAutres as $key => $value) {
-            if ($value === $joueurA['id']) {
-                $value = $joueurB['id'];
-            }
-
-            if ($value === $joueurB['id']) {
-                $value = $joueurA['id'];
-            }
-        }
-
-        $this->setTitulaires($this->_titulaires);
-        $this->setRemplacants($this->_remplacants);
+        $this->setTitulaires($newTitus);
+        $this->setRemplacants($newRempl);
         $this->setAutres($this->_effectifAutres);
-
     }
 
     public function insert()

@@ -32,7 +32,6 @@ class GameController extends Controller
         // TODO: selection des joueurs -> update budgetEquipe + affichage du prix total des joueurs
         //      recruter des joueurs
         //      voir details joueurs
-        //      changer ses joueurs
         //      Changement organisation (+ changement joueurs)
 
         if ($this->_idEquipe === NULL) {
@@ -107,7 +106,7 @@ class GameController extends Controller
         $this->_idEquipe = request('selectedEquipe');
 
         request()->session()->put('selectedTeamId', $this->_idEquipe);
-        return redirect('/game/selectRemplacants');
+        return redirect('/selectRemplacants');
     }
 
     public function newYear()
@@ -119,5 +118,46 @@ class GameController extends Controller
         foreach ($this->_equipes as $equipe) {
             $equipe->newYear();
         }
+    }
+
+    public function displayChangerTitulaire()
+    {
+        return view('changerJoueurs', [
+            'changer' => 'T',
+            'classementEquipes' => $this->getClassement(),
+            'equipe' => $this->_equipes[$this->_idEquipe],
+            'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+            'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+            'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+            'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
+        ]);
+    }
+
+    public function displayChangerRemplacant()
+    {
+        return view('changerJoueurs', [
+            'changer' => 'R',
+            'classementEquipes' => $this->getClassement(),
+            'equipe' => $this->_equipes[$this->_idEquipe],
+            'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+            'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+            'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+            'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
+        ]);
+    }
+
+    public function changerJoueurs()
+    {
+        request()->validate([
+            'idJoueurA' => [],
+            'idJoueurB' => []
+        ]);
+        $idJoueurA = request('idJoueurA');
+        $idJoueurB = request('idJoueurB');
+
+        $this->_equipes[$this->_idEquipe]->echange($idJoueurA, $idJoueurB);
+        return redirect('/game');
     }
 }
