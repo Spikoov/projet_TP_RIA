@@ -1,7 +1,7 @@
 @extends('game-layout')
 
 @section('content')
-<form action="#" method="post" style="margin-left: 20%; margin-right: 20%">
+<form action="/setRemplacants" method="post" style="margin-left: 20%; margin-right: 20%">
     {{ csrf_field() }}
     <table id="table" class="w3-table w3-hoverable w3-bordered">
         <thead class="w3-light-blue">
@@ -10,7 +10,7 @@
             <th id="sort0" class="w3-button w3-hover-cyan" type="button">Age &#8597;</th>
             <th id="sort1" class="w3-button w3-hover-cyan" type="button">Poste &#8597;</th>
             <th id="sort2" class="w3-button w3-hover-cyan" type="button">Note Globale ( / 100) &#8597;</th>
-            <th></th>
+            <th><input class="w3-btn w3-white w3-border w3-border-green w3-hover-green w3-round-large" type="submit" id="boutonValider" value="Valider" name="valider"></th>
         </thead>
         <tbody>
             @foreach ($joueurs as $joueur)
@@ -20,7 +20,7 @@
                     <td>{{ $joueur['age'] }} ans</td>
                     <td>{{ ucfirst($joueur['poste']) }}</td>
                     <td>{{ $joueur['note'] }}</td>
-                    <td><button class="w3-btn w3-white w3-border w3-border-green w3-hover-green w3-round-large" type="submit" value="0" name="selectedEquipe">Sélectionner</button></td>
+                    <td><input type="checkbox" onchange="countChecked()" class="testChecked" id="idJ" name="idJoueur[]" value="{{ $joueur['id'] }}"></td>
                 </tr>
             @endforeach
         </tbody>
@@ -28,6 +28,30 @@
 </form>
 <script>
 //------------------------------------------------------------------------------
+
+function countChecked(){
+  var troisChecked = $('input[name="idJoueur[]"]:checked').length == 3;
+
+  if(troisChecked){
+    $('input.testChecked:not(:checked)').attr('disabled', 'disabled');
+    $('#boutonValider').removeAttr('disabled');
+  }
+  else {
+    $('input.testChecked').removeAttr('disabled');
+    $('#boutonValider').attr('disabled', 'disabled');
+  }
+}
+
+//------------------------------------------------------------------------------
+
+$(document).ready(function(){
+  $('#boutonValider').attr('disabled', 'disabled');
+  $("input.testChecked"). prop("checked", false);
+  $('input.testChecked:not(:checked)').removeAttr('disabled');
+})
+
+//------------------------------------------------------------------------------
+
 $(document).ready(function(){
     $('#sort0, #sort1, #sort2').click(function() {
         var lastLetter = $(this).text()[$(this).text().length-1]

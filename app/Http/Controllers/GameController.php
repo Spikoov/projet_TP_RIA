@@ -80,6 +80,15 @@ class GameController extends Controller
       ]);
     }
 
+    public function setRemplacants()
+    {
+      request()->validate([
+          'idJoueur' => []
+      ]);
+
+      $this->_equipes[$this->_idEquipe]->setRemplacants(request('idJoueur'));
+    }
+
     public function teamSelectorDisplay()
     {
         return view('team-selector', [

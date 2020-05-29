@@ -18,3 +18,5 @@ Route::post('/teamSelector', 'GameController@teamSelectorAction');
 
 Route::get('/game', 'GameController@play');
 Route::get('/game/selectRemplacants', 'GameController@selectRemplacants');
+
+Route::post('/setRemplacants', 'GameController@setRemplacants');
