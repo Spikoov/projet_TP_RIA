@@ -28,11 +28,11 @@ class GameController extends Controller
 
     public function play()
     {
-        // TODO: liste des joueurs sans contrat -> qu'il en prenne 3
+        // TODO: selection des joueurs -> update budgetEquipe + affichage du prix total des joueurs
+        //      recruter des joueurs
         //      voir details joueurs
         //      changer ses joueurs
         //      Changement organisation (+ changement joueurs)
-        //      recruter des joueurs
 
         if ($this->_idEquipe == NULL) {
             return redirect('/');
