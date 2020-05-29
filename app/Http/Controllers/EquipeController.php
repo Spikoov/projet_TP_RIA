@@ -270,7 +270,7 @@ class EquipeController extends Controller
 
     public function setRemplacants($nouveauRemplacants)
     {
-        DB::table('remplacants')->where('idEquipe', $this->_id)->update([
+        DB::table('remplacants')->where('idEquipe', $this->_id)->updateOrInsert([
             'idR1' => $nouveauRemplacants[0],
             'idR2' => $nouveauRemplacants[1],
             'idR3' => $nouveauRemplacants[2]
