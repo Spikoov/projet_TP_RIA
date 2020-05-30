@@ -2,8 +2,17 @@
 
 @section('content')
 <div class="w3-display-middle w3-card-4">
-    <header class="w3-container w3-indigo">
-        <h1 class="w3-center">{{ $infosJoueur['prenom'] . ' ' . $infosJoueur['nom'] }}</h1>
+    <header class="w3-display-container w3-container w3-indigo">
+        <h1>{{ $infosJoueur['prenom'] . ' ' . $infosJoueur['nom'] }}</h1>
+        @if($infosJoueur['poste'] === 'gardien')
+            <img src="https://cdn4.iconfinder.com/data/icons/sports-3-1/48/150-512.png" alt="Avatar" style="width: 60px; margin-right: 10px;" class="w3-display-right w3-green w3-right w3-circle">
+        @elseif($infosJoueur['poste'] === 'defense')
+            <img src="https://cdn4.iconfinder.com/data/icons/sports-3-1/48/150-512.png" alt="Avatar" style="width: 60px; margin-right: 10px;" class="w3-display-right w3-blue w3-right w3-circle">
+        @elseif($infosJoueur['poste'] === 'milieu')
+            <img src="https://cdn4.iconfinder.com/data/icons/sports-3-1/48/150-512.png" alt="Avatar" style="width: 60px; margin-right: 10px;" class="w3-display-right w3-yellow w3-right w3-circle">
+        @elseif($infosJoueur['poste'] === 'attaque')
+            <img src="https://cdn4.iconfinder.com/data/icons/sports-3-1/48/150-512.png" alt="Avatar" style="width: 60px; margin-right: 10px;" class="w3-display-right w3-red w3-right w3-circle">
+        @endif
     </header>
     <br>
     <div class="w3-container">
