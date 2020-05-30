@@ -27,3 +27,5 @@ Route::post('/setEffectif', 'GameController@setEffectif');
 Route::get('/changerTitulaire', 'GameController@displayChangerTitulaire');
 Route::get('/changerRemplacant', 'GameController@displayChangerRemplacant');
 Route::post('/changerJoueurs', 'GameController@changerJoueurs');
+
+Route::post('/changerFormation', 'GameController@changerFormation');

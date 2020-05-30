@@ -43,8 +43,8 @@ class EquipeController extends Controller
                 $this->_effectifAutres = array();
                 $autres = DB::table('effectif_autres')->select('idJoueur')->where('idEquipe', $this->_id)->get();
                 for ($i=0; $i < count($autres); $i++) {
-                    if (isset($autre[$i])) {
-                        array_push($_effectifAutres, $autres[$i]->idJoueur);
+                    if (isset($autres[$i])) {
+                        array_push($this->_effectifAutres, $autres[$i]->idJoueur);
                     }
                 }
             }
@@ -336,6 +336,7 @@ class EquipeController extends Controller
         foreach ($nouveauJoueurs as $jrs) {
           DB::table('joueurs')->where('id', $jrs)->update([
             'salaire' => 0,
+            'sousContrat' => 1
           ]);
         }
     }
@@ -452,7 +453,13 @@ class EquipeController extends Controller
 
         $this->setTitulaires($newTitus);
         $this->setRemplacants($newRempl);
+        $this->deleteAutres();
         $this->setAutres($this->_effectifAutres);
+    }
+
+    public function deleteAutres()
+    {
+        DB::table('effectif_autres')->where('idEquipe', $this->_id)->delete();
     }
 
     public function insert()

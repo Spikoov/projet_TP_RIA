@@ -95,9 +95,9 @@
                         @endforeach
                     @endif
                     <li class="w3-bar w3-display-container">
-                        <div class="w3-bar-item">
+                        <a href="/selectEffectif" class="w3-button w3-bar-item">
                             <span class="w3-display-middle w3-large">+</span>
-                        </div>
+                        </a>
                     </li>
                 </ul>
                 <br><br>
@@ -109,10 +109,11 @@
                 <span id="close-btn-formation" type="button" class="w3-button w3-hover-cyan">&larr;</span>
                 <span>Selectionner nouvelle formation:</span>
             </div>
-            <form class="" action="/" method="post">
-                <input class="w3-button w3-bar" type="submit" value="1-2-1">
-                <input class="w3-button w3-bar" type="submit" value="2-1-1">
-                <input class="w3-button w3-bar" type="submit" value="1-1-2">
+            <form action="/changerFormation" method="post">
+                {{ csrf_field() }}
+                <input class="w3-button w3-bar" name="nForm" type="submit" value="1-2-1">
+                <input class="w3-button w3-bar" name="nForm" type="submit" value="2-1-1">
+                <input class="w3-button w3-bar" name="nForm" type="submit" value="1-1-2">
             </form>
         </div>
 

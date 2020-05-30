@@ -15,12 +15,12 @@
         <tbody>
             @foreach ($joueurs as $joueur)
                 <tr>
-                    <td value="{{ $joueur['id'] }}"><span class="w3-badge w3-lime">{{ $joueur['note'] }}ß</span></td>
+                    <td value="{{ $joueur['id'] }}"><span class="w3-badge w3-lime">{{ floor($joueur['note'] / 2) }}ß</span></td>
                     <td>{{ $joueur['nom'] }}</td>
                     <td>{{ $joueur['age'] }} ans</td>
                     <td>{{ ucfirst($joueur['poste']) }}</td>
                     <td>{{ $joueur['note'] }}</td>
-                    <td><input type="checkbox" onchange="countChecked()" id="{{ $joueur['note'] }}" class="testChecked" name="idJoueur[]" value="{{ $joueur['id'] }}"></td>
+                    <td><input type="checkbox" onchange="countChecked()" id="{{ floor($joueur['note'] / 2) }}" class="testChecked" name="idJoueur[]" value="{{ $joueur['id'] }}"></td>
                 </tr>
             @endforeach
         </tbody>

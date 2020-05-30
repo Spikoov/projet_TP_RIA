@@ -29,9 +29,7 @@ class GameController extends Controller
 
     public function play()
     {
-        // TODO: recruter des joueurs
-        //      voir details joueurs
-        //      style -> (selection joueurs [budget] / lors du changement n'afficher que le poste adéquat)
+        // TODO: voir details joueurs
         //      Changement organisation (+ changement joueurs)
 
         if ($this->_idEquipe === NULL) {
@@ -127,7 +125,7 @@ class GameController extends Controller
       $notes = array();
 
       foreach ($joueurs as $joueur) {
-        array_push($notes, DB::table('joueurs')->where('id', $joueur)->value('noteGlobale'));
+        array_push($notes, floor(DB::table('joueurs')->where('id', $joueur)->value('noteGlobale') / 2));
       }
       return array_sum($notes);
     }
@@ -200,5 +198,13 @@ class GameController extends Controller
 
         $this->_equipes[$this->_idEquipe]->echange($idJoueurA, $idJoueurB);
         return redirect('/game');
+    }
+
+    public function changerFormation()
+    {
+        request()->validate([
+            'nForm' => [],
+        ]);
+        $nForm = request('nForm');
     }
 }
