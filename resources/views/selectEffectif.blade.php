@@ -1,7 +1,7 @@
 @extends('game-layout')
 
 @section('content')
-<form action="/setRemplacants" method="post">
+<form action="/setEffectif" method="post">
     {{ csrf_field() }}
     <table id="table" class="w3-table w3-hoverable w3-bordered">
         <thead class="w3-light-blue">
@@ -30,30 +30,24 @@
 //------------------------------------------------------------------------------
 
 function countChecked(){
-  var troisChecked = $('input[name="idJoueur[]"]:checked').length == 3;
-
-  if(troisChecked){
-    $('input.testChecked:not(:checked)').attr('disabled', 'disabled');
-    $('#boutonValider').removeAttr('disabled');
-  }
-  else {
-    $('input.testChecked').removeAttr('disabled');
-    $('#boutonValider').attr('disabled', 'disabled');
-  }
 
   var budgetRemplacants = 0;
-      $.each($('input[name="idJoueur[]"]:checked'), function() {
-          var note = parseInt($(this).attr('id'));
-          budgetRemplacants = budgetRemplacants + note;
-      });
+  $.each($('input[name="idJoueur[]"]:checked'), function() {
+      var note = parseInt($(this).attr('id'));
+      budgetRemplacants = budgetRemplacants + note;
+  });
 
-      $('#budgetRempl').text(budgetRemplacants + "ß");
+  $('#budgetRempl').text(budgetRemplacants + "ß");
 
-      if(budgetRemplacants>{{ $budgetEquipe }})
-      {
-        $('#boutonValider').attr('disabled', 'disabled');
-        $('#budgetRempl').css('background-color', 'red');
-      }
+  if(budgetRemplacants<={{ $budgetEquipe }}){
+    $('#boutonValider').removeAttr('disabled');
+    $('input.testChecked:not(:checked)').removeAttr('disabled');
+  }
+  else {
+    $('#boutonValider').attr('disabled', 'disabled');
+    $('input.testChecked:not(:checked)').attr('disabled', 'disabled');
+    $('#budgetRempl').css('background-color', 'red');
+  }
 }
 
 //------------------------------------------------------------------------------

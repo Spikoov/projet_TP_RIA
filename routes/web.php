@@ -21,6 +21,9 @@ Route::get('/selectRemplacants', 'GameController@selectRemplacants');
 
 Route::post('/setRemplacants', 'GameController@setRemplacants');
 
+Route::get('/selectEffectif', 'GameController@selectEffectif');
+Route::post('/setEffectif', 'GameController@setEffectif');
+
 Route::get('/changerTitulaire', 'GameController@displayChangerTitulaire');
 Route::get('/changerRemplacant', 'GameController@displayChangerRemplacant');
 Route::post('/changerJoueurs', 'GameController@changerJoueurs');

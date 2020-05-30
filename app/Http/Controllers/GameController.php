@@ -93,12 +93,41 @@ class GameController extends Controller
       return redirect('/game');
     }
 
-    public function getSommeNotes($remplacants)
+    public function selectEffectif()
+    {
+      $joueursSansContrat = new JoueurController();
+
+      return view('selectEffectif', [
+          'joueurs' => $joueursSansContrat->getInfoSansContrat(),
+          'classementEquipes' => $this->getClassement(),
+          'equipe' => $this->_equipes[$this->_idEquipe],
+          'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+          'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+          'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+          'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+          'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
+      ]);
+    }
+
+    public function setEffectif()
+    {
+      request()->validate([
+          'idJoueur' => []
+      ]);
+
+      $this->_equipes[$this->_idEquipe]->setAutres(request('idJoueur'));
+      $soustraireBudget = $this->getSommeNotes(request('idJoueur'));
+      $this->_equipes[$this->_idEquipe]->updateBudget($soustraireBudget);
+
+      return redirect('/game');
+    }
+
+    public function getSommeNotes($joueurs)
     {
       $notes = array();
 
-      foreach ($remplacants as $rempls) {
-        array_push($notes, DB::table('joueurs')->where('id', $rempls)->value('noteGlobale'));
+      foreach ($joueurs as $joueur) {
+        array_push($notes, DB::table('joueurs')->where('id', $joueur)->value('noteGlobale'));
       }
       return array_sum($notes);
     }
