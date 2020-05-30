@@ -29,8 +29,7 @@ class GameController extends Controller
 
     public function play()
     {
-        // TODO: selection des joueurs -> update budgetEquipe + affichage du prix total des joueurs
-        //      recruter des joueurs
+        // TODO: recruter des joueurs
         //      voir details joueurs
         //      style -> (selection joueurs [budget] / lors du changement n'afficher que le poste adéquat)
         //      Changement organisation (+ changement joueurs)
