@@ -180,4 +180,15 @@ class JoueurController extends Controller
         }
       }
     }
+
+
+    public function detailJoueur($id)
+    {
+        $infos = DB::table('joueurs')->where('id', $id)->first();
+        $infosJoueur = (array)$infos;
+
+        return view('details-joueurs', [
+            'infosJoueur' => $infosJoueur
+        ]);
+    }
 }

@@ -335,8 +335,9 @@ class EquipeController extends Controller
 
         foreach ($nouveauJoueurs as $jrs) {
           DB::table('joueurs')->where('id', $jrs)->update([
-            'salaire' => 0,
-            'sousContrat' => 1
+            'salaire' => 1,
+            'sousContrat' => 1,
+            'dureeContrat' =>1
           ]);
         }
     }

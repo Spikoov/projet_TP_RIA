@@ -35,14 +35,16 @@
                     </li>
                     @foreach($titulaires as $titulaire)
                         <li class="w3-bar w3-display-container">
-                            <span class="w3-badge w3-teal w3-display-topleft">{{ $titulaire['note'] }} / 100</span><br>
-                            <div class="w3-bar-item">
-                                <span class="w3-large w3-display-left">{{ $titulaire['nom'] }}</span><br>
-                                <span class="w3-small w3-display-bottomleft">{{ $titulaire['age']}} ans</span>
-                                <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
-                                <span class="w3-display-right w3-small">Salaire: {{ $titulaire['salaire'] }}ß/an</span>
-                                <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $titulaire['dureeContrat'] }} ans</span>
-                            </div>
+                            <a href="/detailsJoueurs/{{ $titulaire['id'] }}">
+                                <span class="w3-badge w3-teal w3-display-topleft">{{ $titulaire['note'] }} / 100</span><br>
+                                <div class="w3-bar-item">
+                                    <span class="w3-large w3-display-left">{{ $titulaire['nom'] }}</span><br>
+                                    <span class="w3-small w3-display-bottomleft">{{ $titulaire['age']}} ans</span>
+                                    <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
+                                    <span class="w3-display-right w3-small">Salaire: {{ $titulaire['salaire'] }}ß/an</span>
+                                    <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $titulaire['dureeContrat'] }} ans</span>
+                                </div>
+                            </a>
                         </li>
                     @endforeach
                 </ul>
@@ -58,14 +60,16 @@
                     @for($i = 0; $i < 3; $i++)
                         @if($remplacants[$i] != -1)
                             <li class="w3-bar w3-display-container">
-                                <span class="w3-badge w3-teal w3-display-topleft">{{ $remplacants[$i]['note'] }} / 100</span><br>
-                                <div class="w3-bar-item">
-                                    <span class="w3-large w3-display-left">{{ $remplacants[$i]['nom'] }}</span><br>
-                                    <span class="w3-small w3-display-bottomleft">{{ $remplacants[$i]['age']}} ans</span>
-                                    <span class="w3-display-topright">{{ ucfirst($remplacants[$i]['poste']) }}</span>
-                                    <span class="w3-display-right w3-small">Salaire: {{ $remplacants[$i]['salaire'] }}ß/an</span>
-                                    <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $remplacants[$i]['dureeContrat'] }} ans</span>
-                                </div>
+                                <a href="/detailsJoueurs/{{ $remplacants[$i]['id'] }}">
+                                    <span class="w3-badge w3-teal w3-display-topleft">{{ $remplacants[$i]['note'] }} / 100</span><br>
+                                    <div class="w3-bar-item">
+                                        <span class="w3-large w3-display-left">{{ $remplacants[$i]['nom'] }}</span><br>
+                                        <span class="w3-small w3-display-bottomleft">{{ $remplacants[$i]['age']}} ans</span>
+                                        <span class="w3-display-topright">{{ ucfirst($remplacants[$i]['poste']) }}</span>
+                                        <span class="w3-display-right w3-small">Salaire: {{ $remplacants[$i]['salaire'] }}ß/an</span>
+                                        <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $remplacants[$i]['dureeContrat'] }} ans</span>
+                                    </div>
+                                </a>
                             </li>
                         @else
                             <li class="w3-bar w3-display-container">
@@ -83,14 +87,16 @@
                     @if($autres != -1)
                         @foreach($autres as $autre)
                             <li class="w3-bar w3-display-container">
-                                <span class="w3-badge w3-teal w3-display-topleft">{{ $autre['note'] }} / 100</span><br>
-                                <div class="w3-bar-item">
-                                    <span class="w3-large w3-display-left">{{ $autre['nom'] }}</span><br>
-                                    <span class="w3-small w3-display-bottomleft">{{ $autre['age']}} ans</span>
-                                    <span class="w3-display-topright">{{ ucfirst($autre['poste']) }}</span>
-                                    <span class="w3-display-right w3-small">Salaire: {{ $autre['salaire'] }}ß/an</span>
-                                    <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $autre['dureeContrat'] }} ans</span>
-                                </div>
+                                <a href="/detailsJoueurs/{{ $autre['id'] }}">
+                                    <span class="w3-badge w3-teal w3-display-topleft">{{ $autre['note'] }} / 100</span><br>
+                                    <div class="w3-bar-item">
+                                        <span class="w3-large w3-display-left">{{ $autre['nom'] }}</span><br>
+                                        <span class="w3-small w3-display-bottomleft">{{ $autre['age']}} ans</span>
+                                        <span class="w3-display-topright">{{ ucfirst($autre['poste']) }}</span>
+                                        <span class="w3-display-right w3-small">Salaire: {{ $autre['salaire'] }}ß/an</span>
+                                        <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $autre['dureeContrat'] }} ans</span>
+                                    </div>
+                                </a>
                             </li>
                         @endforeach
                     @endif

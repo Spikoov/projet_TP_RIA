@@ -29,8 +29,7 @@ class GameController extends Controller
 
     public function play()
     {
-        // TODO: voir details joueurs
-        //      Changement organisation (+ changement joueurs)
+        // TODO: Changement organisation (+ changement joueurs)
 
         if ($this->_idEquipe === NULL) {
             return redirect('/');
