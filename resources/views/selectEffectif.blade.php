@@ -5,7 +5,7 @@
     {{ csrf_field() }}
     <table id="table" class="w3-table w3-hoverable w3-bordered">
         <thead class="w3-light-blue">
-            <th id="resetSort" class="w3-button w3-hover-cyan" type="button">&#8634;<div id="budgetRempl">0ß</div></th>
+            <th id="resetSort" class="w3-button w3-hover-cyan" type="button">&#8634;<br><div class="w3-badge w3-green" id="budgetRempl">0ß</div></th>
             <th>Nom du joueur</th>
             <th id="sort0" class="w3-button w3-hover-cyan" type="button">Age &#8597;</th>
             <th id="sort1" class="w3-button w3-hover-cyan" type="button">Poste &#8597;</th>
@@ -42,11 +42,14 @@ function countChecked(){
   if(budgetRemplacants<={{ $budgetEquipe }}){
     $('#boutonValider').removeAttr('disabled');
     $('input.testChecked:not(:checked)').removeAttr('disabled');
+    $('#budgetRempl').removeClass("w3-red");
+    $('#budgetRempl').addClass("w3-green");
   }
   else {
     $('#boutonValider').attr('disabled', 'disabled');
     $('input.testChecked:not(:checked)').attr('disabled', 'disabled');
-    $('#budgetRempl').css('background-color', 'red');
+    $('#budgetRempl').removeClass("w3-green");
+    $('#budgetRempl').addClass("w3-red");
   }
 }
 
