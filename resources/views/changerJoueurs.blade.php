@@ -13,7 +13,7 @@
                     <div class="w3-bar-item">
                         <span class="w3-large w3-display-left">{{ $titulaire['nom'] }}</span><br>
                         <span class="w3-small w3-display-bottomleft">{{ $titulaire['age']}} ans</span>
-                        <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
+                        <span id="posteA" class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
                         <span class="w3-display-right w3-small">Salaire: {{ $titulaire['salaire'] }}ß/an</span>
                         <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $titulaire['dureeContrat'] }} ans</span>
                     </div>
@@ -33,7 +33,7 @@
                     <div class="w3-bar-item">
                         <span class="w3-large w3-display-left">{{ $remplacant['nom'] }}</span><br>
                         <span class="w3-small w3-display-bottomleft">{{ $remplacant['age']}} ans</span>
-                        <span class="w3-display-topright">{{ ucfirst($remplacant['poste']) }}</span>
+                        <span id="posteB" class="w3-display-topright">{{ ucfirst($remplacant['poste']) }}</span>
                         <span class="w3-display-right w3-small">Salaire: {{ $remplacant['salaire'] }}ß/an</span>
                         <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $remplacant['dureeContrat'] }} ans</span>
                     </div>
@@ -49,7 +49,7 @@
                         <div class="w3-bar-item">
                             <span class="w3-large w3-display-left">{{ $autre['nom'] }}</span><br>
                             <span class="w3-small w3-display-bottomleft">{{ $autre['age']}} ans</span>
-                            <span class="w3-display-topright">{{ ucfirst($autre['poste']) }}</span>
+                            <span id="posteB" class="w3-display-topright">{{ ucfirst($autre['poste']) }}</span>
                             <span class="w3-display-right w3-small">Salaire: {{ $autre['salaire'] }}ß/an</span>
                             <span class="w3-display-bottomright w3-small">Durée du contrat: {{ $autre['dureeContrat'] }} ans</span>
                         </div>
@@ -81,7 +81,7 @@
                 <h4>Sélectionnez le joueur par lequel le remplacer</h4>
             </li>
             <li class="w3-display-container w3-hover-white">
-                <h5>Remplacants</h5>
+                <h5>Titulaires</h5>
             </li>
             @foreach($titulaires as $titulaire)
                 <li id="playerB" type="button" class="w3-button w3-bar w3-display-container" value="{{ $titulaire['id'] }}">
@@ -143,6 +143,18 @@
 
                 form.submit();
             })
+        })
+
+        $("[id=playerA]").click(function(){
+            var posteA = $(this).find("#posteA").text()
+            //console.log($("[id=playerB]").find("#posteB").text());
+
+            for (var i = 0; i < $("[id=playerB]").length; i++) {
+                var el = $("[id=playerB]")[i]
+                console.log(el);
+                //console.log(el.find("#poste").text());
+            }
+
         })
     </script>
 @endsection
