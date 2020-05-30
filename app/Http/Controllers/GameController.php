@@ -202,22 +202,33 @@ class GameController extends Controller
 
     public function changerFormation()
     {
-        request()->validate([
-            'nForm' => [],
-        ]);
-        $nForm = request('nForm');
+      request()->validate([
+          'nForm' => [],
+      ]);
+      $nForm = request('nForm');
 
-        $this->_equipes[$this->_idEquipe]->setOrganisation($nForm);
+      $cinquieme = $this->testFormation($nForm);
 
-        return view('changerFormation', [
-            'changer' => 'T',
-            'classementEquipes' => $this->getClassement(),
-            'equipe' => $this->_equipes[$this->_idEquipe],
-            'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
-            'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
-            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
-            'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
-            'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
-        ]);
+      $this->_equipes[$this->_idEquipe]->setOrganisation($nForm);
+
+      return view('changerFormation', [
+          'poste' => $cinquieme,
+          'classementEquipes' => $this->getClassement(),
+          'equipe' => $this->_equipes[$this->_idEquipe],
+          'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+          'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+          'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+          'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+          'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
+      ]);
+    }
+
+    public function testFormation($formation)
+    {
+      if($defense = $formation[0] == '2')
+        return 'Defense';
+      else if($milieu = $formation[2] == '2')
+        return 'Milieu';
+      return 'Attaque';
     }
 }
