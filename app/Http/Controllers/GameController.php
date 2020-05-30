@@ -29,7 +29,13 @@ class GameController extends Controller
 
     public function play()
     {
-        // TODO: Changement organisation (+ changement joueurs)
+        // TODO: match :
+        //      (algo)
+        //      update classement en focntion du résultat
+        //      update du budget en focntion des spec (domi, ext)
+        //      algo -> nb spec
+        //      update de l'affichage de la saison
+        //      update du budget fin de la saison
 
         if ($this->_idEquipe === NULL) {
             return redirect('/');
