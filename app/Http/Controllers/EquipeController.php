@@ -58,7 +58,6 @@ class EquipeController extends Controller
               'absolue' => $noteAbs,
               'partielle' => $noteParti
             );
-
         }
     }
 

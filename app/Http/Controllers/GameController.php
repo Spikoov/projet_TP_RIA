@@ -17,6 +17,7 @@ class GameController extends Controller
         if (request()->session()->has('selectedTeamId')) {
             $this->_idEquipe = intval(request()->session()->get('selectedTeamId'));
             $this->_idEquipe--;
+            $this->_journee = intval(request()->session()->get('journee'));
         }
 
         $this->_equipes = array();
@@ -25,12 +26,13 @@ class GameController extends Controller
         for ($i=0; $i < $nbEquipes; $i++) {
             array_push($this->_equipes, new EquipeController($i));
         }
+
+        $this->matchAlgo();
     }
 
     public function play()
     {
         // TODO: match :
-        //      (algo)
         //      update nbPoints
         //      algo -> nb spec
         //      update du budget en focntion des spec (domi, ext)
@@ -50,6 +52,51 @@ class GameController extends Controller
             'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
             'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
         ]);
+    }
+
+    public function matchAlgo()
+    {
+        $all = array();
+        foreach ($this->_equipes as $key ) {
+            array_push($all, $key->getId());
+        }
+
+        $first = array();
+        $last = array();
+        $tournament = array();
+
+        for ($i=0; $i < count($this->_equipes)/2; $i++) {
+            $first[$i] = $all[$i];
+            $last[$i] = $all[(count($all) - $i) - 1];
+        }
+
+        for ($j=0; $j < count($this->_equipes) - 1; $j++) {
+            $ronde = array();
+            for ($i=0; $i < count($this->_equipes)/2; $i++) {
+                array_push($ronde, [
+                    'A' => $first[$i],
+                    'B' => $last[$i]
+                ]);
+            }
+            array_push($tournament, $ronde);
+
+            $tmp0 = array($first[0], $last[0], $first[1], $first[2], $first[3]);
+            $tmp1 = array($last[1], $last[2], $last[3], $last[4], $first[4]);
+            $first = $tmp0;
+            $last = $tmp1;
+        }
+
+
+        echo '<pre>';
+        print_r($tournament);
+        echo '</pre>';
+
+        die();
+    }
+
+    public function updateJournee()
+    {
+        request()->session()->put('journee', $this->_journee + 1);
     }
 
     public function getClassement()
@@ -150,6 +197,7 @@ class GameController extends Controller
         $this->_idEquipe = request('selectedEquipe');
 
         request()->session()->put('selectedTeamId', $this->_idEquipe);
+        request()->session()->put('journee', 0);
         return redirect('/selectRemplacants');
     }
 
