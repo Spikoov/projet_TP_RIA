@@ -37,7 +37,6 @@ class GameController extends Controller
     public function play()
     {
         // TODO: match :
-        //      algo -> nb spec
         //      update du budget en focntion des spec (domi, ext)
         //      update de l'affichage de la saison
         //      update du budget fin de la saison
