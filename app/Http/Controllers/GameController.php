@@ -10,13 +10,17 @@ class GameController extends Controller
     private $_idEquipe;
     private $_equipes;
     private $_joueursSansContrat;
+    private $_journee;
+    private $_tournament;
 
     public function __construct()
     {
         //90 matchs / saisons
+        //$this->_journee == 9 => matchs retours
         if (request()->session()->has('selectedTeamId')) {
             $this->_idEquipe = intval(request()->session()->get('selectedTeamId'));
             $this->_idEquipe--;
+            $this->_journee = intval(request()->session()->get('journee'));
         }
 
         $this->_equipes = array();
@@ -25,13 +29,14 @@ class GameController extends Controller
         for ($i=0; $i < $nbEquipes; $i++) {
             array_push($this->_equipes, new EquipeController($i));
         }
+
+        if(isset($this->_idEquipe))
+            $this->_tournament = $this->matchAlgo();
     }
 
     public function play()
     {
         // TODO: match :
-        //      (algo)
-        //      update nbPoints
         //      algo -> nb spec
         //      update du budget en focntion des spec (domi, ext)
         //      update de l'affichage de la saison
@@ -42,6 +47,7 @@ class GameController extends Controller
         }
 
         return view('game', [
+            'prochainMatch' => $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getNom(),
             'classementEquipes' => $this->getClassement(),
             'equipe' => $this->_equipes[$this->_idEquipe],
             'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
@@ -50,6 +56,67 @@ class GameController extends Controller
             'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
             'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
         ]);
+    }
+
+    public function debutMatch()
+    {
+
+
+        return view('match', [
+            'classementEquipes' => $this->getClassement(),
+            'equipe' => $this->_equipes[$this->_idEquipe],
+            'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+            'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+            'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+            'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
+        ]);
+    }
+
+    public function matchAlgo()
+    {
+        $all = array();
+        foreach ($this->_equipes as $key ) {
+            array_push($all, $key->getId());
+        }
+
+        $player = $this->_idEquipe + 1;
+        $ex = $all[0];
+        $k = array_search($player, $all);
+        $all[$k] = $ex;
+        $all[0] = $player;
+
+        $first = array();
+        $last = array();
+        $tournament = array();
+
+        for ($i=0; $i < count($this->_equipes)/2; $i++) {
+            $first[$i] = $all[$i];
+            $last[$i] = $all[(count($all) - $i) - 1];
+        }
+
+        for ($j=0; $j < 2*(count($this->_equipes) - 1); $j++) {
+            $ronde = array();
+            for ($i=0; $i < count($this->_equipes)/2; $i++) {
+                array_push($ronde, [
+                    'A' => $first[$i],
+                    'B' => $last[$i],
+                ]);
+            }
+            array_push($tournament, $ronde);
+
+            $tmp0 = array($first[0], $last[0], $first[1], $first[2], $first[3]);
+            $tmp1 = array($last[1], $last[2], $last[3], $last[4], $first[4]);
+            $first = $tmp0;
+            $last = $tmp1;
+        }
+
+        return $tournament;
+    }
+
+    public function updateJournee()
+    {
+        request()->session()->put('journee', $this->_journee + 1);
     }
 
     public function getClassement()
@@ -150,6 +217,7 @@ class GameController extends Controller
         $this->_idEquipe = request('selectedEquipe');
 
         request()->session()->put('selectedTeamId', $this->_idEquipe);
+        request()->session()->put('journee', 0);
         return redirect('/selectRemplacants');
     }
 

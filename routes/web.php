@@ -31,3 +31,5 @@ Route::post('/changerJoueurs', 'GameController@changerJoueurs');
 Route::post('/changerFormation', 'GameController@changerFormation');
 
 Route::get('detailsJoueurs/{id}', 'JoueurController@detailJoueur');
+
+Route::get('/match', 'GameController@debutMatch');
