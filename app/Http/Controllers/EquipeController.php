@@ -157,6 +157,16 @@ class EquipeController extends Controller
         return DB::table('clubs')->where('id', $this->getIdClub())->value('points');
     }
 
+    public function updatePoints($pts)
+    {
+      $currentPoints = DB::table('clubs')->where('id', $this->getIdClub())->value('points');
+      $currentPoints = $currentPoints + $pts;
+
+      DB::table('clubs')->where('id', $this->getIdClub())->update([
+        'points' => $currentPoints
+      ]);
+    }
+
     public function getTitulaireInfos()
     {
         $titus = array();

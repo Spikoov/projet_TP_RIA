@@ -236,4 +236,20 @@ class GameController extends Controller
         return 'Milieu';
       return 'Attaque';
     }
+
+    public function getSpectateurs($idEquipe)
+    {
+      $idClub =  DB::table('equipes')->where('id', $idEquipe)->value('idClub');
+      $infos =  DB::table('clubs')->select('capaciteStade', 'idVille')->where('id', $idClub)->get();
+
+      $capaStade = $infos[0]->capaciteStade;
+      $attract =  DB::table('villes')->where('id', $infos[0]->idVille)->value('attractivite');
+
+      return ($attract * $capaStade) / 100;
+    }
+
+    public function getSpectateursBDD($idMatch)
+    {
+      return DB::table('matches')->where('id', $idMatch)->value('nbSpectateurs');
+    }
 }
