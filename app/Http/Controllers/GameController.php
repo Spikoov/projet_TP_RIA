@@ -60,7 +60,7 @@ class GameController extends Controller
 
     public function debutMatch()
     {
-
+      
 
         return view('match', [
             'classementEquipes' => $this->getClassement(),
