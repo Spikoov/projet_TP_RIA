@@ -31,9 +31,9 @@ class GameController extends Controller
     {
         // TODO: match :
         //      (algo)
-        //      update classement en focntion du résultat
-        //      update du budget en focntion des spec (domi, ext)
+        //      update nbPoints
         //      algo -> nb spec
+        //      update du budget en focntion des spec (domi, ext)
         //      update de l'affichage de la saison
         //      update du budget fin de la saison
 

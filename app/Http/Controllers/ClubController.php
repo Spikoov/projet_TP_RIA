@@ -36,7 +36,7 @@ class ClubController extends Controller
 
         $ville = array(
             'nom' => $villes[array_rand($villes)],
-            'attractivite' => rand(50, 100)
+            'attractivite' => rand(50, 70)
         );
 
         return $ville;
