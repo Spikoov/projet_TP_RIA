@@ -172,5 +172,7 @@ function rsortTable(t) {
         }
     }
 }
+
+$(this).load(alert("Vous devez selectionner 3 remplançants au début de la partie"))
 </script>
 @endsection
