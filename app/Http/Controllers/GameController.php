@@ -10,10 +10,13 @@ class GameController extends Controller
     private $_idEquipe;
     private $_equipes;
     private $_joueursSansContrat;
+    private $_journee;
+    private $_tournament;
 
     public function __construct()
     {
         //90 matchs / saisons
+        //$this->_journee == 9 => matchs retours
         if (request()->session()->has('selectedTeamId')) {
             $this->_idEquipe = intval(request()->session()->get('selectedTeamId'));
             $this->_idEquipe--;
@@ -27,13 +30,13 @@ class GameController extends Controller
             array_push($this->_equipes, new EquipeController($i));
         }
 
-        $this->matchAlgo();
+        if(isset($this->_idEquipe))
+            $this->_tournament = $this->matchAlgo();
     }
 
     public function play()
     {
         // TODO: match :
-        //      update nbPoints
         //      algo -> nb spec
         //      update du budget en focntion des spec (domi, ext)
         //      update de l'affichage de la saison
@@ -44,6 +47,22 @@ class GameController extends Controller
         }
 
         return view('game', [
+            'prochainMatch' => $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getNom(),
+            'classementEquipes' => $this->getClassement(),
+            'equipe' => $this->_equipes[$this->_idEquipe],
+            'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+            'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+            'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+            'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
+        ]);
+    }
+
+    public function debutMatch()
+    {
+
+
+        return view('match', [
             'classementEquipes' => $this->getClassement(),
             'equipe' => $this->_equipes[$this->_idEquipe],
             'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
@@ -61,6 +80,12 @@ class GameController extends Controller
             array_push($all, $key->getId());
         }
 
+        $player = $this->_idEquipe + 1;
+        $ex = $all[0];
+        $k = array_search($player, $all);
+        $all[$k] = $ex;
+        $all[0] = $player;
+
         $first = array();
         $last = array();
         $tournament = array();
@@ -70,12 +95,12 @@ class GameController extends Controller
             $last[$i] = $all[(count($all) - $i) - 1];
         }
 
-        for ($j=0; $j < count($this->_equipes) - 1; $j++) {
+        for ($j=0; $j < 2*(count($this->_equipes) - 1); $j++) {
             $ronde = array();
             for ($i=0; $i < count($this->_equipes)/2; $i++) {
                 array_push($ronde, [
                     'A' => $first[$i],
-                    'B' => $last[$i]
+                    'B' => $last[$i],
                 ]);
             }
             array_push($tournament, $ronde);
@@ -85,6 +110,8 @@ class GameController extends Controller
             $first = $tmp0;
             $last = $tmp1;
         }
+
+        return $tournament;
     }
 
     public function updateJournee()
