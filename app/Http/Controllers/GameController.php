@@ -85,13 +85,6 @@ class GameController extends Controller
             $first = $tmp0;
             $last = $tmp1;
         }
-
-
-        echo '<pre>';
-        print_r($tournament);
-        echo '</pre>';
-
-        die();
     }
 
     public function updateJournee()
