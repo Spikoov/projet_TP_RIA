@@ -151,6 +151,17 @@ class EquipeController extends Controller
         ]);
     }
 
+    public function ajoutBudget($ajouterBudget)
+    {
+      $currentBudget = $this->getBudget();
+
+      $currentBudget = $currentBudget + $ajouterBudget;
+
+      DB::table('clubs')->where('id', $this->getIdClub())->update([
+        'budget' => $currentBudget
+      ]);
+    }
+
     public function getPoints()
     {
         return DB::table('clubs')->where('id', $this->getIdClub())->value('points');
@@ -506,6 +517,12 @@ class EquipeController extends Controller
     public function getSpectateursBDD($idMatch)
     {
       return DB::table('matches')->where('id', $idMatch)->value('nbSpectateurs');
+    }
+
+    public function getStade()
+    {
+      $idClub = $this->getIdClub();
+      return DB::table('clubs')->where('id', $idClub)->value('stade');
     }
 
     public function newYear()
