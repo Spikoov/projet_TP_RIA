@@ -77,6 +77,17 @@ class GameController extends Controller
         ]);
     }
 
+    public function finMatch()
+    {
+      for ($i=0; $i < 5; $i++) {
+        $this->_tournament[$this->_journee][$i]['A'];
+        $this->_tournament[$this->_journee][$i]['B'];
+        $this->_tournament[$this->_journee][$i]['WhereA'];
+      }
+
+      $this->updateJournee();
+    }
+
     public function matchAlgo()
     {
         $all = array();
