@@ -9,7 +9,7 @@
     <body>
         <div class="w3-bar w3-indigo" style="overflow: hidden; position: fixed; top: 0; width: 100%;">
             @isset($nomEquipe)
-                <div class="w3-bar-item w3-large">{{ $nomEquipe }}</div>
+                <a href="/game" class="w3-hover-deep-purple w3-button w3-bar-item w3-large">{{ $nomEquipe }}</a>
                 <div class="w3-bar-item w3-large">Budget: {{ $budgetEquipe }}ß</div>
             @endisset
             <div class="w3-bar-item w3-display-topmiddle w3-large">M1DFS La Primera Liga</div>

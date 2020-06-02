@@ -59,11 +59,11 @@ class GameController extends Controller
 
     public function debutMatch()
     {
-        if ($this->_journee < 9) {
-            $this->_equipes[$this->_idEquipe]->getSpectateurs(); //Domi
+        if ($this->_tournament[$this->_journee][0]['whereA'] === 'domi') {
+            $this->_equipes[$this->_idEquipe]->getSpectateurs();
         }
         else {
-            $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getSpectateurs(); //exte
+            $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getSpectateurs();
         }
 
         return view('match', [
@@ -94,6 +94,15 @@ class GameController extends Controller
         foreach ($this->_equipes as $key ) {
             array_push($all, $key->getId());
         }
+        $domiOrExte = array();
+
+        for ($i=0; $i < 9; $i++) {
+            $jour = array();
+            for ($j=0; $j < 5; $j++) {
+                $jour[$j] = array('domi', 'exte');
+            }
+            $domiOrExte[$i] = $jour;
+        }
 
         $player = $this->_idEquipe + 1;
         $ex = $all[0];
@@ -110,12 +119,34 @@ class GameController extends Controller
             $last[$i] = $all[(count($all) - $i) - 1];
         }
 
-        for ($j=0; $j < 2*(count($this->_equipes) - 1); $j++) {
+        //ALLER
+        for ($j=0; $j < count($this->_equipes) - 1; $j++) {
             $ronde = array();
             for ($i=0; $i < count($this->_equipes)/2; $i++) {
+                shuffle($domiOrExte[$j][$i]);
                 array_push($ronde, [
                     'A' => $first[$i],
                     'B' => $last[$i],
+                    'whereA' => array_pop($domiOrExte[$j][$i])
+                ]);
+            }
+            array_push($tournament, $ronde);
+
+            $tmp0 = array($first[0], $last[0], $first[1], $first[2], $first[3]);
+            $tmp1 = array($last[1], $last[2], $last[3], $last[4], $first[4]);
+            $first = $tmp0;
+            $last = $tmp1;
+        }
+
+        //RETOUR
+        for ($j=0; $j < count($this->_equipes) - 1; $j++) {
+            $ronde = array();
+            for ($i=0; $i < count($this->_equipes)/2; $i++) {
+                shuffle($domiOrExte[$j][$i]);
+                array_push($ronde, [
+                    'A' => $first[$i],
+                    'B' => $last[$i],
+                    'whereA' => array_pop($domiOrExte[$j][$i])
                 ]);
             }
             array_push($tournament, $ronde);
