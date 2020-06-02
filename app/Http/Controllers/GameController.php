@@ -37,7 +37,8 @@ class GameController extends Controller
     public function play()
     {
         // TODO: match :
-        //      update du budget en focntion des spec (domi, ext)
+        //      full tests pour savoir la position des gars sur le terrain par rapport à la formation
+        //      algo pdt match
         //      update de l'affichage de la saison
         //      update du budget fin de la saison
 
@@ -73,7 +74,6 @@ class GameController extends Controller
             'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
             'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
             'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
-            'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
         ]);
     }
 
