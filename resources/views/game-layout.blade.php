@@ -13,7 +13,11 @@
                 <div class="w3-bar-item w3-large">Budget: {{ $budgetEquipe }}ß</div>
             @endisset
             <div class="w3-bar-item w3-display-topmiddle w3-large">M1DFS La Primera Liga</div>
-            <div class="w3-bar-item w3-right w3-large">Saison: {{ 0 }}</div>
+            @if(isset($saison))
+                <div class="w3-bar-item w3-right w3-large">Saison: {{ $saison }}</div>
+            @else
+                <div class="w3-bar-item w3-right w3-large">Saison: {{ '--' }}</div>
+            @endif
         </div>
 
         <div class="w3-sidebar w3-card w3-bar-block w3-border w3-hoverable" style="width:20%; top: 43px">

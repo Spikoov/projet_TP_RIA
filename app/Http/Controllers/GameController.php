@@ -39,16 +39,18 @@ class GameController extends Controller
     public function play()
     {
         // TODO: match :
+        //      algo pdt match -> full JS (retour des scores par form généré mdr)
         //      full tests pour savoir la position des gars sur le terrain par rapport à la formation
-        //      algo pdt match
-        //      update de l'affichage de la saison
-        //      update du budget fin de la saison
+        //      algo match des autres (+simple)
+        //      formation aléatoire
+        //      update du budget fin de la saison (à tester)
 
         if ($this->_idEquipe === NULL) {
             return redirect('/');
         }
 
         return view('game', [
+            'saison' => $this->_saison,
             'prochainMatch' => $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getNom(),
             'classementEquipes' => $this->getClassement(),
             'equipe' => $this->_equipes[$this->_idEquipe],
@@ -62,14 +64,9 @@ class GameController extends Controller
 
     public function debutMatch()
     {
-        if ($this->_tournament[$this->_journee][0]['whereA'] === 'domi') {
-            $this->_equipes[$this->_idEquipe]->getSpectateurs();
-        }
-        else {
-            $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getSpectateurs();
-        }
-
         return view('match', [
+            'isDomi' => $this->_tournament[$this->_journee][0]['whereA'],
+            'saison' => $this->_saison,
             'classementEquipes' => $this->getClassement(),
             'equipe' => $this->_equipes[$this->_idEquipe],
             'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
@@ -81,13 +78,14 @@ class GameController extends Controller
 
     public function finMatch()
     {
-      $scores = array(
+        //SCORES DOIT ÊTRE SOUS CE FORMAT
+      /*$scores = array(
         [1, 2],
         [2, 2],
         [0, 0],
         [1, 0],
         [0, 3]
-      );
+    );*/
 
       for ($i=0; $i < 5; $i++) {
         $idEquipe1 = 0;
@@ -333,6 +331,7 @@ class GameController extends Controller
 
         request()->session()->put('selectedTeamId', $this->_idEquipe);
         request()->session()->put('journee', 0);
+        request()->session()->put('saison', 1);
         return redirect('/selectRemplacants');
     }
 
