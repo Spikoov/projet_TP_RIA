@@ -12,6 +12,7 @@ class GameController extends Controller
     private $_joueursSansContrat;
     private $_journee;
     private $_tournament;
+    private $_saison;
 
     public function __construct()
     {
@@ -21,6 +22,7 @@ class GameController extends Controller
             $this->_idEquipe = intval(request()->session()->get('selectedTeamId'));
             $this->_idEquipe--;
             $this->_journee = intval(request()->session()->get('journee'));
+            $this->_saison = intval(request()->session()->get('saison'));
         }
 
         $this->_equipes = array();
@@ -79,12 +81,79 @@ class GameController extends Controller
 
     public function finMatch()
     {
+      $scores = array(
+        [1, 2],
+        [2, 2],
+        [0, 0],
+        [1, 0],
+        [0, 3]
+      );
+
       for ($i=0; $i < 5; $i++) {
-        $this->_tournament[$this->_journee][$i]['A'];
-        $this->_tournament[$this->_journee][$i]['B'];
-        $this->_tournament[$this->_journee][$i]['WhereA'];
+        $idEquipe1 = 0;
+        $idEquipe2 = 0;
+        $endroit = $this->_tournament[$this->_journee][$i]['WhereA'];
+        $stade = '';
+        $nbSpect = 0;
+        $points1 = 0;
+        $points2 = 0;
+
+        if($endroit == 'domi'){
+          $idEquipe1 = $this->_tournament[$this->_journee][$i]['A'];
+          $idEquipe2 = $this->_tournament[$this->_journee][$i]['B'];
+
+          $points1 = $scores[$i][0];
+          $points2 = $scores[$i][1];
+
+          $stade = $this->_equipes[$idEquipe1 - 1]->getStade();
+          $nbSpect = $this->_equipes[$idEquipe1 - 1]->getSpectateurs();
+        }
+        else {
+          $idEquipe1 = $this->_tournament[$this->_journee][$i]['B'];
+          $idEquipe2 = $this->_tournament[$this->_journee][$i]['A'];
+
+          $score1 = $scores[$i][1];
+          $score2 = $scores[$i][0];
+
+          $stade = $this->_equipes[$idEquipe1 - 1]->getStade();
+          $nbSpect = $this->_equipes[$idEquipe1 - 1]->getSpectateurs();
+        }
+
+        Match::create([
+          'saison' => $this->_saison,
+          'idClub1' => $idEquipe1,
+          'idClub2' => $idEquipe2,
+          'stade' => $stade,
+          'scoreClub1' => $points1,
+          'scoreClub2' => $point2,
+          'nbSpectateurs' => $nbSpect
+      ]);
+
+      $budget1 = floor(($nbSpect * 70 / 100) * 0.002);
+      $budget2 = floor(($nbSpect * 30 / 100) * 0.002);
+
+      $this->_equipes[$idEquipe1 - 1]->ajoutBudget($budget1);
+      $this->_equipes[$idEquipe2 - 1]->ajoutBudget($budget2);
+
+      if($score1 == $score2){
+        $point1 = 1;
+        $point2 = 1;
+      }
+      else if ($score1 < $score2) {
+        $point1 = 0;
+        $point2 = 3;
+      }
+      else {
+        $point1 = 3;
+        $point2 = 0;
       }
 
+      $this->_equipes[$idEquipe1 - 1]->updatePoints($point1);
+      $this->_equipes[$idEquipe2 - 1]->updatePoints($point2);
+
+      unset($scores[0]);
+      sort($scores[0]);
+      }
       $this->updateJournee();
     }
 
@@ -276,6 +345,8 @@ class GameController extends Controller
         foreach ($this->_equipes as $equipe) {
             $equipe->newYear();
         }
+
+        request()->session()->put('saison', $this->_saison + 1);
     }
 
     public function displayChangerTitulaire()
