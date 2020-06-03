@@ -44,6 +44,8 @@ class GameController extends Controller
         //      algo match des autres (+simple)
         //      formation aléatoire
         //      update du budget fin de la saison (à tester)
+        //      appeler setNotes quand on changer de formation ou de joueurs et quand on recrute
+        //      rajouter le delete des sessions dans "/"
 
         if ($this->_idEquipe === NULL) {
             return redirect('/');
