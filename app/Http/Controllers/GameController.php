@@ -38,7 +38,9 @@ class GameController extends Controller
     {
         // TODO: match :
         //      algo pdt match -> full JS (retour des scores par form généré mdr)
-        //      algo match des autres (+simple)
+        //      changement de joueurs pdt matchs
+        //      front match
+        //      algo match des autres (++simple)
         //      formation aléatoire
         //      update du budget fin de la saison (à tester)
         //      appeler setNotes quand on changer de formation ou de joueurs et quand on recrute
