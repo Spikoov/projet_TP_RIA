@@ -14,6 +14,8 @@ class LoadController extends Controller
     public function welcome()
     {
         request()->session()->forget('selectedTeamId');
+        request()->session()->forget('journee');
+        request()->session()->forget('saison');
 
         DB::table('joueurs')->truncate();
         DB::table('clubs')->truncate();
