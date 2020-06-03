@@ -16,6 +16,7 @@ class LoadController extends Controller
         request()->session()->forget('selectedTeamId');
         request()->session()->forget('journee');
         request()->session()->forget('saison');
+        request()->session()->forget('tournament');
 
         DB::table('joueurs')->truncate();
         DB::table('clubs')->truncate();

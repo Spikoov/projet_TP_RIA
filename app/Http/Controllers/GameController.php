@@ -23,6 +23,7 @@ class GameController extends Controller
             $this->_idEquipe--;
             $this->_journee = intval(request()->session()->get('journee'));
             $this->_saison = intval(request()->session()->get('saison'));
+            $this->_tournament = request()->session()->get('tournament');
         }
 
         $this->_equipes = array();
@@ -31,16 +32,12 @@ class GameController extends Controller
         for ($i=0; $i < $nbEquipes; $i++) {
             array_push($this->_equipes, new EquipeController($i));
         }
-
-        if(isset($this->_idEquipe))
-            $this->_tournament = $this->matchAlgo();
     }
 
     public function play()
     {
         // TODO: match :
         //      algo pdt match -> full JS (retour des scores par form généré mdr)
-        //      full tests pour savoir la position des gars sur le terrain par rapport à la formation
         //      algo match des autres (+simple)
         //      formation aléatoire
         //      update du budget fin de la saison (à tester)
@@ -65,15 +62,41 @@ class GameController extends Controller
 
     public function debutMatch()
     {
+        $titulairesA = array();
+        foreach ($this->_equipes[$this->_idEquipe]->getTitulaireInfos() as $titu) {
+            $infos = DB::table('joueurs')->where('id', $titu['id'])->first();
+            $infosJoueur = (array)$infos;
+
+            array_push($titulairesA, $infosJoueur);
+        }
+
+        $remplA = array();
+        foreach ($this->_equipes[$this->_idEquipe]->getRemplacantInfos() as $rempl) {
+            $infos = DB::table('joueurs')->where('id', $rempl['id'])->first();
+            $infosJoueur = (array)$infos;
+
+            array_push($remplA, $infosJoueur);
+        }
+
+        $tituB = array();
+        foreach ($this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getTitulaireInfos() as $t) {
+            $infos = DB::table('joueurs')->where('id', $t['id'])->first();
+            $infosJoueur = (array)$infos;
+
+            array_push($tituB, $infosJoueur);
+        }
+
         return view('match', [
             'isDomi' => $this->_tournament[$this->_journee][0]['whereA'],
             'saison' => $this->_saison,
             'classementEquipes' => $this->getClassement(),
-            'equipe' => $this->_equipes[$this->_idEquipe],
+            'equipeA' => $this->_equipes[$this->_idEquipe],
+            'equipeB' => $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1],
             'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
             'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
-            'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
-            'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+            'titulairesA' => $titulairesA,
+            'remplacants' => $remplA,
+            'titulairesB' => $tituB
         ]);
     }
 
@@ -329,10 +352,12 @@ class GameController extends Controller
             'selectedEquipe' => []
         ]);
         $this->_idEquipe = request('selectedEquipe');
+        $this->_tournament = $this->matchAlgo();
 
         request()->session()->put('selectedTeamId', $this->_idEquipe);
         request()->session()->put('journee', 0);
         request()->session()->put('saison', 1);
+        request()->session()->put('tournament', $this->_tournament);
         return redirect('/selectRemplacants');
     }
 
