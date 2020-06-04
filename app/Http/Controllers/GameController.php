@@ -39,7 +39,6 @@ class GameController extends Controller
     {
         // TODO: match :
         //      changement de joueurs pdt matchs
-        //      front match
         //      update du budget fin de la saison (à tester) + update saison
 
         if ($this->_idEquipe === NULL) {

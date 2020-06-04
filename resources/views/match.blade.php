@@ -15,6 +15,9 @@
                         <span class="w3-large w3-display-left">{{ $titulaire['prenom'] . ' ' . $titulaire['nom'] }}</span><br>
                         <span class="w3-small w3-display-bottomleft">{{ $titulaire['age']}} ans</span>
                         <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
+                        <div class="w3-light-grey w3-display-bottom">
+                            <div id="forme{{ $titulaire['id'] }}" class="w3-green" style="height: 5px; width: 100%"></div>
+                        </div>
                     </div>
                 </li>
             @endforeach
@@ -34,6 +37,9 @@
                         <span class="w3-large w3-display-left">{{ $remplacants[$i]['prenom'] . ' ' . $remplacants[$i]['nom'] }}</span><br>
                         <span class="w3-small w3-display-bottomleft">{{ $remplacants[$i]['age']}} ans</span>
                         <span class="w3-display-topright">{{ ucfirst($remplacants[$i]['poste']) }}</span>
+                        <div class="w3-light-grey w3-display-bottom">
+                            <div class="w3-green" style="height: 5px; width: 100%"></div>
+                        </div>
                     </div>
                 </li>
             @else
@@ -172,6 +178,7 @@
             }
 
             if(minutes == 45 && seconds == 0){
+                console.log('lol');
                 $("#start").css("display", "block")
                 $("#start").text("Jouer la 2nde mi-temps")
                 $("#pause").css("display", "none")
@@ -182,7 +189,8 @@
             if (seconds == 60) {
                 minutes++
                 seconds = 0
-                updateFormeJoueurs()
+                updateFormeJoueurs(minutes)
+                functionThatDoesNotExists()
             }
 
             if(minutes % 5 == 0 && seconds == 0 && minutes != 0){
@@ -193,7 +201,7 @@
                 tir()
             }
 
-            seconds+=1
+            seconds++
             if (minutes < 10 && seconds < 10) {
                 $("#timer").text("0" + minutes + ":0" + seconds)
             }
@@ -977,6 +985,34 @@
             @endforeach
             remplA.push(infos)
         @endforeach
+    }
+
+    let endu0 = {{ $titulairesA[0]['endurance'] }}
+    let endu1 = {{ $titulairesA[1]['endurance'] }}
+    let endu2 = {{ $titulairesA[2]['endurance'] }}
+    let endu3 = {{ $titulairesA[3]['endurance'] }}
+    let endu4 = {{ $titulairesA[4]['endurance'] }}
+
+    function updateFormeJoueurs(puiss) {
+        var formeActu0 = Math.round($("#forme{{ $titulairesA[0]['id'] }}").width() / $("#forme{{ $titulairesA[0]['id'] }}").parent().width() * 100)
+        var formeActu1 = Math.round($("#forme{{ $titulairesA[1]['id'] }}").width() / $("#forme{{ $titulairesA[1]['id'] }}").parent().width() * 100)
+        var formeActu2 = Math.round($("#forme{{ $titulairesA[2]['id'] }}").width() / $("#forme{{ $titulairesA[2]['id'] }}").parent().width() * 100)
+        var formeActu3 = Math.round($("#forme{{ $titulairesA[3]['id'] }}").width() / $("#forme{{ $titulairesA[3]['id'] }}").parent().width() * 100)
+        var formeActu4 = Math.round($("#forme{{ $titulairesA[4]['id'] }}").width() / $("#forme{{ $titulairesA[4]['id'] }}").parent().width() * 100)
+
+        var newForme0 = (endu0/formeActu0)
+        var newForme1 = 1
+        var newForme2 = 1
+        var newForme3 = 1
+        var newForme4 = 1
+
+        console.log(newForme0);
+
+        $("#forme{{ $titulairesA[0]['id'] }}").width(formeActu0 - newForme0 + '%')
+        $("#forme{{ $titulairesA[1]['id'] }}").width(formeActu1 - newForme1 + '%')
+        $("#forme{{ $titulairesA[2]['id'] }}").width(formeActu2 - newForme2 + '%')
+        $("#forme{{ $titulairesA[3]['id'] }}").width(formeActu3 - newForme3 + '%')
+        $("#forme{{ $titulairesA[4]['id'] }}").width(formeActu4 - newForme4 + '%')
     }
 </script>
 @endsection
