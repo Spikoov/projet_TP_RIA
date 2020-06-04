@@ -1000,11 +1000,11 @@
         var formeActu3 = Math.round($("#forme{{ $titulairesA[3]['id'] }}").width() / $("#forme{{ $titulairesA[3]['id'] }}").parent().width() * 100)
         var formeActu4 = Math.round($("#forme{{ $titulairesA[4]['id'] }}").width() / $("#forme{{ $titulairesA[4]['id'] }}").parent().width() * 100)
 
-        var newForme0 = (endu0/formeActu0)
-        var newForme1 = 1
-        var newForme2 = 1
-        var newForme3 = 1
-        var newForme4 = 1
+        var newForme0 = ((100-endu0)/formeActu0)
+        var newForme1 = ((100-endu0)/formeActu1)
+        var newForme2 = ((100-endu0)/formeActu2)
+        var newForme3 = ((100-endu0)/formeActu3)
+        var newForme4 = ((100-endu0)/formeActu4)
 
         console.log(newForme0);
 
