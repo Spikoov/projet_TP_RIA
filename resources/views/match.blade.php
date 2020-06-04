@@ -1000,19 +1000,19 @@
         var formeActu3 = Math.round($("#forme{{ $titulairesA[3]['id'] }}").width() / $("#forme{{ $titulairesA[3]['id'] }}").parent().width() * 100)
         var formeActu4 = Math.round($("#forme{{ $titulairesA[4]['id'] }}").width() / $("#forme{{ $titulairesA[4]['id'] }}").parent().width() * 100)
 
-        var newForme0 = (endu0/formeActu0)
-        var newForme1 = 1
-        var newForme2 = 1
-        var newForme3 = 1
-        var newForme4 = 1
+        var newForme0 = ((100 - endu0) / 100) * Math.pow(1.065, puiss)
+        var newForme1 = ((100 - endu1) / 100) * Math.pow(1.065, puiss)
+        var newForme2 = ((100 - endu2) / 100) * Math.pow(1.065, puiss)
+        var newForme3 = ((100 - endu3) / 100) * Math.pow(1.065, puiss)
+        var newForme4 = ((100 - endu4) / 100) * Math.pow(1.065, puiss)
 
         console.log(newForme0);
 
-        $("#forme{{ $titulairesA[0]['id'] }}").width(formeActu0 - newForme0 + '%')
-        $("#forme{{ $titulairesA[1]['id'] }}").width(formeActu1 - newForme1 + '%')
-        $("#forme{{ $titulairesA[2]['id'] }}").width(formeActu2 - newForme2 + '%')
-        $("#forme{{ $titulairesA[3]['id'] }}").width(formeActu3 - newForme3 + '%')
-        $("#forme{{ $titulairesA[4]['id'] }}").width(formeActu4 - newForme4 + '%')
+        $("#forme{{ $titulairesA[0]['id'] }}").width(100 - newForme0 + '%')
+        $("#forme{{ $titulairesA[1]['id'] }}").width(100 - newForme1 + '%')
+        $("#forme{{ $titulairesA[2]['id'] }}").width(100 - newForme2 + '%')
+        $("#forme{{ $titulairesA[3]['id'] }}").width(100 - newForme3 + '%')
+        $("#forme{{ $titulairesA[4]['id'] }}").width(100 - newForme4 + '%')
     }
 </script>
 @endsection
