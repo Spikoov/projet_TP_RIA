@@ -106,9 +106,16 @@ class GameController extends Controller
         $noteB = $this->_equipes[$this->_tournament[$this->_journee][$rencontre]['B']-1]->getNotes();
 
         $scoreAutres = array(0, 0);
-        for ($i=0; $i < 5; $i++) {
-            $rand = rand($noteA, $noteB);
-            
+        for ($i=0; $i < 4; $i++) {
+            $randA = rand(1, 100);
+            $randB = rand(1, 100);
+
+            if($randA < ($noteA['partielle']/4)){
+              $scoreAutres[0]++;
+            }
+            if($randB < ($noteB['partielle']/4)){
+              $scoreAutres[1]++;
+            }
         }
 
         echo '<pre>';
