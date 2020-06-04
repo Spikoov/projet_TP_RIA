@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Match;
 
 class GameController extends Controller
 {
@@ -37,11 +38,9 @@ class GameController extends Controller
     public function play()
     {
         // TODO: match :
-        //      algo pdt match -> full JS (retour des scores par form généré mdr)
         //      changement de joueurs pdt matchs
         //      front match
-        //      algo match des autres (++simple)
-        //      update du budget fin de la saison (à tester)
+        //      update du budget fin de la saison (à tester) + update saison
 
         if ($this->_idEquipe === NULL) {
             return redirect('/');
@@ -110,31 +109,19 @@ class GameController extends Controller
             $randA = rand(1, 100);
             $randB = rand(1, 100);
 
-            if($randA < ($noteA['partielle']/4)){
+            if($randA < ($noteA['partielle']/3)){
               $scoreAutres[0]++;
             }
-            if($randB < ($noteB['partielle']/4)){
+            if($randB < ($noteB['partielle']/3)){
               $scoreAutres[1]++;
             }
         }
 
-        echo '<pre>';
-        print_r($scoreAutres);
-        echo '</pre>';
-        die();
+        return $scoreAutres;
     }
 
     public function finMatch()
     {
-        //SCORES DOIT ÊTRE SOUS CE FORMAT
-      /*$scoresTest = array(
-        [1, 2],
-        [2, 2],
-        [0, 0],
-        [1, 0],
-        [0, 3]
-    );*/
-
       request()->validate([
           'scoreA' => [],
           'scoreB' => []
@@ -144,19 +131,13 @@ class GameController extends Controller
       array_push($scores[0], request('scoreA'), request('scoreB'));
 
       for ($i=1; $i < 5; $i++) {
-          array_push($scores[$i], $this->matchAutres($i));
+          $scores[$i] = $this->matchAutres($i);
       }
-
-      echo '<pre>';
-      print_r($scores);
-      echo '</pre>';
-
-      die();
 
       for ($i=0; $i < 5; $i++) {
         $idEquipe1 = 0;
         $idEquipe2 = 0;
-        $endroit = $this->_tournament[$this->_journee][$i]['WhereA'];
+        $endroit = $this->_tournament[$this->_journee][$i]['whereA'];
         $stade = '';
         $nbSpect = 0;
         $points1 = 0;
@@ -176,8 +157,8 @@ class GameController extends Controller
           $idEquipe1 = $this->_tournament[$this->_journee][$i]['B'];
           $idEquipe2 = $this->_tournament[$this->_journee][$i]['A'];
 
-          $score1 = $scores[$i][1];
-          $score2 = $scores[$i][0];
+          $points1 = $scores[$i][1];
+          $points2 = $scores[$i][0];
 
           $stade = $this->_equipes[$idEquipe1 - 1]->getStade();
           $nbSpect = $this->_equipes[$idEquipe1 - 1]->getSpectateurs();
@@ -189,7 +170,7 @@ class GameController extends Controller
           'idClub2' => $idEquipe2,
           'stade' => $stade,
           'scoreClub1' => $points1,
-          'scoreClub2' => $point2,
+          'scoreClub2' => $points2,
           'nbSpectateurs' => $nbSpect
       ]);
 
@@ -199,11 +180,11 @@ class GameController extends Controller
       $this->_equipes[$idEquipe1 - 1]->ajoutBudget($budget1);
       $this->_equipes[$idEquipe2 - 1]->ajoutBudget($budget2);
 
-      if($score1 == $score2){
+      if($points1 == $points2){
         $point1 = 1;
         $point2 = 1;
       }
-      else if ($score1 < $score2) {
+      else if ($points1 < $points2) {
         $point1 = 0;
         $point2 = 3;
       }
@@ -215,10 +196,10 @@ class GameController extends Controller
       $this->_equipes[$idEquipe1 - 1]->updatePoints($point1);
       $this->_equipes[$idEquipe2 - 1]->updatePoints($point2);
 
-      unset($scores[0]);
-      sort($scores[0]);
       }
       $this->updateJournee();
+
+      return redirect('/game');
     }
 
     public function matchAlgo()

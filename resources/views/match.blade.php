@@ -1,17 +1,64 @@
 @extends('match-layout')
 
 @section('content')
+<div class="w3-sidebar w3-card w3-bar-block w3-border w3-hoverable" style="width:20%; top: 43px">
+    @isset($titulairesA)
+        <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
+            <li class="w3-display-container w3-hover-white">
+                <h4>Titulaires</h4>
+                <button id="changementJoueur" type="button" class="w3-display-right w3-button w3-light-grey">Changer</button>
+            </li>
+            @foreach($titulairesA as $titulaire)
+                <li class="w3-bar w3-display-container">
+                    <span class="w3-badge w3-teal w3-display-topleft">{{ $titulaire['noteGlobale'] }} / 100</span><br>
+                    <div class="w3-bar-item">
+                        <span class="w3-large w3-display-left">{{ $titulaire['prenom'] . ' ' . $titulaire['nom'] }}</span><br>
+                        <span class="w3-small w3-display-bottomleft">{{ $titulaire['age']}} ans</span>
+                        <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    @endisset
+
+    @isset($remplacants)
+        <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
+        <li class="w3-display-container w3-hover-white">
+            <h4>Remplaçants</h4>
+        </li>
+        @for($i = 0; $i < 3; $i++)
+            @if($remplacants[$i] != -1)
+                <li class="w3-bar w3-display-container">
+                    <span class="w3-badge w3-teal w3-display-topleft">{{ $remplacants[$i]['noteGlobale'] }} / 100</span><br>
+                    <div class="w3-bar-item">
+                        <span class="w3-large w3-display-left">{{ $remplacants[$i]['prenom'] . ' ' . $remplacants[$i]['nom'] }}</span><br>
+                        <span class="w3-small w3-display-bottomleft">{{ $remplacants[$i]['age']}} ans</span>
+                        <span class="w3-display-topright">{{ ucfirst($remplacants[$i]['poste']) }}</span>
+                    </div>
+                </li>
+            @else
+                <li class="w3-bar w3-display-container">
+                    <div class="w3-bar-item">
+                        <span class="w3-display-middle w3-large">+</span>
+                    </div>
+                </li>
+            @endif
+        @endfor
+        </ul>
+    @endisset
+</div>
+
 <div class="w3-display-topmiddle" style="margin-top: 43px;"><br>
-    <div class="w3-display-container">
+    <div class="w3-display-container w3-large">
         <button id="start" class="w3-light-grey w3-button w3-display-middle" type="button">Commencer</button>
         <button id="pause" class="w3-light-grey w3-button w3-display-middle" type="button" style="display: none;">Pause</button>
-    </div><br>
+        <button id="finMatch" class="w3-light-grey w3-button w3-display-middle" type="button" style="display: none;">Terminer le match</button>
+    </div><br><br>
 
-    <div>
-        <span id="scoreA">0</span>
-        -
-        <span id="scoreB">0</span>
-    </div>
+    <div class="w3-display-container w3-xxlarge">
+        <div id="score" class="w3-display-middle">
+        </div>
+    </div><br>
 
     <table class="w3-center" style="background-image: url('/img/soccer_field.png'); background-size: cover" width="1000" height="661">
         <thead hidden>
@@ -67,7 +114,11 @@
     </div>
 </div>
 <script>
-    $("#pause").click(function(){
+    $("#changementJoueur").click(function(){
+        alert('CHNAGEMENT JOUEUR')
+    })
+
+    $("#finMatch").click(function(){
         var scoreA = $("#scoreA").text()
         var scoreB = $("#scoreB").text()
 
@@ -113,6 +164,10 @@
 
         var timer = setInterval(function() {
             if(minutes == end){
+                $(this).css("display", "none")
+                $("#pause").css("display", "none")
+                $("#finMatch").css("display", "block")
+
                 clearInterval(timer)
             }
 
@@ -151,7 +206,7 @@
             else {
                 $("#timer").text(minutes + ":" + seconds)
             }
-        }, 16,667);
+        }, 0.3);
 
         $("#pause").click(function() {
             $(this).css("display", "none")
@@ -801,6 +856,7 @@
 
     if ('{{ $isDomi }}' == 'domi') {
         //joue à domicile
+        $("#score").html("<span class=\"w3-text-indigo\" id=\"scoreA\">0</span> - <span class=\"w3-text-red\" id=\"scoreB\">0</span>")
         if (orgaA == "1-2-1") {
             $("#gkG").html('<img src="/img/player-blue.png" style="width: 50px;" alt="Avatar">')
             $("#dfGM").html('<img src="/img/player-blue.png" style="width: 50px;" alt="Avatar">')
@@ -848,6 +904,7 @@
     }
     else {
         //joue à l'extérieur
+        $("#score").html("<span class=\"w3-text-red\" id=\"scoreB\">0</span> - <span class=\"w3-text-indigo\" id=\"scoreA\">0</span>")
         if (orgaB == "1-2-1") {
             $("#gkG").html('<img src="/img/player-red.png" style="width: 50px;" alt="Avatar">')
             $("#dfGM").html('<img src="/img/player-red.png" style="width: 50px;" alt="Avatar">')
@@ -920,10 +977,6 @@
             @endforeach
             remplA.push(infos)
         @endforeach
-
-        console.log(tituB);
-        console.log(tituA);
-        console.log(remplA);
     }
 </script>
 @endsection

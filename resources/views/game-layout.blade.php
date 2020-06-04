@@ -140,11 +140,19 @@
                     </thead>
                     <tbody>
                         @foreach($classementEquipes as $equ)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $equ['nom'] }}</td>
-                                <td>{{ $equ['points'] }}</td>
-                            </tr>
+                            @if($equ['nom'] === $nomEquipe)
+                                <tr class="w3-blue">
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $equ['nom'] }}</td>
+                                    <td>{{ $equ['points'] }}</td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $equ['nom'] }}</td>
+                                    <td>{{ $equ['points'] }}</td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
