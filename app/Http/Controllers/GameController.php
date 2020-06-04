@@ -41,7 +41,6 @@ class GameController extends Controller
         //      changement de joueurs pdt matchs
         //      front match
         //      algo match des autres (++simple)
-        //      formation aléatoire
         //      update du budget fin de la saison (à tester)
         //      appeler setNotes quand on changer de formation ou de joueurs et quand on recrute
 

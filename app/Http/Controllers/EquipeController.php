@@ -63,11 +63,21 @@ class EquipeController extends Controller
 
     public function generateEquipe()
     {
-        $this->_organisation = "1-2-1";
+        $this->_organisation = $this->generateOrga();
         $this->_titulaires = $this->generateTitulaires();
 
         $this->insert();
         $this->setNotes();
+    }
+
+    public function generateOrga()
+    {
+
+        $orgas = ["1-2-1", "2-1-1", "1-1-2"];
+
+        $orga = $orgas[rand(0, count($orgas) - 1)];
+
+        return $orga;
     }
 
     public function generateTitulaires()
@@ -89,26 +99,72 @@ class EquipeController extends Controller
             ['sousContrat', '0']
         ])->get();
 
-        $mlId = array();
-        foreach ($mls as $ml) {
-            array_push($mlId, $ml->id);
+        if ($this->_organisation === "1-2-1") {
+            $mlId = array();
+            foreach ($mls as $ml) {
+                array_push($mlId, $ml->id);
+            }
+
+            $gardien = $gardiens[rand(0, count($gardiens) - 1)]->id;
+            $def = $defs[rand(0, count($defs) - 1)]->id;
+            $index = rand(0, count($mls) - 1);
+            $ml0 = $mlId[$index];
+            unset($mlId[$index]); sort($mlId);
+            $ml1 = $mlId[rand(0, count($mlId) - 1)];
+            $atq = $atqs[rand(0, count($atqs) - 1)]->id;
+
+            $titulaires = array(
+                'T1' => $gardien,
+                'T2' => $def,
+                'T3' => $ml0,
+                'T4' => $atq,
+                'T5' => $ml1
+            );
         }
+        elseif($this->_organisation === "2-1-1"){
+            $dfId = array();
+            foreach ($defs as $df) {
+                array_push($dfId, $df->id);
+            }
 
-        $gardien = $gardiens[rand(0, count($gardiens) - 1)]->id;
-        $def = $defs[rand(0, count($defs) - 1)]->id;
-        $index = rand(0, count($mls) - 1);
-        $ml0 = $mlId[$index];
-        unset($mlId[$index]); sort($mlId);
-        $ml1 = $mlId[rand(0, count($mlId) - 1)];
-        $atq = $atqs[rand(0, count($atqs) - 1)]->id;
+            $gardien = $gardiens[rand(0, count($gardiens) - 1)]->id;
+            $index = rand(0, count($defs) - 1);
+            $def0 = $dfId[$index];
+            unset($dfId[$index]); sort($dfId);
+            $def1 = $dfId[rand(0, count($dfId) - 1)];
+            $ml = $mls[rand(0, count($mls) - 1)]->id;
+            $atq = $atqs[rand(0, count($atqs) - 1)]->id;
 
-        $titulaires = array(
-            'T1' => $gardien,
-            'T2' => $def,
-            'T3' => $ml0,
-            'T4' => $atq,
-            'T5' => $ml1
-        );
+            $titulaires = array(
+                'T1' => $gardien,
+                'T2' => $def0,
+                'T3' => $ml,
+                'T4' => $atq,
+                'T5' => $def1
+            );
+        }
+        else{
+            $atqId = array();
+            foreach ($atqs as $atq) {
+                array_push($atqId, $atq->id);
+            }
+
+            $gardien = $gardiens[rand(0, count($gardiens) - 1)]->id;
+            $def = $defs[rand(0, count($defs) - 1)]->id;
+            $ml = $mls[rand(0, count($mls) - 1)]->id;
+            $index = rand(0, count($atqs) - 1);
+            $atq0 = $atqId[$index];
+            unset($atqId[$index]); sort($atqId);
+            $atq1 = $atqId[rand(0, count($atqId) - 1)];
+
+            $titulaires = array(
+                'T1' => $gardien,
+                'T2' => $def,
+                'T3' => $ml,
+                'T4' => $atq0,
+                'T5' => $atq1
+            );
+        }
 
         foreach($titulaires as $titulaire){
             DB::table('joueurs')->where('id', $titulaire)->update([
