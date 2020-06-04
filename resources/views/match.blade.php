@@ -17,7 +17,7 @@
                         <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
                         <input class="w3-display-right" type="radio" id="{{ $titulaire['poste'] }}" name="joueurT" value="{{ $titulaire['id'] }}" onchange="testingPoste()">
                         <div class="w3-light-grey w3-display-bottom">
-                            <div id="forme{{ $titulaire['id'] }}" class="w3-green" style="height: 5px; width: 100%"></div>
+                            <div id="forme{{ $titulaire['id'] }}" class="w3-green w3-right-align" style="height: 20px; width: 100%">100</div>
                         </div>
                     </div>
                 </li>
@@ -214,7 +214,6 @@
             }
 
             if(minutes == 45 && seconds == 0){
-                console.log('lol');
                 $("#start").css("display", "block")
                 $("#start").text("Jouer la 2nde mi-temps")
                 $("#pause").css("display", "none")
@@ -1038,19 +1037,35 @@
         var formeActu3 = Math.round($("#forme{{ $titulairesA[3]['id'] }}").width() / $("#forme{{ $titulairesA[3]['id'] }}").parent().width() * 100)
         var formeActu4 = Math.round($("#forme{{ $titulairesA[4]['id'] }}").width() / $("#forme{{ $titulairesA[4]['id'] }}").parent().width() * 100)
 
-        var newForme0 = ((100 - endu0) / 100) * Math.pow(1.065, puiss)
-        var newForme1 = ((100 - endu1) / 100) * Math.pow(1.065, puiss)
-        var newForme2 = ((100 - endu2) / 100) * Math.pow(1.065, puiss)
-        var newForme3 = ((100 - endu3) / 100) * Math.pow(1.065, puiss)
-        var newForme4 = ((100 - endu4) / 100) * Math.pow(1.065, puiss)
+        var newForme0 = (formeActu0/endu0)*0.8
+        var newForme1 = (formeActu1/endu1)*0.8
+        var newForme2 = (formeActu2/endu2)*0.8
+        var newForme3 = (formeActu3/endu3)*0.8
+        var newForme4 = (formeActu4/endu4)*0.8
 
-        console.log(newForme0);
+        console.log(parseFloat(newForme0.toFixed(2)), parseFloat(newForme1.toFixed(2)), parseFloat(newForme2.toFixed(2)), parseFloat(newForme3.toFixed(2)), parseFloat(newForme4.toFixed(2)));
 
-        $("#forme{{ $titulairesA[0]['id'] }}").width(100 - newForme0 + '%')
-        $("#forme{{ $titulairesA[1]['id'] }}").width(100 - newForme1 + '%')
-        $("#forme{{ $titulairesA[2]['id'] }}").width(100 - newForme2 + '%')
-        $("#forme{{ $titulairesA[3]['id'] }}").width(100 - newForme3 + '%')
-        $("#forme{{ $titulairesA[4]['id'] }}").width(100 - newForme4 + '%')
+        $("#forme{{ $titulairesA[0]['id'] }}").width(parseInt(formeActu0 - parseFloat(newForme0.toFixed(2))) + '%')
+        $("#forme{{ $titulairesA[0]['id'] }}").text(formeActu0 - parseFloat(newForme0.toFixed(1)))
+        $("#forme{{ $titulairesA[1]['id'] }}").width(parseInt(formeActu1 - parseFloat(newForme1.toFixed(2))) + '%')
+        $("#forme{{ $titulairesA[1]['id'] }}").text(formeActu1 - parseFloat(newForme1.toFixed(1)))
+        $("#forme{{ $titulairesA[2]['id'] }}").width(parseInt(formeActu2 - parseFloat(newForme2.toFixed(2))) + '%')
+        $("#forme{{ $titulairesA[2]['id'] }}").text(formeActu2 - parseFloat(newForme2.toFixed(1)))
+        $("#forme{{ $titulairesA[3]['id'] }}").width(parseInt(formeActu3 - parseFloat(newForme3.toFixed(2))) + '%')
+        $("#forme{{ $titulairesA[3]['id'] }}").text(formeActu3 - parseFloat(newForme3.toFixed(1)))
+        $("#forme{{ $titulairesA[4]['id'] }}").width(parseInt(formeActu4 - parseFloat(newForme4.toFixed(2))) + '%')
+        $("#forme{{ $titulairesA[4]['id'] }}").text(formeActu4 - parseFloat(newForme4.toFixed(1)))
+
+        //console.log(formeActu0 - parseFloat(newForme0.toFixed(2)));
+
+        for (var variable of $("[id^=forme]")) {
+            if(variable.attributes[2].value <= "height: 20px; width: 30%;"){
+                variable.className = "w3-right-align w3-deep-orange"
+            }
+            else if(variable.attributes[2].value <= "height: 20px; width: 70%;" && variable.attributes[2].value > "height: 20px; width: 30%;"){
+                variable.className = "w3-right-align w3-yellow"
+            }
+        }
     }
 </script>
 @endsection
