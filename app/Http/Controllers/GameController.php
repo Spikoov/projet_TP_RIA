@@ -42,7 +42,6 @@ class GameController extends Controller
         //      front match
         //      algo match des autres (++simple)
         //      update du budget fin de la saison (à tester)
-        //      appeler setNotes quand on changer de formation ou de joueurs et quand on recrute
 
         if ($this->_idEquipe === NULL) {
             return redirect('/');
@@ -297,6 +296,7 @@ class GameController extends Controller
       $this->_equipes[$this->_idEquipe]->setRemplacants(request('idJoueur'));
       $soustraireBudget = $this->getSommeNotes(request('idJoueur'));
       $this->_equipes[$this->_idEquipe]->updateBudget($soustraireBudget);
+      $this->_equipes[$this->_idEquipe]->setNotes();
 
       return redirect('/game');
     }
@@ -326,6 +326,7 @@ class GameController extends Controller
       $this->_equipes[$this->_idEquipe]->setAutres(request('idJoueur'));
       $soustraireBudget = $this->getSommeNotes(request('idJoueur'));
       $this->_equipes[$this->_idEquipe]->updateBudget($soustraireBudget);
+      $this->_equipes[$this->_idEquipe]->setNotes();
 
       return redirect('/game');
     }
@@ -413,6 +414,7 @@ class GameController extends Controller
         $idJoueurB = request('idJoueurB');
 
         $this->_equipes[$this->_idEquipe]->echange($idJoueurA, $idJoueurB);
+        $this->_equipes[$this->_idEquipe]->setNotes();
         return redirect('/game');
     }
 
