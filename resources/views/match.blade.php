@@ -15,6 +15,7 @@
                         <span class="w3-large w3-display-left">{{ $titulaire['prenom'] . ' ' . $titulaire['nom'] }}</span><br>
                         <span class="w3-small w3-display-bottomleft">{{ $titulaire['age']}} ans</span>
                         <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
+                        <input class="w3-display-right" type="radio" id="{{ $titulaire['poste'] }}" name="joueurT" value="{{ $titulaire['id'] }}" onchange="testingPoste()">
                         <div class="w3-light-grey w3-display-bottom">
                             <div id="forme{{ $titulaire['id'] }}" class="w3-green" style="height: 5px; width: 100%"></div>
                         </div>
@@ -37,6 +38,7 @@
                         <span class="w3-large w3-display-left">{{ $remplacants[$i]['prenom'] . ' ' . $remplacants[$i]['nom'] }}</span><br>
                         <span class="w3-small w3-display-bottomleft">{{ $remplacants[$i]['age']}} ans</span>
                         <span class="w3-display-topright">{{ ucfirst($remplacants[$i]['poste']) }}</span>
+                        <input class="w3-display-right" type="radio" id="{{ $remplacants[$i]['poste'] }}" name="joueurR" value="{{ $titulaire['id'] }}">
                         <div class="w3-light-grey w3-display-bottom">
                             <div class="w3-green" style="height: 5px; width: 100%"></div>
                         </div>
@@ -120,8 +122,31 @@
     </div>
 </div>
 <script>
+
+    function testingPoste(){
+      $('input[name="joueurR"]').prop('checked', false)
+      $('input[name="joueurR"]').removeAttr('disabled')
+      var posteChecked = $("input[name='joueurT']:checked").attr('id')
+      if(posteChecked == "gardien"){
+        $("input[id='defense'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id='milieu'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id='attaque'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id=posteChecked][name='joueurR']").removeAttr('disabled')
+      }
+      else if(posteChecked == "attaque"){
+        $("input[id='defense'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id='milieu'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id='attaque'][name='joueurR']").removeAttr('disabled')
+        $("input[id='gardien'][name='joueurR']").attr('disabled', 'disabled')
+      }
+    }
+
     $("#changementJoueur").click(function(){
-        alert('CHNAGEMENT JOUEUR')
+        var idTitulaire = $("input[name='joueurT']:checked").val();
+        var idRemplacant = $("input[name='joueurR']:checked").val();
+        console.log(idTitulaire);
+        console.log(idRemplacant);
+        //alert('CHNAGEMENT JOUEUR')
     })
 
     $("#finMatch").click(function(){
@@ -153,6 +178,12 @@
 
     //--------------------------------------------------------------------------
 
+    $("#changementJoueur").css("display", "none")
+    $('input[name="joueurT"]').attr('disabled', 'disabled')
+    $('input[name="joueurR"]').attr('disabled', 'disabled')
+    $('input[name="joueurT"]').prop('checked', false)
+    $('input[name="joueurR"]').prop('checked', false)
+
     var tituB = []
     var tituA = []
     var remplA = []
@@ -167,6 +198,11 @@
         $(this).css("display", "none")
         $(this).text("Reprendre")
         $("#pause").css("display", "block")
+        $("#changementJoueur").css("display", "none")
+        $('input[name="joueurT"]').prop('checked', false)
+        $('input[name="joueurR"]').prop('checked', false)
+        $('input[name="joueurT"]').attr('disabled', 'disabled')
+        $('input[name="joueurR"]').attr('disabled', 'disabled')
 
         var timer = setInterval(function() {
             if(minutes == end){
@@ -219,6 +255,8 @@
         $("#pause").click(function() {
             $(this).css("display", "none")
             $("#start").css("display", "block")
+            $("#changementJoueur").css("display", "block")
+            $('input[name="joueurT"]').removeAttr('disabled')
 
             clearInterval(timer)
         })
