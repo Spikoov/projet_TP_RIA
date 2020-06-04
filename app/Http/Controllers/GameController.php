@@ -100,16 +100,51 @@ class GameController extends Controller
         ]);
     }
 
+    public function matchAutres($rencontre)
+    {
+        $noteA = $this->_equipes[$this->_tournament[$this->_journee][$rencontre]['A']-1]->getNotes();
+        $noteB = $this->_equipes[$this->_tournament[$this->_journee][$rencontre]['B']-1]->getNotes();
+
+        $scoreAutres = array(0, 0);
+        for ($i=0; $i < 5; $i++) {
+            $rand = rand($noteA, $noteB);
+            
+        }
+
+        echo '<pre>';
+        print_r($scoreAutres);
+        echo '</pre>';
+        die();
+    }
+
     public function finMatch()
     {
         //SCORES DOIT ÊTRE SOUS CE FORMAT
-      /*$scores = array(
+      /*$scoresTest = array(
         [1, 2],
         [2, 2],
         [0, 0],
         [1, 0],
         [0, 3]
     );*/
+
+      request()->validate([
+          'scoreA' => [],
+          'scoreB' => []
+      ]);
+
+      $scores = array(array());
+      array_push($scores[0], request('scoreA'), request('scoreB'));
+
+      for ($i=1; $i < 5; $i++) {
+          array_push($scores[$i], $this->matchAutres($i));
+      }
+
+      echo '<pre>';
+      print_r($scores);
+      echo '</pre>';
+
+      die();
 
       for ($i=0; $i < 5; $i++) {
         $idEquipe1 = 0;
@@ -195,11 +230,13 @@ class GameController extends Controller
             $domiOrExte[$i] = $jour;
         }
 
-        $player = $this->_idEquipe + 1;
+        $player = $this->_idEquipe;
         $ex = $all[0];
         $k = array_search($player, $all);
         $all[$k] = $ex;
         $all[0] = $player;
+
+        //echo $k;
 
         $first = array();
         $last = array();
@@ -247,6 +284,12 @@ class GameController extends Controller
             $first = $tmp0;
             $last = $tmp1;
         }
+
+        /**echo '<pre>';
+        print_r($tournament);
+        echo '</pre>';
+
+        die();*/
 
         return $tournament;
     }

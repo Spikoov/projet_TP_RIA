@@ -9,6 +9,7 @@
 
     <div>
         <span id="scoreA">0</span>
+        -
         <span id="scoreB">0</span>
     </div>
 
@@ -66,6 +67,35 @@
     </div>
 </div>
 <script>
+    $("#pause").click(function(){
+        var scoreA = $("#scoreA").text()
+        var scoreB = $("#scoreB").text()
+
+        var form = document.createElement('form');
+        document.body.appendChild(form);
+        form.id = 'form'
+        form.method = 'post';
+        form.action = '/match';
+
+        $("#form").append( '{{ csrf_field() }}' )
+
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'scoreA';
+        input.value = scoreA;
+        form.appendChild(input);
+
+        input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'scoreB';
+        input.value = scoreB;
+        form.appendChild(input);
+
+        form.submit();
+    })
+
+    //--------------------------------------------------------------------------
+
     var tituB = []
     var tituA = []
     var remplA = []
