@@ -36,9 +36,6 @@ class GameController extends Controller
 
     public function play()
     {
-        // TODO: match :
-        //      update du budget fin de la saison (à tester) + update saison
-
         if ($this->_idEquipe === NULL) {
             return redirect('/');
         }
@@ -419,9 +416,11 @@ class GameController extends Controller
             $equipe->newYear();
         }
 
+        $this->_tournament = $this->matchAlgo();
+
+        request()->session()->put('tournament', $this->_tournament);
         request()->session()->put('journee', 0);
-        request()->session()->put('saison', $this->_saison + 1);
-        request()->session()->put('tournament', $this->matchAlgo());
+        request()->session()->put('saison', $this->_saison + 1);;
     }
 
     public function displayChangerTitulaire()
