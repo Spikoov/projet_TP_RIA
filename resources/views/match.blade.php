@@ -139,6 +139,18 @@
         $("input[id='attaque'][name='joueurR']").removeAttr('disabled')
         $("input[id='gardien'][name='joueurR']").attr('disabled', 'disabled')
       }
+      else if(posteChecked == "defense"){
+        $("input[id='defense'][name='joueurR']").removeAttr('disabled')
+        $("input[id='milieu'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id='attaque'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id='gardien'][name='joueurR']").attr('disabled', 'disabled')
+      }
+      else{
+        $("input[id='defense'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id='milieu'][name='joueurR']").removeAttr('disabled')
+        $("input[id='attaque'][name='joueurR']").attr('disabled', 'disabled')
+        $("input[id='gardien'][name='joueurR']").attr('disabled', 'disabled')
+      }
     }
 
     $("#changementJoueur").click(function(){
