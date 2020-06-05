@@ -85,6 +85,7 @@ class GameController extends Controller
         }
 
         return view('match', [
+            'nomEquipeAdv' => $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getNom(),
             'isDomi' => $this->_tournament[$this->_journee][0]['whereA'],
             'saison' => $this->_saison,
             'classementEquipes' => $this->getClassement(),

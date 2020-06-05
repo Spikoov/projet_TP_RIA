@@ -57,6 +57,11 @@
     @endisset
 </div>
 
+<div class="w3-sidebar w3-card w3-bar-block w3-border w3-hoverable" style="width:20%; top: 43px; right: 0">
+    <ul id="log" class="w3-ul">
+    </ul>
+</div>
+
 <div class="w3-display-topmiddle" style="margin-top: 43px;"><br>
     <div class="w3-display-container w3-large">
         <button id="start" class="w3-light-grey w3-button w3-display-middle" type="button">Commencer</button>
@@ -399,18 +404,30 @@
                         var passe = Math.ceil(Math.random()*100)
 
                         if (passe <= mlA) { //passe reussie
+                            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-light-blue\">" + $("#log").html())
+                            $("#ac" + minutes).html("<div>Action engagée pour {{ $nomEquipe }}</div>")
                             var tacle0 = Math.ceil(Math.random()*100)
                             var tacle1 = Math.ceil(Math.random()*100)
 
                             if (tacle0 > df0B || tacle1 > df1B) { //tacles échoués
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipe }} esquive les défenseurs adverses !</div>")
                                 var tir = Math.ceil(Math.random()*100)
                                 var arret = Math.ceil(Math.random()*100)
 
                                 if (tir <= atA && arret > gkB ) { //tir réussi et arret raté
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>BUT POUR {{ $nomEquipe }} !!</div>")
                                     $("#scoreA").text(parseInt($("#scoreA").text()) + 1)
                                 }
+                                else{
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>Arrêt du gardien de {{ $nomEquipeAdv }} !!</div>")
+                                }
+                            }
+                            else {
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant est taclé par la défense de {{$nomEquipeAdv}} !</div>")
                             }
                         }
+                        $("#log").html("</li>" + $("#log").html())
+                        $("#ac" + (minutes - 10)).removeClass("w3-light-blue").addClass("w3-pale-blue")
                     }
                     else {
                         var df0B = tituB[1][8]
@@ -419,16 +436,28 @@
                         var passe = Math.ceil(Math.random()*100)
 
                         if (passe <= mlA) { //passe reussie
+                            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-light-blue\">" + $("#log").html())
+                            $("#ac" + minutes).html("<div>Action engagée pour {{ $nomEquipe }}</div>")
                             var tacle0 = Math.ceil(Math.random()*100)
 
                             if (tacle0 > df0B) { //tacle échoué
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipe }} traverse la défense adverse !</div>")
                                 var tir = Math.ceil(Math.random()*100)
                                 var arret = Math.ceil(Math.random()*100)
 
                                 if ((tir <= atA && arret > gkB) || tir < 10) { //tir réussi et arret raté
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>BUT POUR {{ $nomEquipe }} !!</div>")
                                     $("#scoreA").text(parseInt($("#scoreA").text()) + 1)
                                 }
+                                else {
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>Arrêt du gardien de {{ $nomEquipeAdv }} !!</div>")
+                                }
                             }
+                            else {
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant est taclé par la défense de {{$nomEquipeAdv}} !</div>")
+                            }
+                            $("#log").html("</li>" + $("#log").html())
+                            $("#ac" + (minutes - 10)).removeClass("w3-light-blue").addClass("w3-pale-blue")
                         }
                     }
                 }
@@ -446,17 +475,29 @@
                         var passe1 = Math.ceil(Math.random()*100)
 
                         if (passe0 <= ml0A || passe1 <= ml1A) { //passe reussie
+                            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-light-blue\">" + $("#log").html())
+                            $("#ac" + minutes).html("<div>Action engagée pour {{ $nomEquipe }}</div>")
                             var tacle0 = Math.ceil(Math.random()*100)
                             var tacle1 = Math.ceil(Math.random()*100)
 
                             if (tacle0 > df0B || tacle1 > df1B) { //tacles échoués
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipe }} traverse la défense adverse !</div>")
                                 var tir = Math.ceil(Math.random()*100)
                                 var arret = Math.ceil(Math.random()*100)
 
                                 if (tir <= atA && arret > gkB) { //tir réussi et arret raté
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>BUT POUR {{ $nomEquipe }} !!</div>")
                                     $("#scoreA").text(parseInt($("#scoreA").text()) + 1)
                                 }
+                                else {
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>Arrêt du gardien de {{ $nomEquipeAdv }} !!</div>")
+                                }
                             }
+                            else {
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant est taclé par la défense de {{$nomEquipeAdv}} !</div>")
+                            }
+                            $("#log").html("</li>" + $("#log").html())
+                            $("#ac" + (minutes - 10)).removeClass("w3-light-blue").addClass("w3-pale-blue")
                         }
                     }
                     else {
@@ -467,16 +508,28 @@
                         var passe1 = Math.ceil(Math.random()*100)
 
                         if (passe0 <= ml0A || passe1 <= ml1A) { //passe reussie
+                            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-light-blue\">" + $("#log").html())
+                            $("#ac" + minutes).html("<div>Action engagée pour {{ $nomEquipe }}</div>")
                             var tacle0 = Math.ceil(Math.random()*100)
 
                             if (tacle0 > df0B) { //tacle échoué
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipe }} traverse la défense adverse !</div>")
                                 var tir = Math.ceil(Math.random()*100)
                                 var arret = Math.ceil(Math.random()*100)
 
                                 if (tir <= atA && arret > gkB) { //tir réussi et arret raté
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>BUT POUR {{ $nomEquipe }} !!</div>")
                                     $("#scoreA").text(parseInt($("#scoreA").text()) + 1)
                                 }
+                                else {
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>Arrêt du gardien de {{ $nomEquipeAdv }} !!</div>")
+                                }
                             }
+                            else {
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant est taclé par la défense de {{$nomEquipeAdv}} !</div>")
+                            }
+                            $("#log").html("</li>" + $("#log").html())
+	                        $("#ac" + (minutes - 10)).removeClass("w3-light-blue").addClass("w3-pale-blue")
                         }
                     }
                 }
@@ -707,16 +760,28 @@
                         var passe = Math.ceil(Math.random()*100)
 
                         if (passe <= mlB) { //passe reussie
+                            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-light-blue\">" + $("#log").html())
+                            $("#ac" + minutes).html("<div>Action engagée pour {{ $nomEquipeAdv }}</div>")
                             var tacle = Math.ceil(Math.random()*100)
 
                             if (tacle > dfA) { //tacle échoué
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipeAdv }} traverse la défense adverse !</div>")
                                 var tir = Math.ceil(Math.random()*100)
                                 var arret = Math.ceil(Math.random()*100)
 
                                 if (tir <= atB && arret > gkA) { //tir réussi et arret raté
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>BUT POUR {{ $nomEquipeAdv }} !!</div>")
                                     $("#scoreB").text(parseInt($("#scoreB").text()) + 1)
                                 }
+                                else {
+                                    $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>Arrêt du gardien de {{ $nomEquipe }} !!</div>")
+                                }
                             }
+                            else {
+                                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant est taclé par la défense de {{$nomEquipe}} !</div>")
+                            }
+                            $("#log").html("</li>" + $("#log").html())
+                            $("#ac" + (minutes - 10)).removeClass("w3-blue-grey").addClass("w3-light-grey")
                         }
                     }
                 }
@@ -1172,7 +1237,6 @@
             }
             else if(parseFloat(variable.innerText) <= 70 && parseFloat(variable.innerText) > 30){
                 variable.className = "w3-right-align w3-yellow"
-                console.log("béui");
             }
         }
     }
