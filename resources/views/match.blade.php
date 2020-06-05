@@ -6,7 +6,8 @@
         <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
             <li class="w3-display-container w3-hover-white">
                 <h4>Titulaires</h4>
-                <button id="changementJoueur" type="button" class="w3-display-right w3-button w3-light-grey">Changer</button>
+                <button id="changementJoueur" type="button" class="w3-display-right w3-button w3-light-grey">Changement de joueur</button>
+                <button id="changer" type="button" class="w3-display-right w3-button w3-light-grey" style="display: none">Changer</button>
             </li>
             @foreach($titulairesA as $titulaire)
                 <li class="w3-bar w3-display-container">
@@ -52,7 +53,7 @@
                 </li>
             @endif
         @endfor
-        </ul>
+        </ul><br><br>
     @endisset
 </div>
 
@@ -208,6 +209,8 @@
         $(this).css("display", "none")
         $(this).text("Reprendre")
         $("#pause").css("display", "block")
+        $("#changementJoueur").css("display", "block")
+        $("#changer").css("display", "none")
 
         $('input[name="joueurT"]').prop('checked', false)
         $('input[name="joueurR"]').prop('checked', false)
@@ -268,8 +271,6 @@
         $("#pause").click(function() {
             $(this).css("display", "none")
             $("#start").css("display", "block")
-            $("#changementJoueur").css("display", "block")
-            $('input[name="joueurT"]').removeAttr('disabled')
 
             clearInterval(timer)
         })
@@ -278,8 +279,13 @@
             $("#pause").css("display", "none")
             $("#start").css("display", "block")
             $('input[name="joueurT"]').removeAttr('disabled')
+            $(this).css("display", "none")
+            $("#changer").css("display", "block")
+
             clearInterval(timer)
-            changementJoueur()
+            $("#changer").click(function(){
+                changementJoueur()
+            })
         })
     })
 
