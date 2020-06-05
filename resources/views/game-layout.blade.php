@@ -10,11 +10,16 @@
         <div class="w3-bar w3-indigo" style="overflow: hidden; position: fixed; top: 0; width: 100%;">
             @isset($nomEquipe)
                 <a href="/game" class="w3-hover-deep-purple w3-button w3-bar-item w3-large">{{ $nomEquipe }}</a>
-                <div class="w3-bar-item w3-large">Budget: {{ $budgetEquipe }}ß</div>
+                @if($budgetEquipe <= 0)
+                    <div class="w3-bar-item w3-large w3-text-deep-orange">Budget: {{ $budgetEquipe }}ß</div>
+                @else
+                    <div class="w3-bar-item w3-large">Budget: {{ $budgetEquipe }}ß</div>
+                @endif
             @endisset
             <div class="w3-bar-item w3-display-topmiddle w3-large">M1DFS La Primera Liga</div>
             @if(isset($saison))
                 <div class="w3-bar-item w3-right w3-large">Saison: {{ $saison }}</div>
+                <div class="w3-bar-item w3-right w3-large">{{ $journee }}e journée</div>
             @else
                 <div class="w3-bar-item w3-right w3-large">Saison: {{ '--' }}</div>
             @endif

@@ -18,7 +18,6 @@ class GameController extends Controller
     public function __construct()
     {
         //90 matchs / saisons
-        //$this->_journee == 9 => matchs retours
         if (request()->session()->has('selectedTeamId')) {
             $this->_idEquipe = intval(request()->session()->get('selectedTeamId'));
             $this->_idEquipe--;
@@ -39,13 +38,13 @@ class GameController extends Controller
     {
         // TODO: match :
         //      update du budget fin de la saison (à tester) + update saison
-        //      optionnel : log du match à droite
 
         if ($this->_idEquipe === NULL) {
             return redirect('/');
         }
 
         return view('game', [
+            'journee' => $this->_journee+1,
             'saison' => $this->_saison,
             'prochainMatch' => $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getNom(),
             'classementEquipes' => $this->getClassement(),
@@ -85,6 +84,7 @@ class GameController extends Controller
         }
 
         return view('match', [
+            'journee' => $this->_journee+1,
             'nomEquipeAdv' => $this->_equipes[$this->_tournament[$this->_journee][0]['B'] - 1]->getNom(),
             'isDomi' => $this->_tournament[$this->_journee][0]['whereA'],
             'saison' => $this->_saison,
@@ -197,9 +197,29 @@ class GameController extends Controller
       $this->_equipes[$idEquipe2 - 1]->updatePoints($point2);
 
       }
-      $this->updateJournee();
 
-      return redirect('/game');
+      if($this->_journee < 17){
+          $this->updateJournee();
+          return redirect('/game');
+      }
+      else {
+          return view('finSaison', [
+              'classementEquipes' => $this->getClassement(),
+              'equipe' => $this->_equipes[$this->_idEquipe],
+              'nomEquipe' => $this->_equipes[$this->_idEquipe]->getNom(),
+              'budgetEquipe' => $this->_equipes[$this->_idEquipe]->getBudget(),
+              'titulaires' => $this->_equipes[$this->_idEquipe]->getTitulaireInfos(),
+              'remplacants' => $this->_equipes[$this->_idEquipe]->getRemplacantInfos(),
+              'autres' => $this->_equipes[$this->_idEquipe]->getAutresInfos()
+          ]);
+      }
+    }
+
+    public function actionFinSaison()
+    {
+        $this->newYear();
+
+        return redirect('/game');
     }
 
     public function matchAlgo()
@@ -208,8 +228,9 @@ class GameController extends Controller
         foreach ($this->_equipes as $key ) {
             array_push($all, $key->getId());
         }
-        $domiOrExte = array();
+        shuffle($all);
 
+        $domiOrExte = array();
         for ($i=0; $i < 9; $i++) {
             $jour = array();
             for ($j=0; $j < 5; $j++) {
@@ -273,12 +294,6 @@ class GameController extends Controller
             $last = $tmp1;
         }
 
-        /**echo '<pre>';
-        print_r($tournament);
-        echo '</pre>';
-
-        die();*/
-
         return $tournament;
     }
 
@@ -337,6 +352,8 @@ class GameController extends Controller
       $joueursSansContrat = new JoueurController();
 
       return view('selectEffectif', [
+          'journee' => $this->_journee+1,
+          'saison' => $this->_saison,
           'joueurs' => $joueursSansContrat->getInfoSansContrat(),
           'classementEquipes' => $this->getClassement(),
           'equipe' => $this->_equipes[$this->_idEquipe],
@@ -396,20 +413,22 @@ class GameController extends Controller
 
     public function newYear()
     {
-        foreach ($this->$_joueursSansContrat as $joueur) {
-            (new JoueurController)->newYear($id);
-        }
+        (new JoueurController)->newYear();
 
         foreach ($this->_equipes as $equipe) {
             $equipe->newYear();
         }
 
+        request()->session()->put('journee', 0);
         request()->session()->put('saison', $this->_saison + 1);
+        request()->session()->put('tournament', $this->matchAlgo());
     }
 
     public function displayChangerTitulaire()
     {
         return view('changerJoueurs', [
+            'journee' => $this->_journee+1,
+            'saison' => $this->_saison,
             'changer' => 'T',
             'classementEquipes' => $this->getClassement(),
             'equipe' => $this->_equipes[$this->_idEquipe],
@@ -424,6 +443,8 @@ class GameController extends Controller
     public function displayChangerRemplacant()
     {
         return view('changerJoueurs', [
+            'journee' => $this->_journee+1,
+            'saison' => $this->_saison,
             'changer' => 'R',
             'classementEquipes' => $this->getClassement(),
             'equipe' => $this->_equipes[$this->_idEquipe],

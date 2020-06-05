@@ -35,3 +35,5 @@ Route::get('detailsJoueurs/{id}', 'JoueurController@detailJoueur');
 Route::get('/match', 'GameController@debutMatch');
 
 Route::post('/match', 'GameController@finMatch');
+
+Route::get('/finSaison', 'GameController@actionFinSaison');

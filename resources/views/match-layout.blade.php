@@ -15,6 +15,7 @@
             <div class="w3-bar-item w3-display-topmiddle w3-large">M1DFS La Primera Liga</div>
             @isset($saison)
                 <div class="w3-bar-item w3-right w3-large">Saison: {{ $saison }}</div>
+                <div class="w3-bar-item w3-right w3-large">{{ $journee }}e journée</div>
             @endisset
         </div>
 

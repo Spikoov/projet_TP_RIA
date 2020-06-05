@@ -161,23 +161,30 @@ class JoueurController extends Controller
         ]);
     }
 
-    public function newYear($id)
+    public function newYear()
     {
-      $infoJoueur = DB::table('joueurs')->select('age', 'dureeContrat', 'sousContrat')->where('id', $id)->get();
+      $infoJoueur = DB::table('joueurs')->select('id', 'age', 'dureeContrat', 'sousContrat')->get();
 
-      $newAge = $infoJoueur[0]->age + 1;
-      $newDuree = $infoJoueur[0]->dureeContrat - 1;
+      foreach ($infoJoueur as $j) {
+          $newAge = $j->age + 1;
+          $newDuree = $j->dureeContrat - 1;
 
-      if($infoJoueur[0]->sousContrat == true){
-        DB::table('joueurs')->where('id', $id)->update([
-            'dureeContrat' => $newDuree,
-            'age' => $newAge
-        ]);
-      }
-      else {
-        if($newAge > 40){
-          DB::table('joueurs')->where('id', $id)->delete();
-        }
+          if($j->sousContrat == true){
+            DB::table('joueurs')->where('id', $j->id)->update([
+                'dureeContrat' => $newDuree,
+                'age' => $newAge
+            ]);
+          }
+          else {
+            if($newAge > 40){
+              DB::table('joueurs')->where('id', $j->id)->delete();
+            }
+            else {
+                DB::table('joueurs')->where('id', $j->id)->update([
+                    'age' => $newAge
+                ]);
+            }
+          }
       }
     }
 
