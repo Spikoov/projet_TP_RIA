@@ -153,13 +153,12 @@
       }
     }
 
-    $("#changementJoueur").click(function(){
+    function changementJoueur(){
         var idTitulaire = $("input[name='joueurT']:checked").val();
         var idRemplacant = $("input[name='joueurR']:checked").val();
         console.log(idTitulaire);
         console.log(idRemplacant);
-        //alert('CHNAGEMENT JOUEUR')
-    })
+    }
 
     $("#finMatch").click(function(){
         var scoreA = $("#scoreA").text()
@@ -190,7 +189,6 @@
 
     //--------------------------------------------------------------------------
 
-    $("#changementJoueur").css("display", "none")
     $('input[name="joueurT"]').attr('disabled', 'disabled')
     $('input[name="joueurR"]').attr('disabled', 'disabled')
     $('input[name="joueurT"]').prop('checked', false)
@@ -210,7 +208,7 @@
         $(this).css("display", "none")
         $(this).text("Reprendre")
         $("#pause").css("display", "block")
-        $("#changementJoueur").css("display", "none")
+
         $('input[name="joueurT"]').prop('checked', false)
         $('input[name="joueurR"]').prop('checked', false)
         $('input[name="joueurT"]').attr('disabled', 'disabled')
@@ -231,6 +229,10 @@
                 $("#pause").css("display", "none")
 
                 clearInterval(timer)
+            }
+
+            if(minutes == 45 && seconds == 2){
+                miTemps()
             }
 
             if (seconds == 60) {
@@ -270,6 +272,14 @@
             $('input[name="joueurT"]').removeAttr('disabled')
 
             clearInterval(timer)
+        })
+
+        $("#changementJoueur").click(function(){
+            $("#pause").css("display", "none")
+            $("#start").css("display", "block")
+            $('input[name="joueurT"]').removeAttr('disabled')
+            clearInterval(timer)
+            changementJoueur()
         })
     })
 
@@ -1042,20 +1052,37 @@
     let endu3 = {{ $titulairesA[3]['endurance'] }}
     let endu4 = {{ $titulairesA[4]['endurance'] }}
 
-    function updateFormeJoueurs(puiss) {
+    function miTemps() {
         var formeActu0 = Math.round($("#forme{{ $titulairesA[0]['id'] }}").width() / $("#forme{{ $titulairesA[0]['id'] }}").parent().width() * 100)
         var formeActu1 = Math.round($("#forme{{ $titulairesA[1]['id'] }}").width() / $("#forme{{ $titulairesA[1]['id'] }}").parent().width() * 100)
         var formeActu2 = Math.round($("#forme{{ $titulairesA[2]['id'] }}").width() / $("#forme{{ $titulairesA[2]['id'] }}").parent().width() * 100)
         var formeActu3 = Math.round($("#forme{{ $titulairesA[3]['id'] }}").width() / $("#forme{{ $titulairesA[3]['id'] }}").parent().width() * 100)
         var formeActu4 = Math.round($("#forme{{ $titulairesA[4]['id'] }}").width() / $("#forme{{ $titulairesA[4]['id'] }}").parent().width() * 100)
 
-        var newForme0 = (formeActu0/endu0)*0.8
-        var newForme1 = (formeActu1/endu1)*0.8
-        var newForme2 = (formeActu2/endu2)*0.8
-        var newForme3 = (formeActu3/endu3)*0.8
-        var newForme4 = (formeActu4/endu4)*0.8
+        $("#forme{{ $titulairesA[0]['id'] }}").width(formeActu0 + 10 + '%')
+        $("#forme{{ $titulairesA[0]['id'] }}").text(formeActu0 + 10)
+        $("#forme{{ $titulairesA[1]['id'] }}").width(formeActu1 + 10 + '%')
+        $("#forme{{ $titulairesA[1]['id'] }}").text(formeActu1 +10)
+        $("#forme{{ $titulairesA[2]['id'] }}").width(formeActu2 + 10 + '%')
+        $("#forme{{ $titulairesA[2]['id'] }}").text(formeActu2 +10)
+        $("#forme{{ $titulairesA[3]['id'] }}").width(formeActu3 + 10 + '%')
+        $("#forme{{ $titulairesA[3]['id'] }}").text(formeActu3 +10)
+        $("#forme{{ $titulairesA[4]['id'] }}").width(formeActu4 + 10 + '%')
+        $("#forme{{ $titulairesA[4]['id'] }}").text(formeActu4 +10)
+    }
 
-        console.log(parseFloat(newForme0.toFixed(2)), parseFloat(newForme1.toFixed(2)), parseFloat(newForme2.toFixed(2)), parseFloat(newForme3.toFixed(2)), parseFloat(newForme4.toFixed(2)));
+    function updateFormeJoueurs() {
+        var formeActu0 = Math.round($("#forme{{ $titulairesA[0]['id'] }}").width() / $("#forme{{ $titulairesA[0]['id'] }}").parent().width() * 100)
+        var formeActu1 = Math.round($("#forme{{ $titulairesA[1]['id'] }}").width() / $("#forme{{ $titulairesA[1]['id'] }}").parent().width() * 100)
+        var formeActu2 = Math.round($("#forme{{ $titulairesA[2]['id'] }}").width() / $("#forme{{ $titulairesA[2]['id'] }}").parent().width() * 100)
+        var formeActu3 = Math.round($("#forme{{ $titulairesA[3]['id'] }}").width() / $("#forme{{ $titulairesA[3]['id'] }}").parent().width() * 100)
+        var formeActu4 = Math.round($("#forme{{ $titulairesA[4]['id'] }}").width() / $("#forme{{ $titulairesA[4]['id'] }}").parent().width() * 100)
+
+        var newForme0 = (formeActu0/endu0)*0.7
+        var newForme1 = (formeActu1/endu1)*0.7
+        var newForme2 = (formeActu2/endu2)*0.7
+        var newForme3 = (formeActu3/endu3)*0.7
+        var newForme4 = (formeActu4/endu4)*0.7
 
         $("#forme{{ $titulairesA[0]['id'] }}").width(parseInt(formeActu0 - parseFloat(newForme0.toFixed(2))) + '%')
         $("#forme{{ $titulairesA[0]['id'] }}").text(formeActu0 - parseFloat(newForme0.toFixed(1)))
@@ -1068,7 +1095,6 @@
         $("#forme{{ $titulairesA[4]['id'] }}").width(parseInt(formeActu4 - parseFloat(newForme4.toFixed(2))) + '%')
         $("#forme{{ $titulairesA[4]['id'] }}").text(formeActu4 - parseFloat(newForme4.toFixed(1)))
 
-        //console.log(formeActu0 - parseFloat(newForme0.toFixed(2)));
 
         for (var variable of $("[id^=forme]")) {
             if(variable.attributes[2].value <= "height: 20px; width: 30%;"){
