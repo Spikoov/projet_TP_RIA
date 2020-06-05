@@ -3,14 +3,14 @@
 @section('content')
 <div class="w3-sidebar w3-card w3-bar-block w3-border w3-hoverable" style="width:20%; top: 43px">
     @isset($titulairesA)
-        <ul class="w3-bar-item w3-ul w3-card w3-hoverable">
+        <ul id="t" class="w3-bar-item w3-ul w3-card w3-hoverable">
             <li class="w3-display-container w3-hover-white">
                 <h4>Titulaires</h4>
                 <button id="changementJoueur" type="button" class="w3-display-right w3-button w3-light-grey">Changement de joueur</button>
                 <button id="changer" type="button" class="w3-display-right w3-button w3-light-grey" style="display: none">Changer</button>
             </li>
             @foreach($titulairesA as $titulaire)
-                <li class="w3-bar w3-display-container">
+                <li id="{{ $titulaire['id'] }}" class="w3-bar w3-display-container">
                     <span class="w3-badge w3-teal w3-display-topleft">{{ $titulaire['noteGlobale'] }} / 100</span><br>
                     <div class="w3-bar-item">
                         <span class="w3-large w3-display-left">{{ $titulaire['prenom'] . ' ' . $titulaire['nom'] }}</span><br>
@@ -18,7 +18,7 @@
                         <span class="w3-display-topright">{{ ucfirst($titulaire['poste']) }}</span>
                         <input class="w3-display-right" type="radio" id="{{ $titulaire['poste'] }}" name="joueurT" value="{{ $titulaire['id'] }}" onchange="testingPoste()">
                         <div class="w3-light-grey w3-display-bottom">
-                            <div id="forme{{ $titulaire['id'] }}" class="w3-green w3-right-align" style="height: 20px; width: 100%">100</div>
+                            <div id="formet{{ $titulaire['id'] }}" value="{{$titulaire['endurance']}}" class="w3-green w3-right-align" style="height: 20px; width: 100%">100</div>
                         </div>
                     </div>
                 </li>
@@ -33,15 +33,15 @@
         </li>
         @for($i = 0; $i < 3; $i++)
             @if($remplacants[$i] != -1)
-                <li class="w3-bar w3-display-container">
+                <li id="{{$remplacants[$i]['id']}}" class="w3-bar w3-display-container">
                     <span class="w3-badge w3-teal w3-display-topleft">{{ $remplacants[$i]['noteGlobale'] }} / 100</span><br>
                     <div class="w3-bar-item">
                         <span class="w3-large w3-display-left">{{ $remplacants[$i]['prenom'] . ' ' . $remplacants[$i]['nom'] }}</span><br>
                         <span class="w3-small w3-display-bottomleft">{{ $remplacants[$i]['age']}} ans</span>
                         <span class="w3-display-topright">{{ ucfirst($remplacants[$i]['poste']) }}</span>
-                        <input class="w3-display-right" type="radio" id="{{ $remplacants[$i]['poste'] }}" name="joueurR" value="{{ $titulaire['id'] }}">
+                        <input class="w3-display-right" type="radio" id="{{ $remplacants[$i]['poste'] }}" name="joueurR" value="{{ $remplacants[$i]['id'] }}">
                         <div class="w3-light-grey w3-display-bottom">
-                            <div class="w3-green" style="height: 5px; width: 100%"></div>
+                            <div id="former{{$remplacants[$i]['id']}}" value="{{$remplacants[$i]['endurance']}}" class="w3-green w3-right-align" style="height: 5px; width: 100%"></div>
                         </div>
                     </div>
                 </li>
@@ -123,8 +123,10 @@
     </div>
 </div>
 <script>
+    var flagChangeDone = false
 
     function testingPoste(){
+      $("#changer").css("display", "none")
       $('input[name="joueurR"]').prop('checked', false)
       $('input[name="joueurR"]').removeAttr('disabled')
       var posteChecked = $("input[name='joueurT']:checked").attr('id')
@@ -152,13 +154,43 @@
         $("input[id='attaque'][name='joueurR']").attr('disabled', 'disabled')
         $("input[id='gardien'][name='joueurR']").attr('disabled', 'disabled')
       }
+
+
+      $("input[name='joueurR']").click(function(){
+          if ($("input[name='joueurR']:checked").val()) {
+              $("#changer").css("display", "block")
+          }
+      })
+
     }
 
     function changementJoueur(){
         var idTitulaire = $("input[name='joueurT']:checked").val();
         var idRemplacant = $("input[name='joueurR']:checked").val();
-        console.log(idTitulaire);
-        console.log(idRemplacant);
+
+        var liRempl = $("#" + idRemplacant).html()
+        $("#" + idRemplacant).html($("#" + idTitulaire).html())
+        $("#" + idTitulaire).html(liRempl)
+
+        $("#former" + idRemplacant).css("height", "20px")
+        $("#former" + idRemplacant).text(100)
+
+        $("#formet" + idTitulaire).css("height", "5px")
+        $("#formet" + idTitulaire).text("")
+
+        var newIDr = "formet" + idTitulaire
+        var newIDt =  "former" + idRemplacant
+
+        console.log(newIDt);
+
+        $("#former" + idRemplacant).attr("id", "r")
+        $("#formet" + idTitulaire).attr("id", "t")
+
+        $("#r").attr("id", newIDr)
+        $("#t").attr("id", newIDt)
+
+        $("#changer").css("display", "none")
+        flagChangeDone = true
     }
 
     $("#finMatch").click(function(){
@@ -209,8 +241,14 @@
         $(this).css("display", "none")
         $(this).text("Reprendre")
         $("#pause").css("display", "block")
-        $("#changementJoueur").css("display", "block")
-        $("#changer").css("display", "none")
+        if (flagChangeDone == true) {
+            $("#changementJoueur").css("display", "none")
+            $("#changer").css("display", "none")
+        }
+        else {
+            $("#changementJoueur").css("display", "block")
+            $("#changer").css("display", "none")
+        }
 
         $('input[name="joueurT"]').prop('checked', false)
         $('input[name="joueurR"]').prop('checked', false)
@@ -234,7 +272,8 @@
                 clearInterval(timer)
             }
 
-            if(minutes == 45 && seconds == 2){
+            if(minutes == 45 && seconds == 9){
+                console.log("bient");
                 miTemps()
             }
 
@@ -280,7 +319,7 @@
             $("#start").css("display", "block")
             $('input[name="joueurT"]').removeAttr('disabled')
             $(this).css("display", "none")
-            $("#changer").css("display", "block")
+            $("#changer").css("display", "none")
 
             clearInterval(timer)
             $("#changer").click(function(){
@@ -1052,37 +1091,62 @@
         @endforeach
     }
 
-    let endu0 = {{ $titulairesA[0]['endurance'] }}
-    let endu1 = {{ $titulairesA[1]['endurance'] }}
-    let endu2 = {{ $titulairesA[2]['endurance'] }}
-    let endu3 = {{ $titulairesA[3]['endurance'] }}
-    let endu4 = {{ $titulairesA[4]['endurance'] }}
-
     function miTemps() {
-        var formeActu0 = Math.round($("#forme{{ $titulairesA[0]['id'] }}").width() / $("#forme{{ $titulairesA[0]['id'] }}").parent().width() * 100)
-        var formeActu1 = Math.round($("#forme{{ $titulairesA[1]['id'] }}").width() / $("#forme{{ $titulairesA[1]['id'] }}").parent().width() * 100)
-        var formeActu2 = Math.round($("#forme{{ $titulairesA[2]['id'] }}").width() / $("#forme{{ $titulairesA[2]['id'] }}").parent().width() * 100)
-        var formeActu3 = Math.round($("#forme{{ $titulairesA[3]['id'] }}").width() / $("#forme{{ $titulairesA[3]['id'] }}").parent().width() * 100)
-        var formeActu4 = Math.round($("#forme{{ $titulairesA[4]['id'] }}").width() / $("#forme{{ $titulairesA[4]['id'] }}").parent().width() * 100)
+        var formeActu0 = Math.round($("#formet{{ $titulairesA[0]['id'] }}").width() / $("#formet{{ $titulairesA[0]['id'] }}").parent().width() * 100)
+        var formeActu1 = Math.round($("#formet{{ $titulairesA[1]['id'] }}").width() / $("#formet{{ $titulairesA[1]['id'] }}").parent().width() * 100)
+        var formeActu2 = Math.round($("#formet{{ $titulairesA[2]['id'] }}").width() / $("#formet{{ $titulairesA[2]['id'] }}").parent().width() * 100)
+        var formeActu3 = Math.round($("#formet{{ $titulairesA[3]['id'] }}").width() / $("#formet{{ $titulairesA[3]['id'] }}").parent().width() * 100)
+        var formeActu4 = Math.round($("#formet{{ $titulairesA[4]['id'] }}").width() / $("#formet{{ $titulairesA[4]['id'] }}").parent().width() * 100)
 
-        $("#forme{{ $titulairesA[0]['id'] }}").width(formeActu0 + 10 + '%')
-        $("#forme{{ $titulairesA[0]['id'] }}").text(formeActu0 + 10)
-        $("#forme{{ $titulairesA[1]['id'] }}").width(formeActu1 + 10 + '%')
-        $("#forme{{ $titulairesA[1]['id'] }}").text(formeActu1 +10)
-        $("#forme{{ $titulairesA[2]['id'] }}").width(formeActu2 + 10 + '%')
-        $("#forme{{ $titulairesA[2]['id'] }}").text(formeActu2 +10)
-        $("#forme{{ $titulairesA[3]['id'] }}").width(formeActu3 + 10 + '%')
-        $("#forme{{ $titulairesA[3]['id'] }}").text(formeActu3 +10)
-        $("#forme{{ $titulairesA[4]['id'] }}").width(formeActu4 + 10 + '%')
-        $("#forme{{ $titulairesA[4]['id'] }}").text(formeActu4 +10)
+        $("#formet{{ $titulairesA[0]['id'] }}").width(formeActu0 + ($("#formet{{ $titulairesA[0]['id'] }}").attr("value")/10) + '%')
+        $("#formet{{ $titulairesA[0]['id'] }}").text(formeActu0 + ($("#formet{{ $titulairesA[0]['id'] }}").attr("value")/10))
+        $("#formet{{ $titulairesA[1]['id'] }}").width(formeActu1 + ($("#formet{{ $titulairesA[1]['id'] }}").attr("value")/10) + '%')
+        $("#formet{{ $titulairesA[1]['id'] }}").text(formeActu1 +($("#formet{{ $titulairesA[1]['id'] }}").attr("value")/10))
+        $("#formet{{ $titulairesA[2]['id'] }}").width(formeActu2 + ($("#formet{{ $titulairesA[2]['id'] }}").attr("value")/10) + '%')
+        $("#formet{{ $titulairesA[2]['id'] }}").text(formeActu2 +($("#formet{{ $titulairesA[2]['id'] }}").attr("value")/10))
+        $("#formet{{ $titulairesA[3]['id'] }}").width(formeActu3 + ($("#formet{{ $titulairesA[3]['id'] }}").attr("value")/10) + '%')
+        $("#formet{{ $titulairesA[3]['id'] }}").text(formeActu3 +($("#formet{{ $titulairesA[3]['id'] }}").attr("value")/10))
+        $("#formet{{ $titulairesA[4]['id'] }}").width(formeActu4 + ($("#formet{{ $titulairesA[4]['id'] }}").attr("value")/10) + '%')
+        $("#formet{{ $titulairesA[4]['id'] }}").text(formeActu4 +($("#formet{{ $titulairesA[4]['id'] }}").attr("value")/10))
+
+        if ($("#formet{{ $titulairesA[0]['id'] }}").text() >= 100) {
+            $("#formet{{ $titulairesA[0]['id'] }}").width(100 + '%')
+            $("#formet{{ $titulairesA[0]['id'] }}").text(100)
+        }
+
+        if ($("#formet{{ $titulairesA[1]['id'] }}").text() >= 100) {
+            $("#formet{{ $titulairesA[1]['id'] }}").width(100 + '%')
+            $("#formet{{ $titulairesA[1]['id'] }}").text(100)
+        }
+
+        if ($("#formet{{ $titulairesA[2]['id'] }}").text() >= 100) {
+            $("#formet{{ $titulairesA[2]['id'] }}").width(100 + '%')
+            $("#formet{{ $titulairesA[2]['id'] }}").text(100)
+        }
+
+        if ($("#formet{{ $titulairesA[3]['id'] }}").text() >= 100) {
+            $("#formet{{ $titulairesA[3]['id'] }}").width(100 + '%')
+            $("#formet{{ $titulairesA[3]['id'] }}").text(100)
+        }
+
+        if ($("#formet{{ $titulairesA[4]['id'] }}").text() >= 100) {
+            $("#formet{{ $titulairesA[4]['id'] }}").width(100 + '%')
+            $("#formet{{ $titulairesA[4]['id'] }}").text(100)
+        }
     }
 
     function updateFormeJoueurs() {
-        var formeActu0 = Math.round($("#forme{{ $titulairesA[0]['id'] }}").width() / $("#forme{{ $titulairesA[0]['id'] }}").parent().width() * 100)
-        var formeActu1 = Math.round($("#forme{{ $titulairesA[1]['id'] }}").width() / $("#forme{{ $titulairesA[1]['id'] }}").parent().width() * 100)
-        var formeActu2 = Math.round($("#forme{{ $titulairesA[2]['id'] }}").width() / $("#forme{{ $titulairesA[2]['id'] }}").parent().width() * 100)
-        var formeActu3 = Math.round($("#forme{{ $titulairesA[3]['id'] }}").width() / $("#forme{{ $titulairesA[3]['id'] }}").parent().width() * 100)
-        var formeActu4 = Math.round($("#forme{{ $titulairesA[4]['id'] }}").width() / $("#forme{{ $titulairesA[4]['id'] }}").parent().width() * 100)
+        let endu0 = $("#formet{{ $titulairesA[0]['id'] }}").attr("value")
+        let endu1 = $("#formet{{ $titulairesA[1]['id'] }}").attr("value")
+        let endu2 = $("#formet{{ $titulairesA[2]['id'] }}").attr("value")
+        let endu3 = $("#formet{{ $titulairesA[3]['id'] }}").attr("value")
+        let endu4 = $("#formet{{ $titulairesA[4]['id'] }}").attr("value")
+
+        var formeActu0 = Math.round($("#formet{{ $titulairesA[0]['id'] }}").width() / $("#formet{{ $titulairesA[0]['id'] }}").parent().width() * 100)
+        var formeActu1 = Math.round($("#formet{{ $titulairesA[1]['id'] }}").width() / $("#formet{{ $titulairesA[1]['id'] }}").parent().width() * 100)
+        var formeActu2 = Math.round($("#formet{{ $titulairesA[2]['id'] }}").width() / $("#formet{{ $titulairesA[2]['id'] }}").parent().width() * 100)
+        var formeActu3 = Math.round($("#formet{{ $titulairesA[3]['id'] }}").width() / $("#formet{{ $titulairesA[3]['id'] }}").parent().width() * 100)
+        var formeActu4 = Math.round($("#formet{{ $titulairesA[4]['id'] }}").width() / $("#formet{{ $titulairesA[4]['id'] }}").parent().width() * 100)
 
         var newForme0 = (formeActu0/endu0)*0.7
         var newForme1 = (formeActu1/endu1)*0.7
@@ -1090,24 +1154,25 @@
         var newForme3 = (formeActu3/endu3)*0.7
         var newForme4 = (formeActu4/endu4)*0.7
 
-        $("#forme{{ $titulairesA[0]['id'] }}").width(parseInt(formeActu0 - parseFloat(newForme0.toFixed(2))) + '%')
-        $("#forme{{ $titulairesA[0]['id'] }}").text(formeActu0 - parseFloat(newForme0.toFixed(1)))
-        $("#forme{{ $titulairesA[1]['id'] }}").width(parseInt(formeActu1 - parseFloat(newForme1.toFixed(2))) + '%')
-        $("#forme{{ $titulairesA[1]['id'] }}").text(formeActu1 - parseFloat(newForme1.toFixed(1)))
-        $("#forme{{ $titulairesA[2]['id'] }}").width(parseInt(formeActu2 - parseFloat(newForme2.toFixed(2))) + '%')
-        $("#forme{{ $titulairesA[2]['id'] }}").text(formeActu2 - parseFloat(newForme2.toFixed(1)))
-        $("#forme{{ $titulairesA[3]['id'] }}").width(parseInt(formeActu3 - parseFloat(newForme3.toFixed(2))) + '%')
-        $("#forme{{ $titulairesA[3]['id'] }}").text(formeActu3 - parseFloat(newForme3.toFixed(1)))
-        $("#forme{{ $titulairesA[4]['id'] }}").width(parseInt(formeActu4 - parseFloat(newForme4.toFixed(2))) + '%')
-        $("#forme{{ $titulairesA[4]['id'] }}").text(formeActu4 - parseFloat(newForme4.toFixed(1)))
+        $("#formet{{ $titulairesA[0]['id'] }}").width(parseInt(formeActu0 - parseFloat(newForme0.toFixed(2))) + '%')
+        $("#formet{{ $titulairesA[0]['id'] }}").text(formeActu0 - parseFloat(newForme0.toFixed(1)))
+        $("#formet{{ $titulairesA[1]['id'] }}").width(parseInt(formeActu1 - parseFloat(newForme1.toFixed(2))) + '%')
+        $("#formet{{ $titulairesA[1]['id'] }}").text(formeActu1 - parseFloat(newForme1.toFixed(1)))
+        $("#formet{{ $titulairesA[2]['id'] }}").width(parseInt(formeActu2 - parseFloat(newForme2.toFixed(2))) + '%')
+        $("#formet{{ $titulairesA[2]['id'] }}").text(formeActu2 - parseFloat(newForme2.toFixed(1)))
+        $("#formet{{ $titulairesA[3]['id'] }}").width(parseInt(formeActu3 - parseFloat(newForme3.toFixed(2))) + '%')
+        $("#formet{{ $titulairesA[3]['id'] }}").text(formeActu3 - parseFloat(newForme3.toFixed(1)))
+        $("#formet{{ $titulairesA[4]['id'] }}").width(parseInt(formeActu4 - parseFloat(newForme4.toFixed(2))) + '%')
+        $("#formet{{ $titulairesA[4]['id'] }}").text(formeActu4 - parseFloat(newForme4.toFixed(1)))
 
 
-        for (var variable of $("[id^=forme]")) {
-            if(variable.attributes[2].value <= "height: 20px; width: 30%;"){
+        for (var variable of $("[id^=\"formet\"]")) {
+            if(parseFloat(variable.innerText) <= 30){
                 variable.className = "w3-right-align w3-deep-orange"
             }
-            else if(variable.attributes[2].value <= "height: 20px; width: 70%;" && variable.attributes[2].value > "height: 20px; width: 30%;"){
+            else if(parseFloat(variable.innerText) <= 70 && parseFloat(variable.innerText) > 30){
                 variable.className = "w3-right-align w3-yellow"
+                console.log("béui");
             }
         }
     }
