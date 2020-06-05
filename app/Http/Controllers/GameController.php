@@ -38,7 +38,6 @@ class GameController extends Controller
     public function play()
     {
         // TODO: match :
-        //      changer formation pdt match
         //      update du budget fin de la saison (à tester) + update saison
         //      optionnel : log du match à droite
 
