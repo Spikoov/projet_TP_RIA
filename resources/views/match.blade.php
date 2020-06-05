@@ -344,9 +344,16 @@
             var tir1 = Math.ceil(Math.random()*100)
             var arret = Math.ceil(Math.random()*100)
 
+            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-light-blue\">" + $("#log").html())
             if ((tir0 <= at0A ||tir1 <=at1A) && arret > gkB ) { //tir réussi et arret raté
+                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipe }} qui tire et BUUUT!!</div>")
                 $("#scoreA").text(parseInt($("#scoreA").text()) + 1)
             }
+            else {
+                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipe }} qui tire et arrêt du gardien</div>")
+            }
+            $("#log").html("</li>" + $("#log").html())
+            $("#ac" + (minutes - 10)).removeClass("w3-light-blue").addClass("w3-pale-blue")
         }
         else {
             var atA = tituA[3][5]
@@ -356,9 +363,16 @@
             var tir = Math.ceil(Math.random()*100)
             var arret = Math.ceil(Math.random()*100)
 
+            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-light-blue\">" + $("#log").html())
             if (tir <= atA && arret > gkB ) { //tir réussi et arret raté
+                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipe }} qui tire et BUUUT!!</div>")
                 $("#scoreA").text(parseInt($("#scoreA").text()) + 1)
             }
+            else {
+                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipe }} qui tire et arrêt du gardien</div>")
+            }
+            $("#log").html("</li>" + $("#log").html())
+            $("#ac" + (minutes - 10)).removeClass("w3-light-blue").addClass("w3-pale-blue")
         }
 
         if (orgaB == "1-1-2") {
@@ -371,9 +385,16 @@
             var tir1 = Math.ceil(Math.random()*100)
             var arret = Math.ceil(Math.random()*100)
 
+            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-red\">" + $("#log").html())
             if ((tir0 <= at0B ||tir1 <=at1B) && arret > gkA ) { //tir réussi et arret raté
+                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipeAdv }} qui tire et BUUUT!!</div>")
                 $("#scoreB").text(parseInt($("#scoreB").text()) + 1)
             }
+            else {
+                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipeAdv }} qui tire et arrêt du gardien</div>")
+            }
+            $("#log").html("</li>" + $("#log").html())
+            $("#ac" + (minutes - 10)).removeClass("w3-red").addClass("w3-pale-red")
         }
         else {
             var atB = tituB[3][5]
@@ -383,9 +404,16 @@
             var tir = Math.ceil(Math.random()*100)
             var arret = Math.ceil(Math.random()*100)
 
+            $("#log").html("<li id=\"ac" + minutes + "\" class=\"w3-red\">" + $("#log").html())
             if (tir <= atB && arret > gkA ) { //tir réussi et arret raté
+                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipeAdv }} qui tire et BUUUT!!</div>")
                 $("#scoreB").text(parseInt($("#scoreB").text()) + 1)
             }
+            else {
+                $("#ac" + minutes).html($("#ac" + minutes).html() + "<div>L'attaquant de {{ $nomEquipeAdv }} qui tire et arrêt du gardien</div>")
+            }
+            $("#log").html("</li>" + $("#log").html())
+            $("#ac" + (minutes - 10)).removeClass("w3-red").addClass("w3-pale-red")
         }
     }
 
